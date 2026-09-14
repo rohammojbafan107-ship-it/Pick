@@ -120,6 +120,16 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 #emojiPanel.on{display:grid}
 #emojiPanel span{font-size:20px;cursor:pointer;padding:4px;border-radius:6px;text-align:center;user-select:none}
 #emojiPanel span:hover{background:var(--panel3)}
+
+/* ============ Image Menu (Bottom Sheet) ============ */
+#imageMenu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;justify-content:center;align-items:flex-end}
+#imageMenu.on{display:flex}
+#imageMenu .sheet{background:var(--panel2);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px;display:flex;flex-direction:column;gap:10px;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+#imageMenu .sheetTitle{font-weight:bold;text-align:center;color:var(--text);margin-bottom:10px;font-size:15px}
+#imageMenu button{padding:16px;border-radius:12px;border:none;background:var(--panel3);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:12px;justify-content:center;transition:.15s}
+#imageMenu button:hover{background:#374248}
+#imageMenu button.cancel{background:#5c1e1e;color:#fff;padding:14px}
 </style>
 </head>
 <body>
@@ -180,6 +190,16 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 
 </div>
 
+<!-- ============ Image Menu ============ -->
+<div id="imageMenu">
+  <div class="sheet">
+    <div class="sheetTitle">📷 ارسال عکس</div>
+    <button id="pickGallery">🖼️ انتخاب از گالری</button>
+    <button id="pickCamera">📷 گرفتن با دوربین</button>
+    <button id="cancelImageMenu" class="cancel">لغو</button>
+  </div>
+</div>
+
 <div class="modal" id="newContactModal">
   <div class="modalBox">
     <div class="modalHdr"><h2>➕ مخاطب جدید</h2><button data-close="newContactModal">✕</button></div>
@@ -236,7 +256,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 
 <script>
 // ========================================================
-//              راز — پیام‌رسان (متن + ویس + عکس)
+//      راز — پیام‌رسان (متن + ویس + عکس + گالری/دوربین)
 // ========================================================
 
 const $ = id => document.getElementById(id);
@@ -537,7 +557,6 @@ function handleIncoming(d) {
   if (!state.messages[chatId]) state.messages[chatId] = [];
   if (state.messages[chatId].some(m => m.id === d.id)) return;
 
-  // ویس
   if (d.type === 'voice' && d.audioBase64) {
     try {
       const blob = base64ToBlob(d.audioBase64, d.mime || 'audio/webm');
@@ -546,7 +565,6 @@ function handleIncoming(d) {
     } catch(e) { console.error('voice error', e); }
   }
 
-  // عکس
   if (d.type === 'image' && d.imageBase64) {
     try {
       const blob = base64ToBlob(d.imageBase64, d.mime || 'image/jpeg');
@@ -569,7 +587,6 @@ function handleIncoming(d) {
   if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
     const body = d.type === 'voice' ? '🎤 پیام صوتی' : d.type === 'image' ? '📷 عکس' : (d.text || 'پیام جدید');
     new Notification(d.from, { body });
-    
   }
 }
   // ============ Chat list ============
@@ -963,18 +980,51 @@ async function sendVoice(blob, duration) {
   console.log('✅ ویس ارسال شد');
 }
 
-// ============ Send Image ============
-$('attachBtn').onclick = () => $('fileInput').click();
+// ============ Image Menu (گالری/دوربین) ============
+$('attachBtn').onclick = () => {
+  $('imageMenu').classList.add('on');
+};
 
-$('fileInput').onchange = async (e) => {
+$('cancelImageMenu').onclick = () => {
+  $('imageMenu').classList.remove('on');
+};
+
+$('imageMenu').onclick = (e) => {
+  if (e.target.id === 'imageMenu') $('imageMenu').classList.remove('on');
+};
+
+// گالری
+$('pickGallery').onclick = () => {
+  $('imageMenu').classList.remove('on');
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  // بدون capture → خودش گالری یا فایل رو باز می‌کنه
+  input.onchange = (e) => handleImagePick(e);
+  input.click();
+};
+
+// دوربین
+$('pickCamera').onclick = () => {
+  $('imageMenu').classList.remove('on');
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.capture = 'environment'; // دوربین عقب
+  input.onchange = (e) => handleImagePick(e);
+  input.click();
+};
+
+// ============ Handle Image Pick ============
+async function handleImagePick(e) {
   const file = e.target.files[0];
   if (!file) return;
   if (!file.type.startsWith('image/')) { alert('فقط عکس قبول می‌شه!'); return; }
-  e.target.value = '';
 
   $('uploading').classList.add('on');
 
   try {
+    // فشرده‌سازی
     const compressed = await compressImage(file, 800, 0.6);
     console.log('📷 عکس فشرده:', Math.round(compressed.size/1024), 'KB');
 
@@ -990,8 +1040,9 @@ $('fileInput').onchange = async (e) => {
     alert('خطا در پردازش عکس');
   }
   $('uploading').classList.remove('on');
-};
+}
 
+// ============ Send Image ============
 async function sendImage(blob) {
   if (!state.currentChat || !state.mqtt) return;
   const fileId = 'f_' + uid();
@@ -1257,7 +1308,7 @@ if ('Notification' in window && Notification.permission === 'default') {
 }
 
 console.log('✅ راز آماده. ID شما:', state.myId);
-console.log('📡 بروکر:', state.mqttBroker || 'در حال اتصال...');
+console.log('📡 منوی عکس: گالری + دوربین فعاله');
 </script>
 </body>
 </html>
