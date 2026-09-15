@@ -66,11 +66,10 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 .hdr .title .sub.on{color:var(--accent)}
 .hdr .title .sub.on::before{content:"";display:inline-block;width:7px;height:7px;background:var(--accent);border-radius:50%;margin-left:6px;box-shadow:0 0 8px var(--accent);animation:pulse 2s infinite}
 .hdr .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;cursor:pointer;border:2px solid rgba(255,255,255,.08)}
-.hdr .avatar:hover{transform:scale(1.05)}
-#statusDot{width:11px;height:11px;border-radius:50%;background:var(--danger);flex-shrink:0;margin-left:4px;box-shadow:0 0 10px currentColor;border:2px solid var(--panel-2);transition:all .3s}
+#statusDot{width:11px;height:11px;border-radius:50%;background:var(--danger);flex-shrink:0;margin-left:4px;box-shadow:0 0 10px currentColor;border:2px solid var(--panel-2);transition:all .3s;cursor:pointer}
 
 #chatList{flex:1;overflow-y:auto;background:var(--panel);padding:6px 0}
-.chat-item{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;position:relative;animation:fadeIn .3s ease}
+.chat-item{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;position:relative}
 .chat-item:hover{background:var(--panel-2)}
 .chat-item::after{content:"";position:absolute;bottom:0;right:76px;left:0;height:1px;background:var(--border)}
 .chat-item:last-child::after{display:none}
@@ -110,26 +109,23 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 .msg .photo{max-width:100%;max-height:340px;border-radius:12px;display:block;cursor:pointer;margin-top:4px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .voiceBox{display:flex;align-items:center;gap:12px;min-width:220px;padding:2px 0}
 .voiceBox .play{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:15px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.voiceBox .play:hover{background:rgba(255,255,255,.25)}
 .voiceBox.playing .play{background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 0 15px var(--accent-glow)}
 .voiceBox .bars{flex:1;height:24px;display:flex;align-items:center;gap:2.5px}
 .voiceBox .bars span{width:3px;background:rgba(255,255,255,.35);border-radius:2px}
 .voiceBox.playing .bars span{background:var(--accent);animation:pulse .6s ease-in-out infinite}
 .voiceBox .dur{font-size:11.5px;color:rgba(255,255,255,.7);min-width:38px;text-align:left;font-weight:600}
-.sys{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11.5px;padding:6px 14px;border-radius:99px;margin:8px 0;max-width:85%;text-align:center;font-weight:500;border:1px solid rgba(255,255,255,.03)}
-.dayDiv{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11px;padding:5px 14px;border-radius:99px;margin:14px 0 8px;font-weight:600;border:1px solid rgba(255,255,255,.03)}
+.sys{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11.5px;padding:6px 14px;border-radius:99px;margin:8px 0;max-width:85%;text-align:center;font-weight:500}
+.dayDiv{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11px;padding:5px 14px;border-radius:99px;margin:14px 0 8px;font-weight:600}
 #typingBar{background:var(--bg);color:var(--accent);font-size:12px;padding:0 24px;min-height:0;flex-shrink:0;font-weight:500}
 #typingBar.on{min-height:24px;padding:6px 24px}
-#typingBar.on::before{content:"";display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin-left:8px;box-shadow:0 0 8px var(--accent);animation:pulse 1s infinite}
 
 #inputBar{background:linear-gradient(0deg,var(--panel),var(--panel-2));padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;flex-shrink:0;border-top:1px solid var(--border)}
 #inputBar button{width:44px;height:44px;border-radius:50%;border:none;background:transparent;color:var(--text-dim);font-size:20px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-#inputBar button:hover{background:var(--panel-3);color:var(--text)}
 #inputBar button.send{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 4px 14px rgba(0,212,168,.4)}
 #inputBar button.mic{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 4px 14px rgba(0,212,168,.4)}
 #inputBar button.mic.rec{background:linear-gradient(135deg,#ff4d6d,#c9184a);box-shadow:0 0 20px rgba(255,77,109,.6);animation:pulse .8s infinite}
 #inputBar input[type=text]{flex:1;padding:12px 18px;border-radius:24px;border:1.5px solid transparent;background:var(--panel-3);color:var(--text);font-size:15px;outline:none;font-family:inherit;min-width:0}
-#inputBar input[type=text]:focus{border-color:var(--accent);background:var(--panel-2);box-shadow:0 0 0 3px var(--accent-glow)}
+#inputBar input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 #inputBar input[type=text]::placeholder{color:var(--text-dimmer)}
 
 #recBar{display:none;align-items:center;gap:12px;padding:12px 18px;background:linear-gradient(135deg,#5c1e1e,#3d1414);color:#fff;flex-shrink:0}
@@ -144,13 +140,12 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 #uploading.on{display:flex}
 #uploading .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:200;padding:20px;animation:fadeIn .2s ease}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:200;padding:20px}
 .modal.on{display:flex}
-.modalBox{background:linear-gradient(180deg,var(--panel-2),var(--panel));border-radius:22px;width:100%;max-width:440px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--border);animation:slideUp .3s}
+.modalBox{background:linear-gradient(180deg,var(--panel-2),var(--panel));border-radius:22px;width:100%;max-width:440px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
 .modalHdr{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-.modalHdr h2{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.modalHdr h2{font-size:17px;font-weight:700}
 .modalHdr button{background:var(--panel-3);border:none;color:var(--text-dim);font-size:16px;cursor:pointer;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.modalHdr button:hover{background:var(--panel-hover);color:var(--text);transform:rotate(90deg)}
 .modalBody{flex:1;overflow-y:auto;padding:18px 20px}
 .modalBody .lbl{font-size:12px;color:var(--text-dim);margin-bottom:8px;display:block;margin-top:10px;font-weight:600}
 .modalBody .lbl:first-child{margin-top:0}
@@ -169,31 +164,28 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 .modalFtr .ok{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 4px 14px rgba(0,212,168,.4)}
 .modalFtr .ok:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
 .modalBody button.action{width:100%;padding:14px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;margin-top:8px;text-align:center;font-weight:600}
-.modalBody button.action:hover{background:var(--panel-3);border-color:var(--accent)}
 .modalBody button.danger{background:rgba(255,77,109,.1);border-color:rgba(255,77,109,.3);color:#ff8fa3}
-.modalBody button.danger:hover{background:rgba(255,77,109,.2);border-color:var(--danger)}
 
 #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.97);display:none;justify-content:center;align-items:center;z-index:300;cursor:zoom-out;padding:20px}
 #lightbox.on{display:flex}
-#lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;animation:pop .3s}
+#lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px}
 
-#emojiPanel{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(180deg,var(--panel-2),var(--panel));border-radius:22px;padding:12px;display:none;grid-template-columns:repeat(8,1fr);gap:4px;max-width:360px;max-height:280px;overflow-y:auto;box-shadow:var(--shadow-lg);border:1px solid var(--border);z-index:150;animation:slideUp .25s}
+#emojiPanel{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(180deg,var(--panel-2),var(--panel));border-radius:22px;padding:12px;display:none;grid-template-columns:repeat(8,1fr);gap:4px;max-width:360px;max-height:280px;overflow-y:auto;box-shadow:var(--shadow-lg);border:1px solid var(--border);z-index:150}
 #emojiPanel.on{display:grid}
-#emojiPanel span{font-size:24px;cursor:pointer;padding:6px;border-radius:8px;text-align:center;user-select:none}
+#emojiPanel span{font-size:24px;cursor:pointer;padding:6px;border-radius:8px;text-align:center}
 #emojiPanel span:hover{background:var(--panel-3);transform:scale(1.2)}
 
 #imageMenu,#msgMenu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:400;justify-content:center;align-items:flex-end}
 #imageMenu.on,#msgMenu.on{display:flex}
-.sheet{background:linear-gradient(180deg,var(--panel-2),var(--panel));width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;animation:slideUp .3s;border-top:1px solid var(--border);box-shadow:0 -10px 40px rgba(0,0,0,.5);position:relative}
+.sheet{background:linear-gradient(180deg,var(--panel-2),var(--panel));width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);position:relative}
 .sheet::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:40px;height:4px;background:var(--panel-hover);border-radius:99px}
 .sheet .sheetTitle{font-weight:700;text-align:center;color:var(--text);margin:10px 0 6px;font-size:15px}
 .sheet button{padding:16px 18px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:14px;justify-content:flex-start;font-weight:600}
-.sheet button:hover{background:var(--panel-3);border-color:var(--accent);transform:translateX(-4px)}
 .sheet button.danger{color:#ff8fa3;background:rgba(255,77,109,.08);border-color:rgba(255,77,109,.2)}
 .sheet button.cancel{background:var(--panel-3);justify-content:center;font-weight:700}
 
 .search-results{margin-top:10px;margin-bottom:12px}
-.search-result{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:linear-gradient(135deg,rgba(0,212,168,.08),rgba(0,184,148,.05));margin-bottom:8px;border:1.5px solid rgba(0,212,168,.25);animation:slideUp .3s}
+.search-result{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:linear-gradient(135deg,rgba(0,212,168,.08),rgba(0,184,148,.05));margin-bottom:8px;border:1.5px solid rgba(0,212,168,.25)}
 .search-result .av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
 .search-result .info{flex:1;min-width:0}
 .search-result .nm{font-size:14.5px;font-weight:700}
@@ -239,7 +231,7 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 <div class="screen hidden" id="mainScreen">
   <div class="hdr">
     <div class="avatar" id="myAvatarHeader" style="background:linear-gradient(135deg,#00d4a8,#00b894)">؟</div>
-    <div class="title">راز<div class="sub" id="myIdSub">-</div></div>
+    <div class="title">راز<div class="sub" id="myIdSub">⏳ در حال اتصال...</div></div>
     <div id="statusDot" title="وضعیت اتصال"></div>
     <button class="icon" id="settingsBtn" title="تنظیمات">⚙️</button>
   </div>
@@ -380,8 +372,13 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 
 <script>
 const $ = id => document.getElementById(id);
-const PREFIX = 'raaz_phone_v2';
-const BROKERS = ['wss://broker.hivemq.com:8884/mqtt'];
+const PREFIX = 'raaz_phone_v3';
+const BROKERS = [
+  'wss://broker.hivemq.com:8884/mqtt',
+  'wss://broker.emqx.io:8084/mqtt',
+  'wss://mqtt.eclipseprojects.io:443/mqtt',
+  'wss://test.mosquitto.org:8081/mqtt',
+];
 const MAX_VOICE_SIZE = 200 * 1024;
 const MAX_VOICE_DURATION = 15;
 const MAX_IMAGE_SIZE = 150 * 1024;
@@ -635,12 +632,9 @@ $('joinBtn').onclick = async () => {
   }
 };
 
-// ⭐ checkSession با چک کامل
 (function checkSession() {
   try {
     const s = JSON.parse(localStorage.getItem('raaz_session') || sessionStorage.getItem('raaz_session') || 'null');
-
-    // چک کن همه چیز کامله
     if (s && s.phone && s.phone.length === 11 && s.name && localStorage.getItem('raaz_pass_' + s.phone)) {
       state.myPhone = s.phone;
       state.myName = s.name;
@@ -649,10 +643,8 @@ $('joinBtn').onclick = async () => {
       startApp();
       return;
     }
-
-    // اگه ناقصه، پاک کن
     if (s) {
-      console.warn('⚠️ session ناقص — پاک شد');
+      console.warn('⚠️ session ناقص');
       localStorage.removeItem('raaz_session');
       sessionStorage.removeItem('raaz_session');
     }
@@ -661,8 +653,6 @@ $('joinBtn').onclick = async () => {
     localStorage.removeItem('raaz_session');
     sessionStorage.removeItem('raaz_session');
   }
-
-  // برگرد به login
   $('mainScreen').classList.add('hidden');
   $('login').classList.remove('hidden');
   if (state.myPhone) $('phoneInp').value = state.myPhone;
@@ -675,7 +665,6 @@ async function startApp() {
   if (appStarted) return;
   appStarted = true;
 
-  // چک کن اطلاعات کامله
   if (!state.myPhone || !state.myName || state.myPhone.length < 11) {
     console.warn('⚠️ اطلاعات ناقص — برگشت به login');
     localStorage.removeItem('raaz_session');
@@ -695,20 +684,14 @@ async function startApp() {
   updateStatusDot();
   setInterval(updateStatusDot, 2000);
 
-  try {
-    await connectMQTT();
+  // ⭐ شروع اتصال به همه بروکرها
+  connectMQTT().then(() => {
     console.log('✅ MQTT وصل شد →', state.mqttBroker);
     updateStatusDot();
-  } catch(e) {
-    console.error('❌ MQTT failed:', e);
-    // به جای alert، سعی کن دوباره وصل شی
-    setTimeout(() => {
-      if (!state.mqtt || !state.mqtt.connected) {
-        console.log('🔄 تلاش مجدد...');
-        connectMQTT().catch(err => console.warn('retry fail', err));
-      }
-    }, 5000);
-  }
+  }).catch(e => {
+    console.error('❌ همه بروکرها fail:', e);
+    updateStatusDot();
+  });
 }
 
 function updateStatusDot() {
@@ -717,37 +700,53 @@ function updateStatusDot() {
   if (state.mqtt && state.mqtt.connected) {
     el.style.background = 'var(--accent)';
     el.style.boxShadow = '0 0 12px var(--accent)';
-    el.title = '🟢 متصل';
+    el.title = '🟢 متصل به: ' + (state.mqttBroker || '').replace('wss://', '').split(':')[0];
   } else {
     el.style.background = 'var(--danger)';
     el.style.boxShadow = '0 0 12px var(--danger)';
-    el.title = '🔴 قطع — در حال اتصال...';
+    el.title = '🔴 قطع — کلیک کن برای تلاش مجدد';
+    el.style.cursor = 'pointer';
+    el.onclick = () => {
+      console.log('🔄 کاربر کلیک کرد — تلاش مجدد');
+      connectMQTT().catch(() => {});
+    };
   }
 }
 
-// ============ MQTT ============
+// ============ MQTT (چند بروکر) ============
 async function connectMQTT() {
-  // اگه قبلاً وصل بود، کاری نکن
   if (state.mqtt && state.mqtt.connected) return state.mqtt;
 
-  const url = BROKERS[0];
-  console.log('🔄 اتصال به:', url);
-  const c = await tryConnect(url);
-  state.mqttBroker = url;
-  return c;
+  let lastErr = null;
+  for (let i = 0; i < BROKERS.length; i++) {
+    const url = BROKERS[i];
+    try {
+      console.log(`🔄 تلاش ${i+1}/${BROKERS.length}: ${url}`);
+      const c = await tryConnect(url);
+      state.mqttBroker = url;
+      console.log(`✅ وصل شد به: ${url}`);
+      updateStatusDot();
+      return c;
+    } catch(e) {
+      lastErr = e;
+      console.warn(`❌ ${url} ناموفق: ${e.message}`);
+    }
+  }
+  throw lastErr || new Error('هیچ بروکری پاسخ نداد');
 }
 
 function tryConnect(url) {
   return new Promise((res, rej) => {
     let done = false;
     let c;
-    try {
-      // اگه قبلاً یه client داشتیم، ببندش
-      if (state.mqtt) {
-        try { state.mqtt.end(true); } catch(_) {}
-        state.mqtt = null;
-      }
 
+    // بستن client قدیمی
+    if (state.mqtt) {
+      try { state.mqtt.end(true); } catch(_) {}
+      state.mqtt = null;
+    }
+
+    try {
       c = mqtt.connect(url, {
         clientId: 'raaz_' + state.myPhone + '_' + uid(),
         clean: true,
@@ -758,15 +757,18 @@ function tryConnect(url) {
     } catch(e) { return rej(e); }
 
     const to = setTimeout(() => {
-      if (!done) { done = true; try { c.end(true); } catch(_) {} rej(new Error('timeout')); }
-    }, 10000);
+      if (!done) {
+        done = true;
+        try { c.end(true); } catch(_) {}
+        rej(new Error('timeout'));
+      }
+    }, 9000);
 
     c.on('connect', () => {
       if (done) return;
       done = true;
       clearTimeout(to);
       state.mqtt = c;
-      console.log('🟢 connected to', url);
       updateStatusDot();
 
       c.subscribe([
@@ -785,7 +787,7 @@ function tryConnect(url) {
       c.on('error', (e) => console.warn('mqtt error', e));
       c.on('close', () => { console.log('⚫ close'); updateStatusDot(); });
 
-      // شروع heartbeat
+      // heartbeat
       if (window._presenceTimer) clearInterval(window._presenceTimer);
       window._presenceTimer = setInterval(announcePresence, 5000);
 
@@ -849,32 +851,27 @@ document.addEventListener('visibilitychange', () => {
     console.log('👁 صفحه فعال شد');
     if (state.mqtt && !state.mqtt.connected) {
       console.log('🔄 تلاش برای اتصال مجدد...');
-      try { state.mqtt.reconnect(); } catch(e) {
-        // اگه reconnect کار نکرد، از اول وصل شو
-        connectMQTT().catch(err => console.warn('reconnect fail', err));
-      }
-    }
-    if (state.mqtt && state.mqtt.connected) {
+      connectMQTT().catch(() => {});
+    } else if (state.mqtt && state.mqtt.connected) {
       announcePresence();
     }
     updateStatusDot();
   }
 });
 
-// ⭐ هر ۱۵ ثانیه اگه قطع بود، تلاش کن
+// ⭐ هر ۱۵ ثانیه اگه قطع بود
 setInterval(() => {
-  if (state.mqtt && !state.mqtt.connected) {
+  if (state.mqtt && !state.mqtt.connected && appStarted) {
     console.log('🔄 چک خودکار - تلاش اتصال');
-    try { state.mqtt.reconnect(); } catch(e) {}
-    updateStatusDot();
+    connectMQTT().catch(() => {});
   }
 }, 15000);
 
-// ⭐ وقتی برگشت به online، وصل شو
+// ⭐ وقتی آنلاین شد
 window.addEventListener('online', () => {
   console.log('🌐 آنلاین شد');
   if (state.mqtt && !state.mqtt.connected) {
-    try { state.mqtt.reconnect(); } catch(e) {}
+    connectMQTT().catch(() => {});
   }
 });
 
@@ -1313,7 +1310,10 @@ $('menuDeleteAll').onclick = () => {
 function sendText() {
   const txt = $('msgInp').value.trim();
   if (!txt) return;
-  if (!state.mqtt || !state.mqtt.connected) { alert('اتصال به سرور قطع است. صبر کن...'); return; }
+  if (!state.mqtt || !state.mqtt.connected) {
+    alert('⏳ اتصال به سرور برقرار نیست. صبر کن یا روی نقطه قرمز کلیک کن.');
+    return;
+  }
   if (!state.currentChat) { alert('چتی باز نیست'); return; }
 
   const msg = { id: uid(), from: state.myName, fromId: state.myPhone, time: Date.now(), type: 'text', text: txt };
@@ -1851,8 +1851,9 @@ if ('Notification' in window && Notification.permission === 'default') {
 console.log('%c راز ', 'background:linear-gradient(135deg,#00d4a8,#00b894);color:#fff;padding:4px 10px;border-radius:6px;font-weight:bold;font-size:16px');
 console.log('✅ آماده. 📱 شما:', state.myPhone);
 console.log('🔐 رمز عبور فعال');
-console.log('📡 بروکر: broker.hivemq.com');
+console.log('📡 بروکرها:', BROKERS.length, 'تا');
 console.log('🔄 reconnection خودکار فعال');
+console.log('💡 اگه قطع شدی، روی نقطه قرمز کلیک کن');
 </script>
 </body>
 </html>
