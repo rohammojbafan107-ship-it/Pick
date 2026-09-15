@@ -5,7 +5,39 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b141a">
 <title>راز • Raz</title>
-<script src="https://unpkg.com/mqtt@5.3.5/dist/mqtt.min.js"></script>
+<script>
+(function(){
+  var cdns = [
+    'https://cdn.jsdelivr.net/npm/mqtt@5.3.5/dist/mqtt.min.js',
+    'https://unpkg.com/mqtt@5.3.5/dist/mqtt.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.5/mqtt.min.js',
+    'https://cdn.statically.io/gh/mqttjs/MQTT.js/v5.3.5/dist/mqtt.min.js'
+  ];
+  var i = 0;
+  function tryNext(){
+    if (i >= cdns.length) {
+      console.error('❌ همه CDNها fail شدن');
+      window._mqttLoadFailed = true;
+      return;
+    }
+    var url = cdns[i++];
+    console.log('🔄 تلاش CDN: ' + url);
+    var s = document.createElement('script');
+    s.src = url;
+    s.async = false;
+    s.onload = function(){
+      console.log('✅ mqtt لود شد از: ' + url);
+      window._mqttLoaded = true;
+    };
+    s.onerror = function(){
+      console.warn('❌ fail: ' + url);
+      tryNext();
+    };
+    document.head.appendChild(s);
+  }
+  tryNext();
+})();
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -684,13 +716,38 @@ async function startApp() {
   updateStatusDot();
   setInterval(updateStatusDot, 2000);
 
-  // ⭐ شروع اتصال به همه بروکرها
+  // ⭐ صبر کن mqtt لود شه
+  const ok = await waitForMqtt();
+  if (!ok) {
+    console.error('❌ mqtt لود نشد');
+    alert('❌ کتابخونه اتصال لود نشد!\n\nاینترنت رو چک کن یا VPN روشن/خاموش کن و رفرش بزن.');
+    return;
+  }
+
   connectMQTT().then(() => {
     console.log('✅ MQTT وصل شد →', state.mqttBroker);
     updateStatusDot();
   }).catch(e => {
     console.error('❌ همه بروکرها fail:', e);
     updateStatusDot();
+  });
+}
+
+// ⭐ صبر برای لود mqtt (حداکثر ۱۰ ثانیه)
+function waitForMqtt() {
+  return new Promise((resolve) => {
+    if (typeof mqtt !== 'undefined') return resolve(true);
+    let tries = 0;
+    const iv = setInterval(() => {
+      tries++;
+      if (typeof mqtt !== 'undefined') {
+        clearInterval(iv);
+        resolve(true);
+      } else if (tries >= 40) {
+        clearInterval(iv);
+        resolve(false);
+      }
+    }, 250);
   });
 }
 
@@ -708,7 +765,9 @@ function updateStatusDot() {
     el.style.cursor = 'pointer';
     el.onclick = () => {
       console.log('🔄 کاربر کلیک کرد — تلاش مجدد');
-      connectMQTT().catch(() => {});
+      waitForMqtt().then(ok => {
+        if (ok) connectMQTT().catch(() => {});
+      });
     };
   }
 }
@@ -716,6 +775,10 @@ function updateStatusDot() {
 // ============ MQTT (چند بروکر) ============
 async function connectMQTT() {
   if (state.mqtt && state.mqtt.connected) return state.mqtt;
+
+  if (typeof mqtt === 'undefined') {
+    throw new Error('mqtt library not loaded');
+  }
 
   let lastErr = null;
   for (let i = 0; i < BROKERS.length; i++) {
@@ -737,6 +800,10 @@ async function connectMQTT() {
 
 function tryConnect(url) {
   return new Promise((res, rej) => {
+    if (typeof mqtt === 'undefined') {
+      return rej(new Error('mqtt not loaded'));
+    }
+
     let done = false;
     let c;
 
@@ -751,7 +818,7 @@ function tryConnect(url) {
         clientId: 'raaz_' + state.myPhone + '_' + uid(),
         clean: true,
         connectTimeout: 8000,
-        reconnectPeriod: 3000,
+        reconnectPeriod: 0,
         keepalive: 30,
       });
     } catch(e) { return rej(e); }
@@ -806,7 +873,7 @@ function tryConnect(url) {
     c.on('error', (e) => {
       if (done) return;
       done = true;
-      clearTimeout(to);
+      clearTimeout(t);
       try { c.end(true); } catch(_) {}
       rej(e);
     });
@@ -851,7 +918,9 @@ document.addEventListener('visibilitychange', () => {
     console.log('👁 صفحه فعال شد');
     if (state.mqtt && !state.mqtt.connected) {
       console.log('🔄 تلاش برای اتصال مجدد...');
-      connectMQTT().catch(() => {});
+      waitForMqtt().then(ok => {
+        if (ok) connectMQTT().catch(() => {});
+      });
     } else if (state.mqtt && state.mqtt.connected) {
       announcePresence();
     }
@@ -1853,7 +1922,6 @@ console.log('✅ آماده. 📱 شما:', state.myPhone);
 console.log('🔐 رمز عبور فعال');
 console.log('📡 بروکرها:', BROKERS.length, 'تا');
 console.log('🔄 reconnection خودکار فعال');
-console.log('💡 اگه قطع شدی، روی نقطه قرمز کلیک کن');
 </script>
 </body>
 </html>
