@@ -14,14 +14,13 @@
   ];
   var i = 0;
   function tryNext(){
-    if (i >= cdns.length) { console.error('❌ همه CDNها fail'); window._mqttLoadFailed = true; return; }
+    if (i >= cdns.length) { window._mqttLoadFailed = true; return; }
     var url = cdns[i++];
-    console.log('🔄 CDN: ' + url);
     var s = document.createElement('script');
     s.src = url;
     s.async = false;
-    s.onload = function(){ console.log('✅ mqtt لود شد از: ' + url); window._mqttLoaded = true; };
-    s.onerror = function(){ console.warn('❌ fail: ' + url); tryNext(); };
+    s.onload = function(){ window._mqttLoaded = true; console.log('✅ mqtt لود شد'); };
+    s.onerror = function(){ tryNext(); };
     document.head.appendChild(s);
   }
   tryNext();
@@ -36,119 +35,110 @@
   --accent:#00d4a8;--accent-2:#00b894;--accent-glow:rgba(0,212,168,.35);
   --me-1:#005c4b;--me-2:#004c3f;--other:#1f2937;--other-2:#1a232e;
   --border:#1e2836;--danger:#ff4d6d;
-  --shadow-lg:0 20px 60px rgba(0,0,0,.5);
   --transition:.2s cubic-bezier(.4,0,.2,1);
 }
 html,body{height:100%;width:100%;overflow:hidden}
-body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
+body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pop{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.1)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-#app{height:100vh;height:100dvh;max-width:520px;margin:0 auto;background:var(--panel);position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 80px rgba(0,0,0,.5)}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--panel);z-index:5;animation:fadeIn .25s ease}
+#app{height:100vh;height:100dvh;max-width:520px;margin:0 auto;background:var(--panel);position:relative;display:flex;flex-direction:column;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--panel);z-index:5;animation:fadeIn .25s}
 .screen.hidden{display:none}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--panel-3);border-radius:3px}
 
-#login{background:radial-gradient(ellipse at top,rgba(0,212,168,.12),transparent 50%),radial-gradient(ellipse at bottom left,rgba(0,184,148,.08),transparent 50%),linear-gradient(180deg,#0a0e14 0%,#0f141b 100%);z-index:100;justify-content:center;align-items:center;padding:24px 20px;overflow-y:auto}
-#login .inner{display:flex;flex-direction:column;gap:18px;width:100%;max-width:360px;align-items:stretch;animation:slideUp .5s ease;padding:24px 0}
-#login .logo{font-size:76px;text-align:center;margin-bottom:8px;filter:drop-shadow(0 8px 20px rgba(0,212,168,.4));animation:pulse 3s ease-in-out infinite}
-#login h1{font-size:32px;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,#00d4a8 0%,#00b894 50%,#00ffcc 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;margin-bottom:4px}
-#login .sub{color:var(--text-dim);font-size:13px;text-align:center;margin-bottom:16px}
-.field{width:100%}
-.field label{display:block;font-size:11px;color:var(--text-dim);margin-bottom:8px;font-weight:600;padding-right:4px;letter-spacing:.3px;text-transform:uppercase}
-.field input{width:100%;padding:16px 18px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel-2);color:var(--text);font-size:15px;font-weight:500;outline:none;font-family:inherit;transition:var(--transition)}
-.field input:focus{border-color:var(--accent);background:var(--panel);box-shadow:0 0 0 4px var(--accent-glow)}
+#login{background:linear-gradient(180deg,#0a0e14,#0f141b);z-index:100;justify-content:center;align-items:center;padding:24px 20px;overflow-y:auto}
+#login .inner{display:flex;flex-direction:column;gap:18px;width:100%;max-width:360px;animation:slideUp .5s}
+#login .logo{font-size:76px;text-align:center;filter:drop-shadow(0 8px 20px rgba(0,212,168,.4));animation:pulse 3s infinite}
+#login h1{font-size:32px;font-weight:800;background:linear-gradient(135deg,#00d4a8,#00b894,#00ffcc);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center}
+#login .sub{color:var(--text-dim);font-size:13px;text-align:center}
+.field label{display:block;font-size:11px;color:var(--text-dim);margin-bottom:8px;font-weight:600;text-transform:uppercase}
+.field input{width:100%;padding:16px 18px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel-2);color:var(--text);font-size:15px;outline:none;font-family:inherit}
+.field input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-glow)}
 .field input.error{border-color:var(--danger)}
-.field input:disabled{opacity:.55;cursor:not-allowed}
-.field input::placeholder{color:var(--text-dimmer)}
-.field .hint{font-size:11px;color:var(--text-dimmer);margin-top:6px;padding-right:6px;font-weight:500}
+.field input:disabled{opacity:.55}
+.field .hint{font-size:11px;color:var(--text-dimmer);margin-top:6px}
 .pass-wrap{position:relative}
 .pass-wrap input{padding-left:52px !important}
-.pass-wrap button{position:absolute;left:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:10px;border-radius:10px;min-width:40px}
-.checkbox-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);cursor:pointer;user-select:none;padding:10px 12px;border-radius:10px;font-weight:500}
-.checkbox-row input{width:20px;height:20px;accent-color:var(--accent);cursor:pointer}
-#login button.main{width:100%;padding:17px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);color:#fff;font-size:16px;cursor:pointer;font-weight:700;font-family:inherit;margin-top:10px;box-shadow:0 8px 24px rgba(0,212,168,.3)}
-#login button.main:disabled{opacity:.6;cursor:not-allowed}
-#loginStatus{margin-top:8px;font-size:12px;color:var(--text-dim);min-height:20px;text-align:center;font-weight:500}
+.pass-wrap button{position:absolute;left:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:10px}
+.checkbox-row{display:flex;align-items:center;gap:10px;font-size:13px;padding:10px;border-radius:10px;font-weight:500}
+.checkbox-row input{width:20px;height:20px;accent-color:var(--accent)}
+#login button.main{width:100%;padding:17px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:16px;cursor:pointer;font-weight:700;font-family:inherit;margin-top:10px;box-shadow:0 8px 24px rgba(0,212,168,.3)}
+#login button.main:disabled{opacity:.6}
+#loginStatus{margin-top:8px;font-size:12px;color:var(--text-dim);min-height:20px;text-align:center}
 
-.hdr{background:linear-gradient(180deg,var(--panel-2),var(--panel));padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));display:flex;align-items:center;gap:12px;z-index:10;flex-shrink:0;min-height:64px;border-bottom:1px solid var(--border);position:relative}
-.hdr .back,.hdr .icon{background:transparent;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;transition:all .2s}
-.hdr .title{flex:1;font-weight:700;font-size:16px;min-width:0;letter-spacing:-.3px}
+.hdr{background:linear-gradient(180deg,var(--panel-2),var(--panel));padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));display:flex;align-items:center;gap:10px;min-height:64px;border-bottom:1px solid var(--border)}
+.hdr .icon{background:transparent;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;transition:.2s}
+.hdr .icon:active{background:var(--panel-3)}
+.hdr .title{flex:1;font-weight:700;font-size:16px;min-width:0}
 .hdr .title .sub{font-size:12px;color:var(--text-dim);font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hdr .title .sub.on{color:var(--accent)}
-.hdr .title .sub.on::before{content:"";display:inline-block;width:7px;height:7px;background:var(--accent);border-radius:50%;margin-left:6px;box-shadow:0 0 8px var(--accent);animation:pulse 2s infinite}
-.hdr .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;cursor:pointer;border:2px solid rgba(255,255,255,.08)}
-#statusDot{width:11px;height:11px;border-radius:50%;background:var(--danger);flex-shrink:0;margin-left:4px;box-shadow:0 0 10px currentColor;border:2px solid var(--panel-2);transition:all .3s;cursor:pointer}
+.hdr .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;cursor:pointer}
+#statusDot{width:11px;height:11px;border-radius:50%;background:var(--danger);flex-shrink:0;box-shadow:0 0 10px currentColor;transition:all .3s;cursor:pointer}
 
-#chatList{flex:1;overflow-y:auto;background:var(--panel);padding:6px 0}
+#chatList{flex:1;overflow-y:auto;padding:6px 0}
 .chat-item{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;position:relative}
 .chat-item::after{content:"";position:absolute;bottom:0;right:76px;left:0;height:1px;background:var(--border)}
 .chat-item:last-child::after{display:none}
-.chat-item .av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#fff;flex-shrink:0;position:relative;background:var(--accent);border:2px solid rgba(255,255,255,.05)}
-.chat-item .av .dot{position:absolute;bottom:2px;left:2px;width:14px;height:14px;background:var(--accent);border-radius:50%;border:3px solid var(--panel);box-shadow:0 0 8px var(--accent);animation:pulse 2.5s infinite}
+.chat-item .av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#fff;flex-shrink:0;position:relative}
+.chat-item .av .dot{position:absolute;bottom:2px;left:2px;width:14px;height:14px;background:var(--accent);border-radius:50%;border:3px solid var(--panel)}
 .chat-item .info{flex:1;min-width:0}
-.chat-item .row1{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:4px}
+.chat-item .row1{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
 .chat-item .nm{font-weight:600;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chat-item .tm{font-size:11px;color:var(--text-dimmer);flex-shrink:0;font-weight:500}
-.chat-item .row2{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chat-item .tm{font-size:11px;color:var(--text-dimmer);flex-shrink:0}
+.chat-item .row2{display:flex;justify-content:space-between;gap:8px}
 .chat-item .pv{font-size:13.5px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
-.chat-item .badge{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 9px;min-width:22px;text-align:center;flex-shrink:0}
+.chat-item .badge{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:3px 9px;min-width:22px;text-align:center}
 .empty{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:80px 24px;text-align:center;color:var(--text-dim);min-height:100%}
-.empty .em{font-size:72px;margin-bottom:20px;opacity:.35;animation:pulse 3s ease-in-out infinite}
-.empty p{font-size:14px;line-height:1.8}
+.empty .em{font-size:72px;margin-bottom:20px;opacity:.35}
 .empty b{color:var(--accent)}
 .fabs{position:absolute;bottom:24px;left:24px;display:flex;flex-direction:column;gap:12px;z-index:20}
 .fab{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:24px;border:none;cursor:pointer;box-shadow:0 8px 24px rgba(0,212,168,.4);display:flex;align-items:center;justify-content:center}
 .fab.group{background:linear-gradient(135deg,#8b5cf6,#6d28d9)}
 
 #messages{flex:1;overflow-y:auto;padding:20px 4%;background:var(--bg);display:flex;flex-direction:column;gap:3px}
-.msg-wrapper{display:flex;align-items:flex-end;gap:6px;animation:pop .22s;max-width:85%;margin:1px 0}
-.msg-wrapper.me{align-self:flex-start;flex-direction:row}
+.msg-wrapper{display:flex;align-items:flex-end;gap:6px;animation:pop .22s;max-width:85%}
+.msg-wrapper.me{align-self:flex-start}
 .msg-wrapper.other{align-self:flex-end;flex-direction:row-reverse}
-.msg-menu-btn{width:26px;height:26px;border-radius:50%;background:transparent;border:none;color:var(--text-dimmer);font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:0;margin-bottom:4px}
+.msg-menu-btn{width:26px;height:26px;border-radius:50%;background:transparent;border:none;color:var(--text-dimmer);font-size:18px;cursor:pointer;opacity:0}
 .msg-wrapper:hover .msg-menu-btn{opacity:.6}
-.msg{max-width:100%;padding:9px 13px 6px;border-radius:16px;font-size:14.5px;line-height:1.5;word-wrap:break-word;position:relative}
+.msg{max-width:100%;padding:9px 13px 6px;border-radius:16px;font-size:14.5px;line-height:1.5;word-wrap:break-word}
 .msg.me{background:linear-gradient(135deg,var(--me-1),var(--me-2));border-bottom-right-radius:6px}
 .msg.other{background:linear-gradient(135deg,var(--other),var(--other-2));border-bottom-left-radius:6px}
-.msg .from{font-size:12.5px;font-weight:700;margin-bottom:4px}
+.msg .from{font-size:12.5px;font-weight:700;margin-bottom:4px;color:#6cb6ff}
 .msg.me .from{color:#4dd4ac}
-.msg.other .from{color:#6cb6ff}
 .msg .body{word-break:break-word;white-space:pre-wrap}
-.msg .meta{font-size:10.5px;color:rgba(255,255,255,.55);margin-top:4px;text-align:left;font-weight:500}
+.msg .meta{font-size:10.5px;color:rgba(255,255,255,.55);margin-top:4px;text-align:left}
 .msg .photo{max-width:100%;max-height:340px;border-radius:12px;display:block;cursor:pointer;margin-top:4px;object-fit:cover}
-.voiceBox{display:flex;align-items:center;gap:12px;min-width:220px;padding:2px 0}
-.voiceBox .play{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:15px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.voiceBox{display:flex;align-items:center;gap:12px;min-width:220px}
+.voiceBox .play{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:15px;cursor:pointer;flex-shrink:0}
 .voiceBox.playing .play{background:linear-gradient(135deg,var(--accent),var(--accent-2))}
 .voiceBox .bars{flex:1;height:24px;display:flex;align-items:center;gap:2.5px}
 .voiceBox .bars span{width:3px;background:rgba(255,255,255,.35);border-radius:2px}
-.voiceBox .dur{font-size:11.5px;color:rgba(255,255,255,.7);min-width:38px;text-align:left;font-weight:600}
-.sys{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11.5px;padding:6px 14px;border-radius:99px;margin:8px 0;max-width:85%;text-align:center;font-weight:500}
-.dayDiv{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11px;padding:5px 14px;border-radius:99px;margin:14px 0 8px;font-weight:600}
-#typingBar{background:var(--bg);color:var(--accent);font-size:12px;padding:0 24px;min-height:0;flex-shrink:0;font-weight:500}
+.voiceBox .dur{font-size:11.5px;color:rgba(255,255,255,.7);min-width:38px}
+.sys{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11.5px;padding:6px 14px;border-radius:99px;margin:8px 0;text-align:center}
+.dayDiv{align-self:center;background:rgba(0,0,0,.35);color:var(--text-dim);font-size:11px;padding:5px 14px;border-radius:99px;margin:14px 0 8px}
+#typingBar{background:var(--bg);color:var(--accent);font-size:12px;padding:0 24px;min-height:0;transition:.2s}
 #typingBar.on{min-height:24px;padding:6px 24px}
 
-#inputBar{background:linear-gradient(0deg,var(--panel),var(--panel-2));padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;flex-shrink:0;border-top:1px solid var(--border)}
+#inputBar{background:linear-gradient(0deg,var(--panel),var(--panel-2));padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center;border-top:1px solid var(--border)}
 #inputBar button{width:44px;height:44px;border-radius:50%;border:none;background:transparent;color:var(--text-dim);font-size:20px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 #inputBar button.send{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
 #inputBar button.mic{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
 #inputBar button.mic.rec{background:linear-gradient(135deg,#ff4d6d,#c9184a);animation:pulse .8s infinite}
 #inputBar input[type=text]{flex:1;padding:12px 18px;border-radius:24px;border:1.5px solid transparent;background:var(--panel-3);color:var(--text);font-size:15px;outline:none;font-family:inherit;min-width:0}
 #inputBar input[type=text]:focus{border-color:var(--accent)}
-#inputBar input[type=text]::placeholder{color:var(--text-dimmer)}
 
-#recBar{display:none;align-items:center;gap:12px;padding:12px 18px;background:linear-gradient(135deg,#5c1e1e,#3d1414);color:#fff;flex-shrink:0}
+#recBar{display:none;align-items:center;gap:12px;padding:12px 18px;background:#5c1e1e;color:#fff}
 #recBar.on{display:flex}
 #recBar .dot{width:12px;height:12px;background:#ff4d6d;border-radius:50%;animation:pulse .8s infinite}
-#recBar .t{font-weight:700;min-width:56px;font-size:15px}
+#recBar .t{font-weight:700;min-width:56px}
 #recBar .hint{flex:1;font-size:11.5px;opacity:.85}
-#recBar button{border:none;background:rgba(255,255,255,.15);color:#fff;width:42px;height:42px;border-radius:50%;font-size:16px;cursor:pointer;flex-shrink:0}
+#recBar button{border:none;background:rgba(255,255,255,.15);color:#fff;width:42px;height:42px;border-radius:50%;font-size:16px;cursor:pointer}
 #recBar button.send{background:linear-gradient(135deg,var(--accent),var(--accent-2))}
 
-#uploading{display:none;align-items:center;gap:12px;padding:12px 18px;background:#1e3a5c;color:#fff;flex-shrink:0;font-size:13px}
+#uploading{display:none;align-items:center;gap:12px;padding:12px 18px;background:#1e3a5c;color:#fff;font-size:13px}
 #uploading.on{display:flex}
 #uploading .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
 
@@ -161,45 +151,49 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 .modalBody{flex:1;overflow-y:auto;padding:18px 20px}
 .modalBody .lbl{font-size:12px;color:var(--text-dim);margin-bottom:8px;display:block;margin-top:10px;font-weight:600}
 .modalBody .lbl:first-child{margin-top:0}
-.modalBody input[type=text],.modalBody input[type=tel],.modalBody input[type=password]{width:100%;padding:14px 16px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:14.5px;outline:none;font-family:inherit;margin-bottom:14px;font-weight:500}
+.modalBody input[type=text],.modalBody input[type=tel],.modalBody input[type=password]{width:100%;padding:14px 16px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:14.5px;outline:none;font-family:inherit;margin-bottom:14px}
 .modalBody .hint{font-size:11.5px;color:var(--text-dimmer);margin-bottom:16px;line-height:1.7}
 .contact-row{display:flex;align-items:center;gap:14px;padding:12px;border-radius:16px;cursor:pointer}
-.contact-row input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer}
+.contact-row input{width:22px;height:22px;accent-color:var(--accent)}
 .contact-row .av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
-.contact-row .nm{font-size:14.5px;flex:1;min-width:0;font-weight:600}
+.contact-row .nm{font-size:14.5px;flex:1;font-weight:600}
 .contact-row .uid{font-size:11px;color:var(--text-dim);margin-top:2px}
 .modalFtr{padding:14px 20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--border);background:var(--panel-2)}
 .modalFtr button{padding:11px 22px;border-radius:16px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 .modalFtr .cancel{background:var(--panel-3);color:var(--text)}
 .modalFtr .ok{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
-.modalFtr .ok:disabled{opacity:.4;cursor:not-allowed}
-.modalBody button.action{width:100%;padding:14px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;margin-top:8px;text-align:center;font-weight:600}
+.modalFtr .ok:disabled{opacity:.4}
+.modalBody button.action{width:100%;padding:14px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:14px;cursor:pointer;margin-top:8px;text-align:center;font-weight:600}
 .modalBody button.danger{background:rgba(255,77,109,.1);border-color:rgba(255,77,109,.3);color:#ff8fa3}
 
 #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.97);display:none;justify-content:center;align-items:center;z-index:300;cursor:zoom-out;padding:20px}
 #lightbox.on{display:flex}
 #lightbox img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px}
 
-#emojiPanel{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(180deg,var(--panel-2),var(--panel));border-radius:22px;padding:12px;display:none;grid-template-columns:repeat(8,1fr);gap:4px;max-width:360px;max-height:280px;overflow-y:auto;border:1px solid var(--border);z-index:150}
+#emojiPanel{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--panel-2);border-radius:22px;padding:12px;display:none;grid-template-columns:repeat(8,1fr);gap:4px;max-width:360px;max-height:280px;overflow-y:auto;border:1px solid var(--border);z-index:150}
 #emojiPanel.on{display:grid}
 #emojiPanel span{font-size:24px;cursor:pointer;padding:6px;border-radius:8px;text-align:center}
 
 #imageMenu,#msgMenu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:400;justify-content:center;align-items:flex-end}
 #imageMenu.on,#msgMenu.on{display:flex}
-.sheet{background:linear-gradient(180deg,var(--panel-2),var(--panel));width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);position:relative}
+.sheet{background:var(--panel-2);width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--border);position:relative}
 .sheet::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:40px;height:4px;background:var(--panel-hover);border-radius:99px}
-.sheet .sheetTitle{font-weight:700;text-align:center;color:var(--text);margin:10px 0 6px;font-size:15px}
-.sheet button{padding:16px 18px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:14px;justify-content:flex-start;font-weight:600}
+.sheet .sheetTitle{font-weight:700;text-align:center;margin:10px 0 6px;font-size:15px}
+.sheet button{padding:16px 18px;border-radius:16px;border:1.5px solid var(--panel-3);background:var(--panel);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:14px;font-weight:600;font-family:inherit}
 .sheet button.danger{color:#ff8fa3;background:rgba(255,77,109,.08);border-color:rgba(255,77,109,.2)}
 .sheet button.cancel{background:var(--panel-3);justify-content:center;font-weight:700}
 
 .search-results{margin-top:10px;margin-bottom:12px}
 .search-result{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:rgba(0,212,168,.08);margin-bottom:8px;border:1.5px solid rgba(0,212,168,.25)}
 .search-result .av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
-.search-result .info{flex:1;min-width:0}
+.search-result .info{flex:1}
 .search-result .nm{font-size:14.5px;font-weight:700}
 .search-result .ph{font-size:11.5px;color:var(--text-dim);margin-top:3px;font-family:monospace;direction:ltr;text-align:right}
 .no-result{padding:16px;text-align:center;color:var(--text-dim);font-size:12.5px;background:var(--panel-2);border-radius:16px;line-height:1.7}
+
+/* Toast */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--panel-3);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;opacity:0;transition:.3s;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.4);pointer-events:none;font-weight:500}
+#toast.on{transform:translateX(-50%) translateY(0);opacity:1}
 </style>
 </head>
 <body>
@@ -241,23 +235,23 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
   <div class="hdr">
     <div class="avatar" id="myAvatarHeader" style="background:linear-gradient(135deg,#00d4a8,#00b894)">؟</div>
     <div class="title">راز<div class="sub" id="myIdSub">⏳ در حال اتصال...</div></div>
-    <div id="statusDot" title="وضعیت اتصال"></div>
+    <div id="statusDot" title="وضعیت"></div>
     <button class="icon" id="reconnectBtn" title="اتصال مجدد">🔄</button>
     <button class="icon" id="settingsBtn" title="تنظیمات">⚙️</button>
   </div>
   <div id="chatList"></div>
   <div class="fabs">
-    <button class="fab group" id="newGroupFab" title="گروه جدید">👥</button>
-    <button class="fab" id="newContactFab" title="مخاطب جدید">➕</button>
+    <button class="fab group" id="newGroupFab" title="گروه">👥</button>
+    <button class="fab" id="newContactFab" title="مخاطب">➕</button>
   </div>
 </div>
 
 <div class="screen hidden" id="chatScreen">
   <div class="hdr">
-    <button class="back" id="chatBack">←</button>
-    <div class="avatar" id="chatAvatar" style="background:linear-gradient(135deg,#00d4a8,#00b894)">؟</div>
+    <button class="icon" id="chatBack">←</button>
+    <div class="avatar" id="chatAvatar">؟</div>
     <div class="title">-<div class="sub" id="chatSub">-</div></div>
-    <button class="icon" id="chatInfoBtn" title="اطلاعات">ℹ️</button>
+    <button class="icon" id="chatInfoBtn">ℹ️</button>
   </div>
   <div id="messages"></div>
   <div id="typingBar"></div>
@@ -270,7 +264,7 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
   </div>
   <div id="uploading">
     <div class="spinner"></div>
-    <div>در حال آماده‌سازی عکس...</div>
+    <div>آماده‌سازی عکس...</div>
   </div>
   <form id="inputBar" autocomplete="off" onsubmit="return false">
     <button type="button" id="emojiBtn">😊</button>
@@ -297,23 +291,23 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 <div id="imageMenu">
   <div class="sheet">
     <div class="sheetTitle">📷 ارسال عکس</div>
-    <button id="pickGallery">🖼️ انتخاب از گالری</button>
-    <button id="pickCamera">📷 گرفتن با دوربین</button>
+    <button id="pickGallery">🖼️ گالری</button>
+    <button id="pickCamera">📷 دوربین</button>
     <button id="cancelImageMenu" class="cancel">لغو</button>
   </div>
 </div>
 
 <div class="modal" id="newContactModal">
   <div class="modalBox">
-    <div class="modalHdr"><h2>🔍 پیدا کردن مخاطب</h2><button data-close="newContactModal">✕</button></div>
+    <div class="modalHdr"><h2>🔍 مخاطب</h2><button data-close="newContactModal">✕</button></div>
     <div class="modalBody">
-      <label class="lbl">شماره موبایل دوستت:</label>
-      <input type="tel" id="contactPhoneInp" placeholder="09123456789" autocomplete="off" dir="ltr" style="text-align:left">
-      <div class="hint">شماره رو کامل وارد کن. اگه طرف توی راز باشه، پیدا می‌شه.</div>
+      <label class="lbl">شماره موبایل:</label>
+      <input type="tel" id="contactPhoneInp" placeholder="09123456789" dir="ltr" style="text-align:left">
+      <div class="hint">اگه طرف توی راز باشه، پیدا می‌شه.</div>
       <div id="searchResults" class="search-results"></div>
       <div id="manualNameField" style="display:none">
         <label class="lbl">اسم دلخواه:</label>
-        <input type="text" id="contactNameInp" placeholder="مثلاً علی" autocomplete="off">
+        <input type="text" id="contactNameInp" placeholder="علی">
       </div>
     </div>
     <div class="modalFtr">
@@ -328,13 +322,13 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
     <div class="modalHdr"><h2>👥 گروه جدید</h2><button data-close="newGroupModal">✕</button></div>
     <div class="modalBody">
       <label class="lbl">اسم گروه:</label>
-      <input type="text" id="groupNameInp" placeholder="مثلاً دوستان" autocomplete="off">
+      <input type="text" id="groupNameInp" placeholder="دوستان">
       <label class="lbl">اعضا:</label>
       <div id="contactPickList"></div>
     </div>
     <div class="modalFtr">
       <button class="cancel" data-close="newGroupModal">لغو</button>
-      <button class="ok" id="createGroupOk" disabled>ساخت گروه</button>
+      <button class="ok" id="createGroupOk" disabled>ساخت</button>
     </div>
   </div>
 </div>
@@ -344,12 +338,12 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
     <div class="modalHdr"><h2>👤 پروفایل</h2><button data-close="profileModal">✕</button></div>
     <div class="modalBody">
       <label class="lbl">اسم:</label>
-      <input type="text" id="profileNameInp" autocomplete="off">
-      <label class="lbl">شماره موبایل:</label>
+      <input type="text" id="profileNameInp">
+      <label class="lbl">شماره:</label>
       <input type="tel" id="profilePhoneInp" dir="ltr" style="text-align:left" readonly>
-      <div class="hint">با کلیک روی شماره کپی می‌شه.</div>
-      <button class="action" id="changePassBtn">🔐 تغییر رمز عبور</button>
-      <button class="action danger" id="logoutBtn">🚪 خروج از حساب</button>
+      <div class="hint">با کلیک کپی می‌شه.</div>
+      <button class="action" id="changePassBtn">🔐 تغییر رمز</button>
+      <button class="action danger" id="logoutBtn">🚪 خروج</button>
     </div>
     <div class="modalFtr">
       <button class="cancel" data-close="profileModal">بستن</button>
@@ -360,14 +354,14 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 
 <div class="modal" id="changePassModal">
   <div class="modalBox">
-    <div class="modalHdr"><h2>🔐 تغییر رمز عبور</h2><button data-close="changePassModal">✕</button></div>
+    <div class="modalHdr"><h2>🔐 تغییر رمز</h2><button data-close="changePassModal">✕</button></div>
     <div class="modalBody">
       <label class="lbl">رمز فعلی:</label>
-      <input type="password" id="oldPassInp" placeholder="رمز فعلی" autocomplete="off">
+      <input type="password" id="oldPassInp" placeholder="رمز فعلی">
       <label class="lbl">رمز جدید:</label>
-      <input type="password" id="newPassInp" placeholder="حداقل ۴ کاراکتر" autocomplete="off">
-      <label class="lbl">تکرار رمز جدید:</label>
-      <input type="password" id="newPass2Inp" placeholder="دوباره وارد کن" autocomplete="off">
+      <input type="password" id="newPassInp" placeholder="حداقل ۴ کاراکتر">
+      <label class="lbl">تکرار رمز:</label>
+      <input type="password" id="newPass2Inp" placeholder="دوباره وارد کن">
       <div class="hint" id="changePassHint">پس از ذخیره، از دفعه بعد رمز جدید لازمه.</div>
     </div>
     <div class="modalFtr">
@@ -379,16 +373,19 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 
 <div id="lightbox"><img id="lightboxImg"></div>
 <div id="emojiPanel"></div>
+<div id="toast"></div>
 
 <script>
+// ========================================================
+//              راز — نسخه نهایی (باگ فیکس شده)
+// ========================================================
+
 const $ = id => document.getElementById(id);
-const PREFIX = 'raaz_phone_v3';
-const BROKERS = [
-  'wss://broker.hivemq.com:8884/mqtt',
-  'wss://broker.emqx.io:8084/mqtt',
-  'wss://mqtt.eclipseprojects.io:443/mqtt',
-  'wss://test.mosquitto.org:8081/mqtt',
-];
+const PREFIX = 'raaz_phone_v4';
+
+// فقط یک بروکر برای هماهنگی کامل
+const BROKER = 'wss://broker.hivemq.com:8884/mqtt';
+
 const MAX_VOICE_SIZE = 200 * 1024;
 const MAX_VOICE_DURATION = 15;
 const MAX_IMAGE_SIZE = 150 * 1024;
@@ -431,6 +428,17 @@ const beep = () => {
     o.start(); o.stop(c.currentTime + .15);
   } catch(e){}
 };
+
+// Toast
+let _toastTimer = null;
+function toast(text) {
+  const el = $('toast');
+  if (!el) return;
+  el.textContent = text;
+  el.classList.add('on');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('on'), 2500);
+}
 
 async function hashPassword(pass) {
   const input = 'raaz|v1|' + pass;
@@ -579,7 +587,6 @@ function updateLoginUI(phone) {
       hint.textContent = '🆕 شماره جدید — رمز بساز';
       hint.style.color = 'var(--text-dim)';
       nameInp.disabled = false;
-      if (nameInp.value === localStorage.getItem('raaz_name_' + phone)) nameInp.value = '';
       passHint.textContent = '🔐 حداقل ۴ کاراکتر';
       passHint.style.color = 'var(--text-dim)';
     }
@@ -598,7 +605,7 @@ $('joinBtn').onclick = async () => {
   const nameVal = $('nameInp').value.trim();
   const phoneVal = $('phoneInp').value.trim();
   const passVal = $('passInp').value;
-  if (!validPhone(phoneVal)) { $('phoneInp').classList.add('error'); return alert('شماره نامعتبره!\nمثال: 09123456789'); }
+  if (!validPhone(phoneVal)) { $('phoneInp').classList.add('error'); return alert('شماره نامعتبره!'); }
   $('phoneInp').classList.remove('error');
   const phone = normalizePhone(phoneVal);
   const savedHash = localStorage.getItem('raaz_pass_' + phone);
@@ -683,27 +690,20 @@ async function startApp() {
   renderChatList();
   setupSendEvents();
   updateStatusDot();
-  setInterval(updateStatusDot, 2000);
+  setInterval(updateStatusDot, 1500);
 
   // دکمه اتصال مجدد
-  if ($('reconnectBtn')) {
-    $('reconnectBtn').onclick = forceReconnect;
-  }
+  if ($('reconnectBtn')) $('reconnectBtn').onclick = forceReconnect;
 
+  // صبر کن mqtt لود شه
   const ok = await waitForMqtt();
   if (!ok) {
-    console.error('❌ mqtt لود نشد');
-    alert('❌ کتابخونه اتصال لود نشد!\n\nVPN روشن/خاموش کن و رفرش بزن.');
+    alert('❌ کتابخونه اتصال لود نشد! VPN رو روشن کن و رفرش بزن.');
     return;
   }
 
-  connectMQTT().then(() => {
-    console.log('✅ MQTT وصل شد →', state.mqttBroker);
-    updateStatusDot();
-  }).catch(e => {
-    console.error('❌ همه بروکرها fail:', e);
-    updateStatusDot();
-  });
+  // ⭐ فقط یک بار اتصال — بقیه‌اش با reconnectPeriod خودکاره
+  connectMQTT().catch(e => console.warn('initial connect fail:', e));
 }
 
 function waitForMqtt() {
@@ -724,7 +724,7 @@ function updateStatusDot() {
   if (state.mqtt && state.mqtt.connected) {
     el.style.background = 'var(--accent)';
     el.style.boxShadow = '0 0 12px var(--accent)';
-    el.title = '🟢 متصل به: ' + (state.mqttBroker || '').replace('wss://', '').split(':')[0];
+    el.title = '🟢 متصل';
   } else {
     el.style.background = 'var(--danger)';
     el.style.boxShadow = '0 0 12px var(--danger)';
@@ -734,188 +734,157 @@ function updateStatusDot() {
   }
 }
 
-// ============ Force Reconnect (دکمه 🔄) ============
-async function forceReconnect() {
-  const btn = $('reconnectBtn');
-  if (!btn) return;
+// ============ ⭐ اتصال MQTT (فقط یک بار) ============
+function connectMQTT() {
+  return new Promise((resolve, reject) => {
+    if (typeof mqtt === 'undefined') return reject(new Error('mqtt not loaded'));
 
-  // چک کردن همزمان
-  if (window._reconnecting) {
-    console.log('⏳ در حال اتصال...');
-    return;
-  }
+    // اگه از قبل یه client داریم، ببندش
+    if (state.mqtt) {
+      try { state.mqtt.end(true); } catch(_) {}
+      state.mqtt = null;
+    }
+
+    console.log('🔌 اتصال به:', BROKER);
+
+    const client = mqtt.connect(BROKER, {
+      clientId: 'raaz_' + state.myPhone + '_' + uid(),
+      clean: true,
+      connectTimeout: 10000,
+      reconnectPeriod: 3000,   // ⭐ خودکار وصل میشه
+      keepalive: 30,
+    });
+
+    state.mqtt = client;
+    state.mqttBroker = BROKER;
+
+    let initialResolved = false;
+
+    // ⭐⭐⭐ نکته کلیدی: هر بار connect اتفاق بیفته، subscribe می‌کنیم
+    // (بدون done flag — چون mqtt.js خودش reconnect می‌کنه و دوباره connect صدا می‌شه)
+    client.on('connect', () => {
+      console.log('🟢 MQTT وصل شد — subscribe...');
+
+      client.subscribe([
+        `${PREFIX}/msg/${state.myPhone}`,
+        `${PREFIX}/presence/+`,
+        `${PREFIX}/typing/${state.myPhone}`,
+        `${PREFIX}/directory`,
+      ], (err) => {
+        if (err) console.error('❌ subscribe err:', err);
+        else console.log('📥 subscribe ok');
+      });
+
+      // اعلام حضور
+      announcePresence();
+      broadcastDirectory();
+
+      updateStatusDot();
+
+      // فقط بار اول resolve کن
+      if (!initialResolved) {
+        initialResolved = true;
+        resolve(client);
+      }
+    });
+
+    // ⭐ فقط یک بار on('message') ثبت میکنیم — نه هر بار connect
+    if (!client._handlersSet) {
+      client._handlersSet = true;
+
+      client.on('message', onMQTT);
+
+      client.on('reconnect', () => {
+        console.log('🔄 reconnecting...');
+        updateStatusDot();
+      });
+
+      client.on('offline', () => {
+        console.log('⚫ offline');
+        updateStatusDot();
+      });
+
+      client.on('error', (e) => {
+        console.warn('⚠️ mqtt error:', e && e.message);
+      });
+
+      client.on('close', () => {
+        console.log('⚫ close');
+        updateStatusDot();
+      });
+
+      // heartbeat intervals
+      if (window._presenceTimer) clearInterval(window._presenceTimer);
+      window._presenceTimer = setInterval(() => {
+        if (state.mqtt && state.mqtt.connected) announcePresence();
+      }, 5000);
+
+      if (window._checkTimer) clearInterval(window._checkTimer);
+      window._checkTimer = setInterval(checkPresence, 3000);
+
+      if (window._dirTimer) clearInterval(window._dirTimer);
+      window._dirTimer = setInterval(() => {
+        if (state.mqtt && state.mqtt.connected) broadcastDirectory();
+      }, DIRECTORY_INTERVAL);
+    }
+
+    // timeout برای بار اول
+    setTimeout(() => {
+      if (!initialResolved) {
+        initialResolved = true;
+        reject(new Error('initial connect timeout'));
+      }
+    }, 12000);
+  });
+}
+
+// ============ Force Reconnect ============
+async function forceReconnect() {
+  if (window._reconnecting) return;
   window._reconnecting = true;
 
-  // انیمیشن چرخش
-  btn.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
-  btn.style.transform = 'rotate(720deg)';
-
-  setTimeout(() => {
-    btn.style.transform = '';
-    setTimeout(() => { btn.style.transition = ''; }, 100);
-  }, 800);
-
-  console.log('🔄 =========== ریست کامل MQTT ===========');
-
-  // ۱. بستن client قدیمی
-  if (state.mqtt) {
-    try { state.mqtt.end(true); } catch(e) {}
-    state.mqtt = null;
+  const btn = $('reconnectBtn');
+  if (btn) {
+    btn.style.transition = 'transform .7s ease';
+    btn.style.transform = 'rotate(360deg)';
+    setTimeout(() => { btn.style.transform = ''; }, 700);
   }
 
-  // ۲. پاک کردن timers قدیمی
-  if (window._presenceTimer) { clearInterval(window._presenceTimer); window._presenceTimer = null; }
-  if (window._checkTimer) { clearInterval(window._checkTimer); window._checkTimer = null; }
-  if (window._dirTimer) { clearInterval(window._dirTimer); window._dirTimer = null; }
+  console.log('🔄 ====== force reconnect ======');
 
-  // ۳. خالی کردن presence
+  // خالی کردن presence
   state.presence = {};
   state.typing = {};
   renderChatList();
   updateHeaderPresence();
   updateStatusDot();
 
-  // ۴. صبر کوتاه
-  await new Promise(r => setTimeout(r, 400));
+  // بستن client
+  if (state.mqtt) {
+    try { state.mqtt.end(true); } catch(_) {}
+    state.mqtt = null;
+  }
 
-  // ۵. اتصال مجدد
+  await new Promise(r => setTimeout(r, 300));
+
   try {
     await connectMQTT();
-    console.log('✅ =========== دوباره وصل شد ===========');
-    
-    // flash سبز
-    btn.style.background = 'var(--accent)';
-    btn.style.color = '#fff';
-    btn.style.borderRadius = '50%';
-    setTimeout(() => {
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 700);
-
-    // notify
-    if (typeof toast === 'function') toast('✅ دوباره وصل شد!');
+    console.log('✅ ====== دوباره وصل شد ======');
+    if (btn) {
+      btn.style.background = 'var(--accent)';
+      setTimeout(() => { btn.style.background = ''; }, 600);
+    }
+    toast('✅ دوباره وصل شد!');
   } catch(e) {
-    console.error('❌ =========== اتصال مجدد ناموفق ===========', e);
-    
-    // flash قرمز
-    btn.style.background = 'var(--danger)';
-    btn.style.color = '#fff';
-    btn.style.borderRadius = '50%';
-    setTimeout(() => {
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 1000);
-
-    alert('❌ اتصال مجدد ناموفق!\n\nراه‌حل‌ها:\n• VPN روشن/خاموش کن\n• ۱۰ ثانیه صبر کن و دوباره بزن\n• صفحه رو رفرش کن');
+    console.error('❌ reconnect fail:', e);
+    if (btn) {
+      btn.style.background = 'var(--danger)';
+      setTimeout(() => { btn.style.background = ''; }, 900);
+    }
+    toast('❌ اتصال ناموفق — VPN رو روشن کن');
   } finally {
     window._reconnecting = false;
   }
-}
-
-// ============ MQTT (چند بروکر) ============
-async function connectMQTT() {
-  if (state.mqtt && state.mqtt.connected) return state.mqtt;
-
-  if (typeof mqtt === 'undefined') {
-    throw new Error('mqtt library not loaded');
-  }
-
-  let lastErr = null;
-  for (let i = 0; i < BROKERS.length; i++) {
-    const url = BROKERS[i];
-    try {
-      console.log(`🔄 تلاش ${i+1}/${BROKERS.length}: ${url}`);
-      const c = await tryConnect(url);
-      state.mqttBroker = url;
-      console.log(`✅ وصل شد به: ${url}`);
-      updateStatusDot();
-      return c;
-    } catch(e) {
-      lastErr = e;
-      console.warn(`❌ ${url} ناموفق: ${e.message}`);
-    }
-  }
-  throw lastErr || new Error('هیچ بروکری پاسخ نداد');
-}
-
-function tryConnect(url) {
-  return new Promise((res, rej) => {
-    if (typeof mqtt === 'undefined') {
-      return rej(new Error('mqtt not loaded'));
-    }
-
-    let done = false;
-    let c;
-
-    if (state.mqtt) {
-      try { state.mqtt.end(true); } catch(_) {}
-      state.mqtt = null;
-    }
-
-    try {
-      c = mqtt.connect(url, {
-        clientId: 'raaz_' + state.myPhone + '_' + uid(),
-        clean: true,
-        connectTimeout: 8000,
-        reconnectPeriod: 4000,
-        keepalive: 30,
-      });
-    } catch(e) { return rej(e); }
-
-    const to = setTimeout(() => {
-      if (!done) {
-        done = true;
-        try { c.end(true); } catch(_) {}
-        rej(new Error('timeout'));
-      }
-    }, 9000);
-
-    c.on('connect', () => {
-      if (done) return;
-      done = true;
-      clearTimeout(to);
-      state.mqtt = c;
-      updateStatusDot();
-
-      c.subscribe([
-        `${PREFIX}/msg/${state.myPhone}`,
-        `${PREFIX}/presence/+`,
-        `${PREFIX}/typing/${state.myPhone}`,
-        `${PREFIX}/directory`,
-      ], err => {
-        if (err) console.error('sub err', err);
-        else console.log('📥 subscribe ok');
-      });
-
-      c.on('message', onMQTT);
-      c.on('reconnect', () => { console.log('🔄 reconnecting...'); updateStatusDot(); });
-      c.on('offline', () => { console.log('⚫ offline'); updateStatusDot(); });
-      c.on('error', (e) => console.warn('mqtt error', e));
-      c.on('close', () => { console.log('⚫ close'); updateStatusDot(); });
-
-      if (window._presenceTimer) clearInterval(window._presenceTimer);
-      window._presenceTimer = setInterval(announcePresence, 5000);
-
-      if (window._checkTimer) clearInterval(window._checkTimer);
-      window._checkTimer = setInterval(checkPresence, 3000);
-
-      if (window._dirTimer) clearInterval(window._dirTimer);
-      window._dirTimer = setInterval(broadcastDirectory, DIRECTORY_INTERVAL);
-
-      announcePresence();
-      broadcastDirectory();
-
-      res(c);
-    });
-
-    c.on('error', (e) => {
-      if (done) return;
-      done = true;
-      clearTimeout(to);
-      try { c.end(true); } catch(_) {}
-      rej(e);
-    });
-  });
 }
 
 function announcePresence() {
@@ -950,25 +919,46 @@ function checkPresence() {
   if (changed) { renderChatList(); updateHeaderPresence(); updateTypingBar(); }
 }
 
-// خودکار وقتی صفحه فعال شد
+// ⭐⭐⭐ نکته کلیدی: وقتی صفحه فعال شد، فقط reconnect رو صدا بزن
+// mqtt.js خودش کاراش رو انجام میده و connect event رو trigger می‌کنه
+// که ما توی اون subscribe می‌کنیم
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) {
-    console.log('👁 صفحه فعال شد');
-    if (state.mqtt && !state.mqtt.connected) {
-      console.log('🔄 تلاش خودکار...');
-      waitForMqtt().then(ok => {
-        if (ok) connectMQTT().catch(() => {});
-      });
-    } else if (state.mqtt && state.mqtt.connected) {
+  if (document.hidden) {
+    console.log('👁 صفحه مخفی شد');
+    return;
+  }
+
+  console.log('👁 صفحه فعال شد');
+
+  // اگه client وجود داره ولی connected نیست، reconnect رو صدا بزن
+  if (state.mqtt) {
+    if (!state.mqtt.connected) {
+      console.log('🔄 mqtt.reconnect() صدا زده شد');
+      try {
+        state.mqtt.reconnect();
+      } catch(e) {
+        console.warn('reconnect error:', e);
+        // اگه reconnect کار نکرد، از صفر
+        connectMQTT().catch(() => {});
+      }
+    } else {
+      // وصله → فقط presence بفرست
       announcePresence();
     }
-    updateStatusDot();
+  } else {
+    // کلاینت نیست → از صفر
+    console.log('🔄 client نیست — از صفر وصل میشم');
+    connectMQTT().catch(() => {});
   }
+
+  updateStatusDot();
 });
 
 window.addEventListener('online', () => {
   console.log('🌐 آنلاین شد');
   if (state.mqtt && !state.mqtt.connected) {
+    try { state.mqtt.reconnect(); } catch(e) { connectMQTT().catch(() => {}); }
+  } else if (!state.mqtt) {
     connectMQTT().catch(() => {});
   }
 });
@@ -1352,7 +1342,7 @@ $('menuCopy').onclick = () => {
   if (!selectedMsg || !selectedMsg.text) return;
   const text = selectedMsg.text;
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => alert('✅ کپی شد')).catch(() => fallbackCopy(text));
+    navigator.clipboard.writeText(text).then(() => toast('✅ کپی شد')).catch(() => fallbackCopy(text));
   } else fallbackCopy(text);
   closeMsgMenu();
 };
@@ -1360,7 +1350,7 @@ function fallbackCopy(text) {
   const ta = document.createElement('textarea');
   ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
   document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); alert('✅ کپی شد'); } catch(e) {}
+  try { document.execCommand('copy'); toast('✅ کپی شد'); } catch(e) {}
   ta.remove();
 }
 
@@ -1381,7 +1371,7 @@ $('menuDeleteAll').onclick = () => {
   if (!selectedMsg || !state.currentChat) return;
   const msg = selectedMsg;
   const chatId = state.currentChat.id;
-  if (msg.fromId !== state.myPhone) { alert('فقط پیام‌های خودت'); closeMsgMenu(); return; }
+  if (msg.fromId !== state.myPhone) { toast('فقط پیام‌های خودت'); closeMsgMenu(); return; }
   if (!confirm('برای همه حذف بشه؟')) { closeMsgMenu(); return; }
   if (state.messages[chatId]) state.messages[chatId] = state.messages[chatId].filter(x => x.id !== msg.id);
   save();
@@ -1408,10 +1398,10 @@ function sendText() {
   const txt = $('msgInp').value.trim();
   if (!txt) return;
   if (!state.mqtt || !state.mqtt.connected) {
-    alert('⏳ اتصال قطع است. دکمه 🔄 رو بزن.');
+    toast('⏳ اتصال قطع — دکمه 🔄 رو بزن');
     return;
   }
-  if (!state.currentChat) { alert('چتی باز نیست'); return; }
+  if (!state.currentChat) { toast('چتی باز نیست'); return; }
 
   const msg = { id: uid(), from: state.myName, fromId: state.myPhone, time: Date.now(), type: 'text', text: txt };
 
@@ -1426,7 +1416,7 @@ function sendText() {
     } else {
       state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(msg));
     }
-  } catch(e) { console.error(e); alert('خطا: ' + e.message); return; }
+  } catch(e) { console.error(e); toast('خطا: ' + e.message); return; }
 
   if (!state.messages[state.currentChat.id]) state.messages[state.currentChat.id] = [];
   state.messages[state.currentChat.id].push(msg);
@@ -1557,12 +1547,12 @@ $('sendRec').onclick = () => stopRec(true);
 
 async function sendVoice(blob, duration) {
   if (!state.currentChat || !state.mqtt || !state.mqtt.connected) return;
-  if (blob.size > MAX_VOICE_SIZE) { alert('❌ ویس بزرگه!'); return; }
+  if (blob.size > MAX_VOICE_SIZE) { toast('❌ ویس بزرگه!'); return; }
   const fileId = 'f_' + uid();
   const msgId = uid();
   state.fileStore[fileId] = { blob, name: 'voice.webm', size: blob.size, mime: 'audio/webm', duration };
   let base64;
-  try { base64 = await blobToBase64(blob); } catch(e) { alert('خطا'); return; }
+  try { base64 = await blobToBase64(blob); } catch(e) { toast('خطا'); return; }
 
   const msg = {
     id: msgId, from: state.myName, fromId: state.myPhone,
@@ -1612,17 +1602,17 @@ $('pickCamera').onclick = () => {
 async function handleImagePick(e) {
   const file = e.target.files[0];
   if (!file) return;
-  if (!file.type.startsWith('image/')) { alert('فقط عکس!'); return; }
+  if (!file.type.startsWith('image/')) { toast('فقط عکس!'); return; }
   $('uploading').classList.add('on');
   try {
     const compressed = await compressImage(file, 800, 0.6);
     if (compressed.size > MAX_IMAGE_SIZE) {
-      alert('❌ عکس بزرگه (' + Math.round(compressed.size/1024) + 'KB)');
+      toast('❌ عکس بزرگه (' + Math.round(compressed.size/1024) + 'KB)');
       $('uploading').classList.remove('on');
       return;
     }
     await sendImage(compressed);
-  } catch(err) { alert('خطا در پردازش'); }
+  } catch(err) { toast('خطا در پردازش'); }
   $('uploading').classList.remove('on');
 }
 
@@ -1662,7 +1652,7 @@ async function sendImage(blob) {
 let curAudio = null, curVB = null;
 function playVoice(fileId, vb) {
   const fs = state.fileStore[fileId];
-  if (!fs) { alert('❌ فایل صوتی نیست'); return; }
+  if (!fs) { toast('❌ فایل صوتی نیست'); return; }
   if (curAudio && curVB === vb && !curAudio.paused) {
     curAudio.pause();
     vb.classList.remove('playing');
@@ -1734,7 +1724,7 @@ function searchContact(phone) {
   } else {
     results.innerHTML = `<div class="no-result">
       🔍 کسی با این شماره پیدا نشد<br>
-      <span style="font-size:11px;opacity:.7">۱۰ ثانیه صبر کن</span>
+      <span style="font-size:11px;opacity:.7">۱۰ ثانیه صبر کن، شاید طرف تازه آنلاین بشه</span>
     </div>`;
     $('manualNameField').style.display = 'block';
     $('contactNameInp').dataset.phone = phone;
@@ -1755,9 +1745,9 @@ $('newContactFab').onclick = () => {
 $('addContactOk').onclick = () => {
   const phone = $('contactNameInp').dataset.phone || normalizePhone($('contactPhoneInp').value);
   const name = $('contactNameInp').value.trim();
-  if (!validPhone(phone)) return alert('شماره نامعتبره');
-  if (phone === state.myPhone) return alert('خودته!');
-  if (!name) return alert('اسم رو وارد کن');
+  if (!validPhone(phone)) return toast('شماره نامعتبره');
+  if (phone === state.myPhone) return toast('خودته!');
+  if (!name) return toast('اسم رو وارد کن');
   state.contacts[phone] = { name };
   save();
   renderChatList();
@@ -1813,7 +1803,9 @@ $('createGroupOk').onclick = () => {
 
   const invite = { type: 'invite', groupId: gid, groupName: name, members, from: state.myName, fromId: state.myPhone };
   for (const m of selected) {
-    state.mqtt.publish(`${PREFIX}/msg/${m}`, JSON.stringify(invite));
+    if (state.mqtt && state.mqtt.connected) {
+      state.mqtt.publish(`${PREFIX}/msg/${m}`, JSON.stringify(invite));
+    }
   }
   closeModal('newGroupModal');
   renderChatList();
@@ -1841,7 +1833,7 @@ function openProfile() {
 
 $('saveProfileOk').onclick = () => {
   const n = $('profileNameInp').value.trim();
-  if (!n) return alert('اسم خالی نباشه');
+  if (!n) return toast('اسم خالی نباشه');
   state.myName = n;
   save();
   $('myAvatarHeader').textContent = n[0].toUpperCase();
@@ -1853,8 +1845,8 @@ $('saveProfileOk').onclick = () => {
 
 $('profilePhoneInp').onclick = function() {
   this.select();
-  try { navigator.clipboard.writeText(state.myPhone); alert('📱 کپی شد'); }
-  catch(e) { document.execCommand('copy'); alert('📱 کپی شد'); }
+  try { navigator.clipboard.writeText(state.myPhone); toast('📱 کپی شد'); }
+  catch(e) { document.execCommand('copy'); toast('📱 کپی شد'); }
 };
 
 // ============ Change Password ============
@@ -1946,9 +1938,9 @@ if ('Notification' in window && Notification.permission === 'default') {
 }
 
 console.log('%c راز ', 'background:linear-gradient(135deg,#00d4a8,#00b894);color:#fff;padding:4px 10px;border-radius:6px;font-weight:bold;font-size:16px');
-console.log('✅ آماده. 📱 شما:', state.myPhone);
-console.log('🔄 دکمه اتصال مجدد فعال');
-console.log('📡 بروکرها:', BROKERS.length, 'تا');
+console.log('✅ نسخه نهایی — باگ reconnect فیکس شد');
+console.log('📱 شما:', state.myPhone);
+console.log('📡 بروکر:', BROKER);
 </script>
 </body>
 </html>
