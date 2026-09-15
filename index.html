@@ -76,7 +76,7 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 #loginStatus{margin-top:8px;font-size:12px;color:var(--text-dim);min-height:20px;text-align:center;font-weight:500}
 
 .hdr{background:linear-gradient(180deg,var(--panel-2),var(--panel));padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));display:flex;align-items:center;gap:12px;z-index:10;flex-shrink:0;min-height:64px;border-bottom:1px solid var(--border);position:relative}
-.hdr .back,.hdr .icon{background:transparent;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0}
+.hdr .back,.hdr .icon{background:transparent;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;transition:all .2s}
 .hdr .title{flex:1;font-weight:700;font-size:16px;min-width:0;letter-spacing:-.3px}
 .hdr .title .sub{font-size:12px;color:var(--text-dim);font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hdr .title .sub.on{color:var(--accent)}
@@ -242,6 +242,7 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
     <div class="avatar" id="myAvatarHeader" style="background:linear-gradient(135deg,#00d4a8,#00b894)">؟</div>
     <div class="title">راز<div class="sub" id="myIdSub">⏳ در حال اتصال...</div></div>
     <div id="statusDot" title="وضعیت اتصال"></div>
+    <button class="icon" id="reconnectBtn" title="اتصال مجدد">🔄</button>
     <button class="icon" id="settingsBtn" title="تنظیمات">⚙️</button>
   </div>
   <div id="chatList"></div>
@@ -666,7 +667,7 @@ async function startApp() {
   appStarted = true;
 
   if (!state.myPhone || !state.myName || state.myPhone.length < 11) {
-    console.warn('⚠️ اطلاعات ناقص — برگشت به login');
+    console.warn('⚠️ اطلاعات ناقص');
     localStorage.removeItem('raaz_session');
     sessionStorage.removeItem('raaz_session');
     $('mainScreen').classList.add('hidden');
@@ -684,11 +685,15 @@ async function startApp() {
   updateStatusDot();
   setInterval(updateStatusDot, 2000);
 
-  // صبر کن mqtt لود شه
+  // دکمه اتصال مجدد
+  if ($('reconnectBtn')) {
+    $('reconnectBtn').onclick = forceReconnect;
+  }
+
   const ok = await waitForMqtt();
   if (!ok) {
     console.error('❌ mqtt لود نشد');
-    alert('❌ کتابخونه اتصال لود نشد!\n\nاینترنت رو چک کن یا VPN روشن/خاموش کن و رفرش بزن.');
+    alert('❌ کتابخونه اتصال لود نشد!\n\nVPN روشن/خاموش کن و رفرش بزن.');
     return;
   }
 
@@ -723,14 +728,87 @@ function updateStatusDot() {
   } else {
     el.style.background = 'var(--danger)';
     el.style.boxShadow = '0 0 12px var(--danger)';
-    el.title = '🔴 قطع — کلیک کن برای تلاش مجدد';
+    el.title = '🔴 قطع — دکمه 🔄 رو بزن';
     el.style.cursor = 'pointer';
-    el.onclick = () => {
-      console.log('🔄 کلیک — تلاش مجدد');
-      waitForMqtt().then(ok => {
-        if (ok) connectMQTT().catch(() => {});
-      });
-    };
+    el.onclick = forceReconnect;
+  }
+}
+
+// ============ Force Reconnect (دکمه 🔄) ============
+async function forceReconnect() {
+  const btn = $('reconnectBtn');
+  if (!btn) return;
+
+  // چک کردن همزمان
+  if (window._reconnecting) {
+    console.log('⏳ در حال اتصال...');
+    return;
+  }
+  window._reconnecting = true;
+
+  // انیمیشن چرخش
+  btn.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
+  btn.style.transform = 'rotate(720deg)';
+
+  setTimeout(() => {
+    btn.style.transform = '';
+    setTimeout(() => { btn.style.transition = ''; }, 100);
+  }, 800);
+
+  console.log('🔄 =========== ریست کامل MQTT ===========');
+
+  // ۱. بستن client قدیمی
+  if (state.mqtt) {
+    try { state.mqtt.end(true); } catch(e) {}
+    state.mqtt = null;
+  }
+
+  // ۲. پاک کردن timers قدیمی
+  if (window._presenceTimer) { clearInterval(window._presenceTimer); window._presenceTimer = null; }
+  if (window._checkTimer) { clearInterval(window._checkTimer); window._checkTimer = null; }
+  if (window._dirTimer) { clearInterval(window._dirTimer); window._dirTimer = null; }
+
+  // ۳. خالی کردن presence
+  state.presence = {};
+  state.typing = {};
+  renderChatList();
+  updateHeaderPresence();
+  updateStatusDot();
+
+  // ۴. صبر کوتاه
+  await new Promise(r => setTimeout(r, 400));
+
+  // ۵. اتصال مجدد
+  try {
+    await connectMQTT();
+    console.log('✅ =========== دوباره وصل شد ===========');
+    
+    // flash سبز
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    btn.style.borderRadius = '50%';
+    setTimeout(() => {
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 700);
+
+    // notify
+    if (typeof toast === 'function') toast('✅ دوباره وصل شد!');
+  } catch(e) {
+    console.error('❌ =========== اتصال مجدد ناموفق ===========', e);
+    
+    // flash قرمز
+    btn.style.background = 'var(--danger)';
+    btn.style.color = '#fff';
+    btn.style.borderRadius = '50%';
+    setTimeout(() => {
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1000);
+
+    alert('❌ اتصال مجدد ناموفق!\n\nراه‌حل‌ها:\n• VPN روشن/خاموش کن\n• ۱۰ ثانیه صبر کن و دوباره بزن\n• صفحه رو رفرش کن');
+  } finally {
+    window._reconnecting = false;
   }
 }
 
@@ -769,7 +847,6 @@ function tryConnect(url) {
     let done = false;
     let c;
 
-    // بستن client قدیمی
     if (state.mqtt) {
       try { state.mqtt.end(true); } catch(_) {}
       state.mqtt = null;
@@ -780,7 +857,7 @@ function tryConnect(url) {
         clientId: 'raaz_' + state.myPhone + '_' + uid(),
         clean: true,
         connectTimeout: 8000,
-        reconnectPeriod: 4000,   // ⭐⭐⭐ این خط مشکل رو حل می‌کنه!
+        reconnectPeriod: 4000,
         keepalive: 30,
       });
     } catch(e) { return rej(e); }
@@ -816,7 +893,6 @@ function tryConnect(url) {
       c.on('error', (e) => console.warn('mqtt error', e));
       c.on('close', () => { console.log('⚫ close'); updateStatusDot(); });
 
-      // heartbeat
       if (window._presenceTimer) clearInterval(window._presenceTimer);
       window._presenceTimer = setInterval(announcePresence, 5000);
 
@@ -874,12 +950,12 @@ function checkPresence() {
   if (changed) { renderChatList(); updateHeaderPresence(); updateTypingBar(); }
 }
 
-// وقتی صفحه فعال شد
+// خودکار وقتی صفحه فعال شد
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     console.log('👁 صفحه فعال شد');
     if (state.mqtt && !state.mqtt.connected) {
-      console.log('🔄 تلاش برای اتصال مجدد...');
+      console.log('🔄 تلاش خودکار...');
       waitForMqtt().then(ok => {
         if (ok) connectMQTT().catch(() => {});
       });
@@ -890,7 +966,6 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// وقتی آنلاین شد
 window.addEventListener('online', () => {
   console.log('🌐 آنلاین شد');
   if (state.mqtt && !state.mqtt.connected) {
@@ -898,7 +973,6 @@ window.addEventListener('online', () => {
   }
 });
 
-// اطلاع offline موقع بستن
 window.addEventListener('beforeunload', () => {
   if (state.mqtt) {
     try {
@@ -1334,7 +1408,7 @@ function sendText() {
   const txt = $('msgInp').value.trim();
   if (!txt) return;
   if (!state.mqtt || !state.mqtt.connected) {
-    alert('⏳ اتصال به سرور برقرار نیست. صبر کن...');
+    alert('⏳ اتصال قطع است. دکمه 🔄 رو بزن.');
     return;
   }
   if (!state.currentChat) { alert('چتی باز نیست'); return; }
@@ -1660,7 +1734,7 @@ function searchContact(phone) {
   } else {
     results.innerHTML = `<div class="no-result">
       🔍 کسی با این شماره پیدا نشد<br>
-      <span style="font-size:11px;opacity:.7">۱۰ ثانیه صبر کن، شاید طرف تازه آنلاین بشه</span>
+      <span style="font-size:11px;opacity:.7">۱۰ ثانیه صبر کن</span>
     </div>`;
     $('manualNameField').style.display = 'block';
     $('contactNameInp').dataset.phone = phone;
@@ -1873,7 +1947,8 @@ if ('Notification' in window && Notification.permission === 'default') {
 
 console.log('%c راز ', 'background:linear-gradient(135deg,#00d4a8,#00b894);color:#fff;padding:4px 10px;border-radius:6px;font-weight:bold;font-size:16px');
 console.log('✅ آماده. 📱 شما:', state.myPhone);
-console.log('🔄 reconnectPeriod: 4000 — اتصال خودکار فعال');
+console.log('🔄 دکمه اتصال مجدد فعال');
+console.log('📡 بروکرها:', BROKERS.length, 'تا');
 </script>
 </body>
 </html>
