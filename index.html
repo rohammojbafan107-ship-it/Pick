@@ -19,7 +19,7 @@
     var s = document.createElement('script');
     s.src = url;
     s.async = false;
-    s.onload = function(){ window._mqttLoaded = true; console.log('✅ mqtt لود شد'); };
+    s.onload = function(){ window._mqttLoaded = true; };
     s.onerror = function(){ tryNext(); };
     document.head.appendChild(s);
   }
@@ -35,7 +35,6 @@
   --accent:#00d4a8;--accent-2:#00b894;--accent-glow:rgba(0,212,168,.35);
   --me-1:#005c4b;--me-2:#004c3f;--other:#1f2937;--other-2:#1a232e;
   --border:#1e2836;--danger:#ff4d6d;
-  --transition:.2s cubic-bezier(.4,0,.2,1);
 }
 html,body{height:100%;width:100%;overflow:hidden}
 body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
@@ -191,7 +190,6 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 .search-result .ph{font-size:11.5px;color:var(--text-dim);margin-top:3px;font-family:monospace;direction:ltr;text-align:right}
 .no-result{padding:16px;text-align:center;color:var(--text-dim);font-size:12.5px;background:var(--panel-2);border-radius:16px;line-height:1.7}
 
-/* Toast */
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--panel-3);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;opacity:0;transition:.3s;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.4);pointer-events:none;font-weight:500}
 #toast.on{transform:translateX(-50%) translateY(0);opacity:1}
 </style>
@@ -222,10 +220,6 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
       </div>
       <div class="hint" id="passHint">🔐 حداقل ۴ کاراکتر</div>
     </div>
-    <label class="checkbox-row">
-      <input type="checkbox" id="rememberChk" checked>
-      <span>یادآوری من در این دستگاه</span>
-    </label>
     <button class="main" id="joinBtn">ورود به راز</button>
     <div id="loginStatus">آماده</div>
   </div>
@@ -343,7 +337,7 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
       <input type="tel" id="profilePhoneInp" dir="ltr" style="text-align:left" readonly>
       <div class="hint">با کلیک کپی می‌شه.</div>
       <button class="action" id="changePassBtn">🔐 تغییر رمز</button>
-      <button class="action danger" id="logoutBtn">🚪 خروج</button>
+      <button class="action danger" id="logoutBtn">🚪 خروج از حساب</button>
     </div>
     <div class="modalFtr">
       <button class="cancel" data-close="profileModal">بستن</button>
@@ -376,14 +370,8 @@ body{font-family:'Vazirmatn',Tahoma,Arial,sans-serif;background:var(--bg);color:
 <div id="toast"></div>
 
 <script>
-// ========================================================
-//              راز — نسخه نهایی (باگ فیکس شده)
-// ========================================================
-
 const $ = id => document.getElementById(id);
-const PREFIX = 'raaz_phone_v4';
-
-// فقط یک بروکر برای هماهنگی کامل
+const PREFIX = 'raaz_phone_v5';
 const BROKER = 'wss://broker.hivemq.com:8884/mqtt';
 
 const MAX_VOICE_SIZE = 200 * 1024;
@@ -391,6 +379,9 @@ const MAX_VOICE_DURATION = 15;
 const MAX_IMAGE_SIZE = 150 * 1024;
 const DIRECTORY_INTERVAL = 8000;
 const MIN_PASS_LEN = 4;
+
+// ⏱ چقدر غیبت = لاگ‌اوت خودکار (ثانیه)
+const AUTO_LOGOUT_AFTER = 30;
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -429,7 +420,6 @@ const beep = () => {
   } catch(e){}
 };
 
-// Toast
 let _toastTimer = null;
 function toast(text) {
   const el = $('toast');
@@ -518,8 +508,8 @@ function compressImage(file, maxWidth, quality) {
 const EMOJIS = '😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🤩🥳😏😒😞😔😟😕🙁☹️😣😖😫😩🥺😢😭😤😠😡🤬🤯😳🥵🥶😱😨😰😥😓🤗🤔🤭🤫🤥😶😐😑😬🙄😯😦😧😮😲🥱😴🤤😪😵🤐🥴🤢🤮🤧😷🤒🤕🤑🤠😈👿👹👺🤡💩👻💀☠️👽👾🤖🎃😺😸😹😻😼😽🙀😿😾👍👎👌✌️🤞🤟🤘🤙👈👉👆👇☝️✋🤚🖐🖖👋🤝🙏💪🦾❤️🧡💛💚💙💜🖤🤍🤎💔❣️💕💞💓💗💖💘💝💟🔥⭐🌟✨⚡💥💫🌈☀️🌙⛅☁️🌧⛈❄️🎉🎊🎁🎈🎀🏆🥇🥈🥉⚽🏀🏈⚾🎾🏐🎯🎮🎲🎸🎹🎤🎧🍕🍔🍟🌭🍿🍎🍌🍇🍓🍉🍑🍒☕🍵🍺🍻🥂🍷🥤🍰🎂🍪🍫🍬'.match(/./gu);
 
 const state = {
-  myPhone: localStorage.getItem('raaz_phone') || '',
-  myName: localStorage.getItem('raaz_name') || '',
+  myPhone: '',
+  myName: '',
   contacts: JSON.parse(localStorage.getItem('raaz_contacts') || '{}'),
   groups: JSON.parse(localStorage.getItem('raaz_groups') || '{}'),
   messages: JSON.parse(localStorage.getItem('raaz_msgs') || '{}'),
@@ -534,8 +524,6 @@ const state = {
 };
 
 function save() {
-  localStorage.setItem('raaz_phone', state.myPhone);
-  localStorage.setItem('raaz_name', state.myName);
   localStorage.setItem('raaz_contacts', JSON.stringify(state.contacts));
   localStorage.setItem('raaz_groups', JSON.stringify(state.groups));
   localStorage.setItem('raaz_unread', JSON.stringify(state.unread));
@@ -633,11 +621,6 @@ $('joinBtn').onclick = async () => {
       state.myName = nameVal;
     }
     state.myPhone = phone;
-    save();
-    const remember = $('rememberChk').checked;
-    const session = JSON.stringify({ phone, name: state.myName, time: Date.now() });
-    if (remember) localStorage.setItem('raaz_session', session);
-    else { localStorage.removeItem('raaz_session'); sessionStorage.setItem('raaz_session', session); }
     $('loginStatus').textContent = '✅ خوش آمدی!';
     $('login').classList.add('hidden');
     $('mainScreen').classList.remove('hidden');
@@ -649,24 +632,8 @@ $('joinBtn').onclick = async () => {
   }
 };
 
-(function checkSession() {
-  try {
-    const s = JSON.parse(localStorage.getItem('raaz_session') || sessionStorage.getItem('raaz_session') || 'null');
-    if (s && s.phone && s.phone.length === 11 && s.name && localStorage.getItem('raaz_pass_' + s.phone)) {
-      state.myPhone = s.phone;
-      state.myName = s.name;
-      $('login').classList.add('hidden');
-      $('mainScreen').classList.remove('hidden');
-      startApp();
-      return;
-    }
-  } catch(e) {}
-  $('mainScreen').classList.add('hidden');
-  $('login').classList.remove('hidden');
-  if (state.myPhone) $('phoneInp').value = state.myPhone;
-  if (state.myName) $('nameInp').value = state.myName;
-  updateLoginUI(state.myPhone);
-})();
+// ⭐ بدون auto-login — هر بار صفحه لود میشه، لاگین میاد
+// فقط اگه کاربر دکمه خروج بزنه، دوباره لاگین میکنه
   // ============ Start ============
 let appStarted = false;
 async function startApp() {
@@ -674,12 +641,8 @@ async function startApp() {
   appStarted = true;
 
   if (!state.myPhone || !state.myName || state.myPhone.length < 11) {
-    console.warn('⚠️ اطلاعات ناقص');
-    localStorage.removeItem('raaz_session');
-    sessionStorage.removeItem('raaz_session');
-    $('mainScreen').classList.add('hidden');
-    $('login').classList.remove('hidden');
-    appStarted = false;
+    localStorage.clear();
+    location.reload();
     return;
   }
 
@@ -692,20 +655,127 @@ async function startApp() {
   updateStatusDot();
   setInterval(updateStatusDot, 1500);
 
-  // دکمه اتصال مجدد
   if ($('reconnectBtn')) $('reconnectBtn').onclick = forceReconnect;
 
-  // صبر کن mqtt لود شه
   const ok = await waitForMqtt();
   if (!ok) {
-    alert('❌ کتابخونه اتصال لود نشد! VPN رو روشن کن و رفرش بزن.');
+    alert('❌ کتابخونه اتصال لود نشد! VPN روشن کن و رفرش بزن.');
     return;
   }
 
-  // ⭐ فقط یک بار اتصال — بقیه‌اش با reconnectPeriod خودکاره
   connectMQTT().catch(e => console.warn('initial connect fail:', e));
+
+  // ⏱ شروع monitoring غیبت
+  startAwayMonitoring();
 }
 
+// ============================================================
+// ⭐⭐⭐ AUTO-LOGOUT بعد از ۳۰ ثانیه غیبت
+// ============================================================
+let _awayTimer = null;
+let _hiddenAt = null;
+let _autoLogoutEnabled = true;
+
+function startAwayMonitoring() {
+  // وقتی صفحه مخفی میشه → زمان ثبت کن
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      _hiddenAt = Date.now();
+      console.log('👁 صفحه مخفی شد — شروع تایمر ' + AUTO_LOGOUT_AFTER + ' ثانیه');
+      
+      // تایمر برای auto-logout
+      if (_awayTimer) clearTimeout(_awayTimer);
+      _awayTimer = setTimeout(() => {
+        console.log('⏰ ' + AUTO_LOGOUT_AFTER + ' ثانیه غیبت — auto-logout');
+        doAutoLogout();
+      }, AUTO_LOGOUT_AFTER * 1000);
+      
+    } else {
+      // برگشت به صفحه
+      const awayMs = _hiddenAt ? (Date.now() - _hiddenAt) : 0;
+      const awaySec = Math.round(awayMs / 1000);
+      console.log('👁 برگشتی بعد از ' + awaySec + ' ثانیه');
+      
+      // پاک کردن تایمر auto-logout
+      if (_awayTimer) {
+        clearTimeout(_awayTimer);
+        _awayTimer = null;
+      }
+      _hiddenAt = null;
+
+      // اگه از ۳۰ ثانیه گذشته بود، لاگ‌اوت کن (احتیاط دوباره)
+      if (awaySec >= AUTO_LOGOUT_AFTER) {
+        doAutoLogout();
+        return;
+      }
+
+      // وگرنه فقط MQTT رو reconnect کن
+      if (state.mqtt && !state.mqtt.connected) {
+        console.log('🔄 صفحه فعال — reconnect MQTT');
+        try { state.mqtt.reconnect(); } catch(e) { connectMQTT().catch(() => {}); }
+      } else if (state.mqtt && state.mqtt.connected) {
+        announcePresence();
+      }
+      updateStatusDot();
+    }
+  });
+
+  // وقتی صفحه بسته میشه (reload/close)
+  window.addEventListener('beforeunload', () => {
+    if (state.mqtt) {
+      try {
+        state.mqtt.publish(`${PREFIX}/presence/${state.myPhone}`,
+          JSON.stringify({ offline: true, time: Date.now() }),
+          { retain: true });
+      } catch(_) {}
+    }
+  });
+
+  // وقتی آنلاین شد
+  window.addEventListener('online', () => {
+    if (state.mqtt && !state.mqtt.connected) {
+      try { state.mqtt.reconnect(); } catch(e) { connectMQTT().catch(() => {}); }
+    }
+  });
+}
+
+function doAutoLogout() {
+  if (!_autoLogoutEnabled) return;
+  console.log('🔒 Auto-logout اجرا شد');
+
+  // بستن MQTT
+  if (state.mqtt) {
+    try {
+      state.mqtt.publish(`${PREFIX}/presence/${state.myPhone}`,
+        JSON.stringify({ offline: true, time: Date.now() }),
+        { retain: true });
+      state.mqtt.end(true);
+    } catch(_) {}
+    state.mqtt = null;
+  }
+
+  // پاک کردن timers
+  if (window._presenceTimer) { clearInterval(window._presenceTimer); window._presenceTimer = null; }
+  if (window._checkTimer) { clearInterval(window._checkTimer); window._checkTimer = null; }
+  if (window._dirTimer) { clearInterval(window._dirTimer); window._dirTimer = null; }
+
+  // پاک کردن session — ولی رمز و اسم می‌مونه
+  state.myPhone = '';
+  state.myName = '';
+  state.presence = {};
+  state.typing = {};
+  state.currentChat = null;
+
+  // نمایش toast
+  toast('🔒 به دلیل غیبت، از حساب خارج شدی');
+
+  // بعد ۸۰۰ میلی‌ثانیه رفرش کن → کاربر لاگین رو می‌بینه
+  setTimeout(() => {
+    location.reload();
+  }, 800);
+}
+
+// ============ اتصال MQTT ============
 function waitForMqtt() {
   return new Promise((resolve) => {
     if (typeof mqtt !== 'undefined') return resolve(true);
@@ -728,18 +798,16 @@ function updateStatusDot() {
   } else {
     el.style.background = 'var(--danger)';
     el.style.boxShadow = '0 0 12px var(--danger)';
-    el.title = '🔴 قطع — دکمه 🔄 رو بزن';
+    el.title = '🔴 قطع — دکمه 🔄';
     el.style.cursor = 'pointer';
     el.onclick = forceReconnect;
   }
 }
 
-// ============ ⭐ اتصال MQTT (فقط یک بار) ============
 function connectMQTT() {
   return new Promise((resolve, reject) => {
     if (typeof mqtt === 'undefined') return reject(new Error('mqtt not loaded'));
 
-    // اگه از قبل یه client داریم، ببندش
     if (state.mqtt) {
       try { state.mqtt.end(true); } catch(_) {}
       state.mqtt = null;
@@ -751,7 +819,7 @@ function connectMQTT() {
       clientId: 'raaz_' + state.myPhone + '_' + uid(),
       clean: true,
       connectTimeout: 10000,
-      reconnectPeriod: 3000,   // ⭐ خودکار وصل میشه
+      reconnectPeriod: 3000,
       keepalive: 30,
     });
 
@@ -760,10 +828,8 @@ function connectMQTT() {
 
     let initialResolved = false;
 
-    // ⭐⭐⭐ نکته کلیدی: هر بار connect اتفاق بیفته، subscribe می‌کنیم
-    // (بدون done flag — چون mqtt.js خودش reconnect می‌کنه و دوباره connect صدا می‌شه)
     client.on('connect', () => {
-      console.log('🟢 MQTT وصل شد — subscribe...');
+      console.log('🟢 MQTT وصل — subscribe...');
 
       client.subscribe([
         `${PREFIX}/msg/${state.myPhone}`,
@@ -771,49 +837,29 @@ function connectMQTT() {
         `${PREFIX}/typing/${state.myPhone}`,
         `${PREFIX}/directory`,
       ], (err) => {
-        if (err) console.error('❌ subscribe err:', err);
+        if (err) console.error('❌ sub err:', err);
         else console.log('📥 subscribe ok');
       });
 
-      // اعلام حضور
       announcePresence();
       broadcastDirectory();
-
       updateStatusDot();
 
-      // فقط بار اول resolve کن
       if (!initialResolved) {
         initialResolved = true;
         resolve(client);
       }
     });
 
-    // ⭐ فقط یک بار on('message') ثبت میکنیم — نه هر بار connect
     if (!client._handlersSet) {
       client._handlersSet = true;
 
       client.on('message', onMQTT);
+      client.on('reconnect', () => { console.log('🔄 reconnecting...'); updateStatusDot(); });
+      client.on('offline', () => { console.log('⚫ offline'); updateStatusDot(); });
+      client.on('error', (e) => console.warn('⚠️ mqtt err:', e && e.message));
+      client.on('close', () => { console.log('⚫ close'); updateStatusDot(); });
 
-      client.on('reconnect', () => {
-        console.log('🔄 reconnecting...');
-        updateStatusDot();
-      });
-
-      client.on('offline', () => {
-        console.log('⚫ offline');
-        updateStatusDot();
-      });
-
-      client.on('error', (e) => {
-        console.warn('⚠️ mqtt error:', e && e.message);
-      });
-
-      client.on('close', () => {
-        console.log('⚫ close');
-        updateStatusDot();
-      });
-
-      // heartbeat intervals
       if (window._presenceTimer) clearInterval(window._presenceTimer);
       window._presenceTimer = setInterval(() => {
         if (state.mqtt && state.mqtt.connected) announcePresence();
@@ -828,7 +874,6 @@ function connectMQTT() {
       }, DIRECTORY_INTERVAL);
     }
 
-    // timeout برای بار اول
     setTimeout(() => {
       if (!initialResolved) {
         initialResolved = true;
@@ -838,7 +883,6 @@ function connectMQTT() {
   });
 }
 
-// ============ Force Reconnect ============
 async function forceReconnect() {
   if (window._reconnecting) return;
   window._reconnecting = true;
@@ -850,16 +894,14 @@ async function forceReconnect() {
     setTimeout(() => { btn.style.transform = ''; }, 700);
   }
 
-  console.log('🔄 ====== force reconnect ======');
+  console.log('🔄 force reconnect...');
 
-  // خالی کردن presence
   state.presence = {};
   state.typing = {};
   renderChatList();
   updateHeaderPresence();
   updateStatusDot();
 
-  // بستن client
   if (state.mqtt) {
     try { state.mqtt.end(true); } catch(_) {}
     state.mqtt = null;
@@ -869,26 +911,26 @@ async function forceReconnect() {
 
   try {
     await connectMQTT();
-    console.log('✅ ====== دوباره وصل شد ======');
+    console.log('✅ reconnect ok');
     if (btn) {
       btn.style.background = 'var(--accent)';
       setTimeout(() => { btn.style.background = ''; }, 600);
     }
-    toast('✅ دوباره وصل شد!');
+    toast('✅ وصل شد');
   } catch(e) {
     console.error('❌ reconnect fail:', e);
     if (btn) {
       btn.style.background = 'var(--danger)';
       setTimeout(() => { btn.style.background = ''; }, 900);
     }
-    toast('❌ اتصال ناموفق — VPN رو روشن کن');
+    toast('❌ اتصال ناموفق');
   } finally {
     window._reconnecting = false;
   }
 }
 
 function announcePresence() {
-  if (!state.mqtt || !state.mqtt.connected) return;
+  if (!state.mqtt || !state.mqtt.connected || !state.myPhone) return;
   try {
     state.mqtt.publish(`${PREFIX}/presence/${state.myPhone}`,
       JSON.stringify({ name: state.myName, time: Date.now() }),
@@ -897,7 +939,7 @@ function announcePresence() {
 }
 
 function broadcastDirectory() {
-  if (!state.mqtt || !state.mqtt.connected) return;
+  if (!state.mqtt || !state.mqtt.connected || !state.myPhone) return;
   try {
     state.mqtt.publish(`${PREFIX}/directory`, JSON.stringify({
       phone: state.myPhone,
@@ -918,60 +960,6 @@ function checkPresence() {
   }
   if (changed) { renderChatList(); updateHeaderPresence(); updateTypingBar(); }
 }
-
-// ⭐⭐⭐ نکته کلیدی: وقتی صفحه فعال شد، فقط reconnect رو صدا بزن
-// mqtt.js خودش کاراش رو انجام میده و connect event رو trigger می‌کنه
-// که ما توی اون subscribe می‌کنیم
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    console.log('👁 صفحه مخفی شد');
-    return;
-  }
-
-  console.log('👁 صفحه فعال شد');
-
-  // اگه client وجود داره ولی connected نیست، reconnect رو صدا بزن
-  if (state.mqtt) {
-    if (!state.mqtt.connected) {
-      console.log('🔄 mqtt.reconnect() صدا زده شد');
-      try {
-        state.mqtt.reconnect();
-      } catch(e) {
-        console.warn('reconnect error:', e);
-        // اگه reconnect کار نکرد، از صفر
-        connectMQTT().catch(() => {});
-      }
-    } else {
-      // وصله → فقط presence بفرست
-      announcePresence();
-    }
-  } else {
-    // کلاینت نیست → از صفر
-    console.log('🔄 client نیست — از صفر وصل میشم');
-    connectMQTT().catch(() => {});
-  }
-
-  updateStatusDot();
-});
-
-window.addEventListener('online', () => {
-  console.log('🌐 آنلاین شد');
-  if (state.mqtt && !state.mqtt.connected) {
-    try { state.mqtt.reconnect(); } catch(e) { connectMQTT().catch(() => {}); }
-  } else if (!state.mqtt) {
-    connectMQTT().catch(() => {});
-  }
-});
-
-window.addEventListener('beforeunload', () => {
-  if (state.mqtt) {
-    try {
-      state.mqtt.publish(`${PREFIX}/presence/${state.myPhone}`,
-        JSON.stringify({ offline: true, time: Date.now() }),
-        { retain: true });
-    } catch(_) {}
-  }
-});
 
 function onMQTT(topic, payload) {
   let d;
@@ -1012,7 +1000,6 @@ function onMQTT(topic, payload) {
   }
 }
 
-// ============ Incoming ============
 function handleIncoming(d) {
   if (!d || d.fromId === state.myPhone) return;
 
@@ -1081,7 +1068,6 @@ function handleIncoming(d) {
   }
 }
 
-// ============ Chat list ============
 function renderChatList() {
   const box = $('chatList');
   box.innerHTML = '';
@@ -1162,7 +1148,6 @@ function renderChatList() {
   }
 }
 
-// ============ Open chat ============
 function openChat(it) {
   state.currentChat = { ...it };
   state.unread[it.id] = 0;
@@ -1206,7 +1191,6 @@ function updateHeaderPresence() {
   }
 }
 
-// ============ Messages UI ============
 function renderMessages() {
   const box = $('messages');
   box.innerHTML = '';
@@ -1384,21 +1368,20 @@ $('menuDeleteAll').onclick = () => {
     const g = state.groups[state.currentChat.groupId];
     for (const mem of g.members) {
       if (mem === state.myPhone) continue;
-      state.mqtt.publish(`${PREFIX}/msg/${mem}`, JSON.stringify(delMsg));
+      if (state.mqtt && state.mqtt.connected) state.mqtt.publish(`${PREFIX}/msg/${mem}`, JSON.stringify(delMsg));
     }
   } else {
-    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(delMsg));
+    if (state.mqtt && state.mqtt.connected) state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(delMsg));
   }
   closeMsgMenu();
   renderChatList();
 };
 
-// ============ Send text ============
 function sendText() {
   const txt = $('msgInp').value.trim();
   if (!txt) return;
   if (!state.mqtt || !state.mqtt.connected) {
-    toast('⏳ اتصال قطع — دکمه 🔄 رو بزن');
+    toast('⏳ اتصال قطع — دکمه 🔄');
     return;
   }
   if (!state.currentChat) { toast('چتی باز نیست'); return; }
@@ -1416,7 +1399,7 @@ function sendText() {
     } else {
       state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(msg));
     }
-  } catch(e) { console.error(e); toast('خطا: ' + e.message); return; }
+  } catch(e) { console.error(e); toast('خطا'); return; }
 
   if (!state.messages[state.currentChat.id]) state.messages[state.currentChat.id] = [];
   state.messages[state.currentChat.id].push(msg);
@@ -1458,7 +1441,6 @@ function setupSendEvents() {
   };
 }
 
-// ============ Typing ============
 function sendTyping(t) {
   if (!state.mqtt || !state.mqtt.connected || !state.currentChat) return;
   const payload = JSON.stringify({ fromId: state.myPhone, from: state.myName, typing: t });
@@ -1491,13 +1473,12 @@ function updateTypingBar() {
   else { bar.classList.add('on'); bar.textContent = `${typers.length} نفر دارن تایپ می‌کنن...`; }
 }
 
-// ============ Voice ============
 let recorder = null, recChunks = [], recSec = 0, recTmr = null;
 
 $('micBtn').onclick = async () => {
   if (recorder) { stopRec(true); return; }
   const isSecure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  if (!isSecure) { alert('❌ میکروفون فقط روی HTTPS کار می‌کنه!'); return; }
+  if (!isSecure) { alert('❌ میکروفون فقط روی HTTPS!'); return; }
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { alert('❌ پشتیبانی نمی‌شه.'); return; }
 
   try {
@@ -1579,7 +1560,6 @@ async function sendVoice(blob, duration) {
   appendMessage(localMsg, true);
 }
 
-// ============ Image ============
 $('attachBtn').onclick = () => $('imageMenu').classList.add('on');
 $('cancelImageMenu').onclick = () => $('imageMenu').classList.remove('on');
 $('imageMenu').onclick = (e) => { if (e.target.id === 'imageMenu') $('imageMenu').classList.remove('on'); };
@@ -1607,12 +1587,12 @@ async function handleImagePick(e) {
   try {
     const compressed = await compressImage(file, 800, 0.6);
     if (compressed.size > MAX_IMAGE_SIZE) {
-      toast('❌ عکس بزرگه (' + Math.round(compressed.size/1024) + 'KB)');
+      toast('❌ عکس بزرگه');
       $('uploading').classList.remove('on');
       return;
     }
     await sendImage(compressed);
-  } catch(err) { toast('خطا در پردازش'); }
+  } catch(err) { toast('خطا'); }
   $('uploading').classList.remove('on');
 }
 
@@ -1648,7 +1628,6 @@ async function sendImage(blob) {
   appendMessage(localMsg, true);
 }
 
-// ============ Voice Playback ============
 let curAudio = null, curVB = null;
 function playVoice(fileId, vb) {
   const fs = state.fileStore[fileId];
@@ -1683,7 +1662,6 @@ function playVoice(fileId, vb) {
   } catch(e) {}
 }
 
-// ============ Search Contact ============
 let searchTimer = null;
 $('contactPhoneInp').addEventListener('input', (e) => {
   const n = normalizePhone(e.target.value);
@@ -1722,10 +1700,7 @@ function searchContact(phone) {
     $('contactNameInp').dataset.phone = phone;
     $('addContactOk').disabled = false;
   } else {
-    results.innerHTML = `<div class="no-result">
-      🔍 کسی با این شماره پیدا نشد<br>
-      <span style="font-size:11px;opacity:.7">۱۰ ثانیه صبر کن، شاید طرف تازه آنلاین بشه</span>
-    </div>`;
+    results.innerHTML = `<div class="no-result">🔍 کسی پیدا نشد — ۱۰ ثانیه صبر کن</div>`;
     $('manualNameField').style.display = 'block';
     $('contactNameInp').dataset.phone = phone;
   }
@@ -1754,7 +1729,6 @@ $('addContactOk').onclick = () => {
   closeModal('newContactModal');
 };
 
-// ============ Groups ============
 $('newGroupFab').onclick = () => {
   $('groupNameInp').value = '';
   renderContactPickList();
@@ -1812,7 +1786,6 @@ $('createGroupOk').onclick = () => {
   openChat({ id: 'group_' + gid, type: 'group', groupId: gid, name });
 };
 
-// ============ Modal helpers ============
 function openModal(id) { $(id).classList.add('on'); }
 function closeModal(id) { $(id).classList.remove('on'); }
 document.querySelectorAll('[data-close]').forEach(b => {
@@ -1822,7 +1795,6 @@ document.querySelectorAll('.modal').forEach(m => {
   m.onclick = e => { if (e.target === m) m.classList.remove('on'); };
 });
 
-// ============ Profile ============
 $('myAvatarHeader').onclick = openProfile;
 $('settingsBtn').onclick = openProfile;
 function openProfile() {
@@ -1835,7 +1807,6 @@ $('saveProfileOk').onclick = () => {
   const n = $('profileNameInp').value.trim();
   if (!n) return toast('اسم خالی نباشه');
   state.myName = n;
-  save();
   $('myAvatarHeader').textContent = n[0].toUpperCase();
   $('myAvatarHeader').style.background = gradientOf(n);
   announcePresence();
@@ -1849,7 +1820,6 @@ $('profilePhoneInp').onclick = function() {
   catch(e) { document.execCommand('copy'); toast('📱 کپی شد'); }
 };
 
-// ============ Change Password ============
 $('changePassBtn').onclick = () => {
   $('oldPassInp').value = '';
   $('newPassInp').value = '';
@@ -1867,8 +1837,8 @@ $('changePassOk').onclick = async () => {
   const hint = $('changePassHint');
 
   if (!oldP) { hint.textContent = '❌ رمز فعلی رو وارد کن'; hint.style.color = 'var(--danger)'; return; }
-  if (newP.length < MIN_PASS_LEN) { hint.textContent = '❌ رمز جدید حداقل ۴ کاراکتر'; hint.style.color = 'var(--danger)'; return; }
-  if (newP !== new2) { hint.textContent = '❌ رمز جدید یکسان نیست'; hint.style.color = 'var(--danger)'; return; }
+  if (newP.length < MIN_PASS_LEN) { hint.textContent = '❌ حداقل ۴ کاراکتر'; hint.style.color = 'var(--danger)'; return; }
+  if (newP !== new2) { hint.textContent = '❌ یکسان نیست'; hint.style.color = 'var(--danger)'; return; }
 
   const oldHash = await hashPassword(oldP);
   const saved = localStorage.getItem('raaz_pass_' + state.myPhone);
@@ -1876,15 +1846,15 @@ $('changePassOk').onclick = async () => {
 
   const newHash = await hashPassword(newP);
   localStorage.setItem('raaz_pass_' + state.myPhone, newHash);
-  hint.textContent = '✅ رمز تغییر کرد!';
+  hint.textContent = '✅ تغییر کرد!';
   hint.style.color = 'var(--accent)';
   setTimeout(() => closeModal('changePassModal'), 1000);
 };
 
 $('logoutBtn').onclick = () => {
   if (!confirm('خارج بشی؟ چت‌ها پاک می‌شن ولی رمزت می‌مونه.')) return;
-  localStorage.removeItem('raaz_session');
-  sessionStorage.removeItem('raaz_session');
+  _autoLogoutEnabled = false;
+  if (state.mqtt) { try { state.mqtt.end(true); } catch(_) {} }
   localStorage.removeItem('raaz_contacts');
   localStorage.removeItem('raaz_groups');
   localStorage.removeItem('raaz_msgs');
@@ -1893,7 +1863,6 @@ $('logoutBtn').onclick = () => {
   location.reload();
 };
 
-// ============ UI Events ============
 $('chatBack').onclick = closeChat;
 $('chatInfoBtn').onclick = () => {
   if (!state.currentChat) return;
@@ -1917,7 +1886,6 @@ function updateSendMic() {
 }
 updateSendMic();
 
-// ============ Emoji ============
 const ep = $('emojiPanel');
 EMOJIS.forEach(e => {
   const s = document.createElement('span');
@@ -1932,15 +1900,15 @@ document.addEventListener('click', e => {
 
 $('lightbox').onclick = () => $('lightbox').classList.remove('on');
 
-// ============ Notifications ============
 if ('Notification' in window && Notification.permission === 'default') {
   setTimeout(() => Notification.requestPermission(), 3000);
 }
 
+// ⭐ همیشه صفحه لاگین باز میشه — بدون auto-login
+// (چون رمز تو localStorage هست، ولی خودکار وارد نمیشه)
 console.log('%c راز ', 'background:linear-gradient(135deg,#00d4a8,#00b894);color:#fff;padding:4px 10px;border-radius:6px;font-weight:bold;font-size:16px');
-console.log('✅ نسخه نهایی — باگ reconnect فیکس شد');
-console.log('📱 شما:', state.myPhone);
-console.log('📡 بروکر:', BROKER);
+console.log('✅ آماده — از لاگین شروع کن');
+console.log('⏱ Auto-logout بعد از ' + AUTO_LOGOUT_AFTER + ' ثانیه غیبت');
 </script>
 </body>
 </html>
