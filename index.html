@@ -12,14 +12,25 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 #app{height:100vh;max-width:520px;margin:0 auto;background:var(--panel);position:relative;display:flex;flex-direction:column;overflow:hidden}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--panel);z-index:5}
 .screen.hidden{display:none}
-#login{background:linear-gradient(135deg,#0b141a,#111b21);z-index:100;justify-content:center;align-items:center;padding:24px;gap:14px}
-#login .logo{font-size:70px;margin-bottom:6px}
-#login h1{font-size:28px;background:linear-gradient(90deg,#6678ff,#20d9ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-#login .sub{color:var(--dim);font-size:13px;margin-bottom:18px;text-align:center}
-#login input{width:100%;max-width:320px;padding:14px;border-radius:10px;border:none;background:var(--panel3);color:var(--text);font-size:15px;outline:none;text-align:center;font-family:inherit}
-#login button{width:100%;max-width:320px;padding:14px;border-radius:10px;border:none;background:var(--green);color:#fff;font-size:16px;cursor:pointer;font-weight:bold;font-family:inherit}
-#login button:disabled{opacity:.5}
-#loginStatus{margin-top:10px;font-size:12px;color:var(--dim);min-height:20px;text-align:center;max-width:320px;line-height:1.6}
+
+/* ============ Login ============ */
+#login{background:linear-gradient(135deg,#0b141a,#111b21);z-index:100;justify-content:center;align-items:center;padding:24px;overflow-y:auto}
+#login .inner{display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px;align-items:center}
+#login .logo{font-size:70px;margin-bottom:4px}
+#login h1{font-size:28px;background:linear-gradient(90deg,#6678ff,#20d9ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center}
+#login .sub{color:var(--dim);font-size:13px;margin-bottom:14px;text-align:center}
+.field{width:100%;position:relative}
+.field label{display:block;font-size:11px;color:var(--dim);margin-bottom:6px;font-weight:bold;padding-right:4px}
+.field input{width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid var(--panel3);background:var(--panel2);color:var(--text);font-size:15px;outline:none;font-family:inherit;transition:.2s}
+.field input:focus{border-color:var(--green);background:var(--panel3)}
+.field input.error{border-color:#ff5e7a}
+.field .hint{font-size:10px;color:var(--dim);margin-top:5px;padding-right:6px}
+#login button{width:100%;padding:15px;border-radius:12px;border:none;background:var(--green);color:#fff;font-size:16px;cursor:pointer;font-weight:bold;font-family:inherit;transition:.2s;margin-top:8px}
+#login button:hover{background:var(--green2)}
+#login button:disabled{opacity:.5;cursor:not-allowed}
+#loginStatus{margin-top:6px;font-size:12px;color:var(--dim);min-height:20px;text-align:center;line-height:1.6}
+
+/* ============ Header ============ */
 .hdr{background:var(--panel2);padding:12px 14px;display:flex;align-items:center;gap:10px;z-index:2;flex-shrink:0;min-height:60px}
 .hdr .back{background:none;border:none;color:#aebac1;font-size:22px;cursor:pointer;padding:4px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .hdr .back:hover{background:var(--panel3)}
@@ -29,6 +40,8 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .hdr .icon{background:none;border:none;color:#aebac1;font-size:19px;cursor:pointer;padding:6px;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hdr .icon:hover{background:var(--panel3)}
 .hdr .avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;color:#fff;flex-shrink:0;overflow:hidden}
+
+/* ============ Chat list ============ */
 #chatList{flex:1;overflow-y:auto;background:var(--panel)}
 #chatList::-webkit-scrollbar{width:5px}
 #chatList::-webkit-scrollbar-thumb{background:var(--panel3);border-radius:3px}
@@ -46,30 +59,24 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .empty{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 24px;text-align:center;color:var(--dim)}
 .empty .em{font-size:60px;margin-bottom:16px;opacity:.5}
 .empty p{font-size:14px;line-height:1.6}
+.empty b{color:var(--green)}
+
+/* ============ FAB ============ */
 .fabs{position:absolute;bottom:20px;left:20px;display:flex;flex-direction:column;gap:10px;z-index:4}
 .fab{width:56px;height:56px;border-radius:50%;background:var(--green);color:#fff;font-size:24px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
 .fab:hover{background:var(--green2)}
 .fab.group{background:#7c3aed}
-#messages{flex:1;overflow-y:auto;padding:16px 5%;background:var(--bg);display:flex;flex-direction:column;gap:2px}
+
+/* ============ Messages ============ */
+#messages{flex:1;overflow-y:auto;padding:16px 4%;background:var(--bg);display:flex;flex-direction:column;gap:2px}
 #messages::-webkit-scrollbar{width:5px}
 #messages::-webkit-scrollbar-thumb{background:var(--panel3);border-radius:3px}
-
-/* ⭐ msg-wrapper با دکمه سه نقطه */
 .msg-wrapper{display:flex;align-items:center;gap:6px;animation:pop .15s;max-width:88%}
 .msg-wrapper.me{align-self:flex-start;flex-direction:row}
 .msg-wrapper.other{align-self:flex-end;flex-direction:row-reverse}
 @keyframes pop{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
-
-.msg-menu-btn{
-  width:28px;height:28px;border-radius:50%;
-  background:var(--panel2);border:none;color:var(--dim);
-  font-size:16px;cursor:pointer;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  transition:.15s;opacity:.7;
-}
-.msg-menu-btn:hover{background:var(--panel3);color:var(--text);opacity:1;transform:scale(1.1)}
-.msg-menu-btn:active{transform:scale(.95)}
-
+.msg-menu-btn{width:26px;height:26px;border-radius:50%;background:transparent;border:none;color:var(--dim);font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;opacity:.4}
+.msg-menu-btn:hover{background:var(--panel2);color:var(--text);opacity:1}
 .msg{max-width:100%;padding:7px 11px 5px;border-radius:9px;font-size:14.5px;line-height:1.4;word-wrap:break-word;position:relative}
 .msg.me{background:var(--me);border-top-left-radius:2px;color:var(--text)}
 .msg.other{background:var(--other);border-top-right-radius:2px;color:var(--text)}
@@ -89,6 +96,8 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .dayDiv{align-self:center;background:#182229;color:var(--dim);font-size:11px;padding:4px 12px;border-radius:6px;margin:8px 0}
 #typingBar{background:var(--bg);color:var(--green2);font-size:12px;padding:0 20px;min-height:0;flex-shrink:0}
 #typingBar.on{min-height:22px;padding:5px 20px}
+
+/* ============ Input Bar ============ */
 #inputBar{background:var(--panel2);padding:8px 10px;display:flex;gap:6px;align-items:center;flex-shrink:0}
 #inputBar button{width:42px;height:42px;border-radius:50%;border:none;background:transparent;color:#aebac1;font-size:19px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 #inputBar button:hover{background:var(--panel3)}
@@ -108,6 +117,8 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 #uploading.on{display:flex}
 #uploading .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ Modal ============ */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;justify-content:center;align-items:center;z-index:200;padding:20px}
 .modal.on{display:flex}
 .modalBox{background:var(--panel);border-radius:14px;width:100%;max-width:420px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden}
@@ -115,8 +126,10 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .modalHdr h2{font-size:16px}
 .modalHdr button{background:none;border:none;color:#aebac1;font-size:22px;cursor:pointer;padding:4px;line-height:1}
 .modalBody{flex:1;overflow-y:auto;padding:14px 18px}
-.modalBody .lbl{font-size:12px;color:var(--dim);margin-bottom:6px;display:block;margin-top:8px}
-.modalBody input[type=text]{width:100%;padding:12px 14px;border-radius:8px;border:none;background:var(--panel3);color:var(--text);font-size:14px;outline:none;font-family:inherit;margin-bottom:12px}
+.modalBody .lbl{font-size:12px;color:var(--dim);margin-bottom:6px;display:block;margin-top:8px;font-weight:bold}
+.modalBody input[type=text],.modalBody input[type=tel]{width:100%;padding:12px 14px;border-radius:8px;border:1.5px solid var(--panel3);background:var(--panel2);color:var(--text);font-size:14px;outline:none;font-family:inherit;margin-bottom:12px;transition:.2s}
+.modalBody input[type=text]:focus,.modalBody input[type=tel]:focus{border-color:var(--green);background:var(--panel3)}
+.modalBody input.error{border-color:#ff5e7a}
 .modalBody .hint{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.6}
 .contact-row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;cursor:pointer}
 .contact-row:hover{background:var(--panel2)}
@@ -129,49 +142,70 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .modalFtr .cancel{background:var(--panel3);color:var(--text)}
 .modalFtr .ok{background:var(--green);color:#fff}
 .modalFtr .ok:disabled{opacity:.4}
+
+/* ============ Lightbox ============ */
 #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;justify-content:center;align-items:center;z-index:300;cursor:zoom-out;padding:20px}
 #lightbox.on{display:flex}
 #lightbox img{max-width:100%;max-height:100%;object-fit:contain}
+
+/* ============ Emoji ============ */
 #emojiPanel{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--panel2);border-radius:12px;padding:8px;display:none;grid-template-columns:repeat(8,1fr);gap:2px;max-width:340px;max-height:240px;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.6);z-index:20}
 #emojiPanel.on{display:grid}
 #emojiPanel span{font-size:20px;cursor:pointer;padding:4px;border-radius:6px;text-align:center;user-select:none}
 #emojiPanel span:hover{background:var(--panel3)}
 
-/* ============ Image Menu (Bottom Sheet) ============ */
-#imageMenu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;justify-content:center;align-items:flex-end}
-#imageMenu.on{display:flex}
-#imageMenu .sheet{background:var(--panel2);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px;display:flex;flex-direction:column;gap:10px;animation:slideUp .3s ease}
+/* ============ Bottom Sheets ============ */
+#imageMenu,#msgMenu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;justify-content:center;align-items:flex-end}
+#imageMenu.on,#msgMenu.on{display:flex}
+.sheet{background:var(--panel2);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px;display:flex;flex-direction:column;gap:10px;animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-#imageMenu .sheetTitle{font-weight:bold;text-align:center;color:var(--text);margin-bottom:10px;font-size:15px}
-#imageMenu button{padding:16px;border-radius:12px;border:none;background:var(--panel3);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:12px;justify-content:center;transition:.15s}
-#imageMenu button:hover{background:#374248}
-#imageMenu button.cancel{background:#5c1e1e;color:#fff;padding:14px}
+.sheet .sheetTitle{font-weight:bold;text-align:center;color:var(--text);margin-bottom:10px;font-size:15px}
+.sheet button{padding:16px;border-radius:12px;border:none;background:var(--panel3);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:12px;justify-content:center;transition:.15s}
+.sheet button:hover{background:#374248}
+.sheet button.danger{color:#ff6b6b;background:#3a1a1a}
+.sheet button.danger:hover{background:#5c1e1e}
+.sheet button.cancel{background:#2a3942;padding:14px}
 
-/* ============ Message Action Menu ============ */
-#msgMenu{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;justify-content:center;align-items:flex-end}
-#msgMenu.on{display:flex}
-#msgMenu .sheet{background:var(--panel2);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px;display:flex;flex-direction:column;gap:10px;animation:slideUp .3s ease}
-#msgMenu .sheetTitle{font-weight:bold;text-align:center;color:var(--text);margin-bottom:10px;font-size:14px;padding:6px 12px;background:var(--panel3);border-radius:8px;max-height:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#msgMenu button{padding:16px;border-radius:12px;border:none;background:var(--panel3);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:12px;justify-content:center;transition:.15s}
-#msgMenu button:hover{background:#374248}
-#msgMenu button.danger{color:#ff6b6b;background:#3a1a1a}
-#msgMenu button.danger:hover{background:#5c1e1e}
-#msgMenu button.cancel{background:#2a3942;color:var(--text);padding:14px}
+/* ============ Phone Search Results ============ */
+.search-results{margin-top:8px;margin-bottom:10px}
+.search-result{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--panel2);margin-bottom:6px;cursor:pointer;transition:.15s}
+.search-result:hover{background:var(--panel3)}
+.search-result .av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;color:#fff;flex-shrink:0}
+.search-result .info{flex:1;min-width:0}
+.search-result .nm{font-size:14px;font-weight:bold}
+.search-result .ph{font-size:11px;color:var(--dim);margin-top:2px;font-family:monospace;direction:ltr;text-align:right}
+.search-result .btn{padding:6px 14px;border-radius:8px;background:var(--green);color:#fff;border:none;font-size:12px;font-family:inherit;cursor:pointer;font-weight:bold}
+.no-result{padding:14px;text-align:center;color:var(--dim);font-size:12px;background:var(--panel2);border-radius:10px}
 </style>
 </head>
 <body>
 
 <div id="app">
 
+<!-- ============ Login ============ -->
 <div class="screen" id="login">
-  <div class="logo">🔒</div>
-  <h1>راز</h1>
-  <div class="sub">پیام‌رسان امن و سریع</div>
-  <input id="nameInp" placeholder="اسم شما..." maxlength="25" autocomplete="off">
-  <button id="joinBtn">ورود</button>
-  <div id="loginStatus">آماده</div>
+  <div class="inner">
+    <div class="logo">🔒</div>
+    <h1>راز</h1>
+    <div class="sub">پیام‌رسان امن و سریع</div>
+
+    <div class="field">
+      <label>اسم شما</label>
+      <input id="nameInp" type="text" placeholder="مثلاً: علی" maxlength="25" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label>شماره موبایل</label>
+      <input id="phoneInp" type="tel" placeholder="09123456789" maxlength="15" autocomplete="off" dir="ltr" style="text-align:left">
+      <div class="hint">💡 دوستات با این شماره پیدات می‌کنن</div>
+    </div>
+
+    <button id="joinBtn">ورود به راز</button>
+    <div id="loginStatus">آماده</div>
+  </div>
 </div>
 
+<!-- ============ Main Screen ============ -->
 <div class="screen hidden" id="mainScreen">
   <div class="hdr">
     <div class="avatar" id="myAvatarHeader" style="background:var(--green)">؟</div>
@@ -185,6 +219,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
   </div>
 </div>
 
+<!-- ============ Chat Screen ============ -->
 <div class="screen hidden" id="chatScreen">
   <div class="hdr">
     <button class="back" id="chatBack">←</button>
@@ -238,23 +273,30 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
   </div>
 </div>
 
+<!-- ============ New Contact Modal ============ -->
 <div class="modal" id="newContactModal">
   <div class="modalBox">
-    <div class="modalHdr"><h2>➕ مخاطب جدید</h2><button data-close="newContactModal">✕</button></div>
+    <div class="modalHdr"><h2>🔍 پیدا کردن مخاطب</h2><button data-close="newContactModal">✕</button></div>
     <div class="modalBody">
-      <label class="lbl">ID کاربر مورد نظر:</label>
-      <input type="text" id="contactIdInp" placeholder="u12345678" autocomplete="off" dir="ltr" style="text-align:left">
-      <div class="hint">ID رو از خود شخص بگیر (توی هدر اپش می‌بینه).</div>
-      <label class="lbl">اسم دلخواه:</label>
-      <input type="text" id="contactNameInp" placeholder="مثلاً: علی" autocomplete="off">
+      <label class="lbl">شماره موبایل دوستت:</label>
+      <input type="tel" id="contactPhoneInp" placeholder="09123456789" autocomplete="off" dir="ltr" style="text-align:left">
+      <div class="hint">شماره رو کامل وارد کن. اگه طرف توی راز باشه، پیدا می‌شه.</div>
+
+      <div id="searchResults" class="search-results"></div>
+
+      <div id="manualNameField" style="display:none">
+        <label class="lbl">اسم دلخواه:</label>
+        <input type="text" id="contactNameInp" placeholder="مثلاً: علی" autocomplete="off">
+      </div>
     </div>
     <div class="modalFtr">
       <button class="cancel" data-close="newContactModal">لغو</button>
-      <button class="ok" id="addContactOk">افزودن</button>
+      <button class="ok" id="addContactOk" disabled>افزودن</button>
     </div>
   </div>
 </div>
 
+<!-- ============ New Group Modal ============ -->
 <div class="modal" id="newGroupModal">
   <div class="modalBox">
     <div class="modalHdr"><h2>👥 گروه جدید</h2><button data-close="newGroupModal">✕</button></div>
@@ -271,15 +313,16 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
   </div>
 </div>
 
+<!-- ============ Profile Modal ============ -->
 <div class="modal" id="profileModal">
   <div class="modalBox">
     <div class="modalHdr"><h2>👤 پروفایل</h2><button data-close="profileModal">✕</button></div>
     <div class="modalBody">
       <label class="lbl">اسم:</label>
       <input type="text" id="profileNameInp" autocomplete="off">
-      <label class="lbl">ID من:</label>
-      <input type="text" id="profileIdInp" readonly dir="ltr" style="text-align:left;cursor:text">
-      <div class="hint">با کلیک کپی می‌شه</div>
+      <label class="lbl">شماره موبایل (به دوستات بده):</label>
+      <input type="tel" id="profilePhoneInp" dir="ltr" style="text-align:left">
+      <div class="hint">با کلیک روی شماره کپی می‌شه. هر کی این شماره رو داشته باشه، می‌تونه بهت پیام بده.</div>
       <button id="logoutBtn" style="padding:10px;border-radius:8px;border:none;background:#5c1e1e;color:#fff;cursor:pointer;font-family:inherit;font-size:13px;width:100%;margin-top:8px">خروج</button>
     </div>
     <div class="modalFtr">
@@ -294,11 +337,11 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 
 <script>
 // ========================================================
-//      راز — پیام‌رسان (متن + ویس + عکس + منوی پیام)
+//    راز — پیام‌رسان (با شماره موبایل)
 // ========================================================
 
 const $ = id => document.getElementById(id);
-const PREFIX = 'raaz_msgr_v3';
+const PREFIX = 'raaz_phone_v1';
 
 const BROKERS = [
   'wss://broker.hivemq.com:8884/mqtt',
@@ -310,6 +353,7 @@ const BROKERS = [
 const MAX_VOICE_SIZE = 200 * 1024;
 const MAX_VOICE_DURATION = 15;
 const MAX_IMAGE_SIZE = 150 * 1024;
+const DIRECTORY_INTERVAL = 8000;
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -336,6 +380,41 @@ const beep = () => {
     o.start(); o.stop(c.currentTime + .15);
   } catch(e){}
 };
+
+// ⭐ نرمال‌سازی شماره موبایل (تبدیل اعداد فارسی/عربی به انگلیسی)
+function normalizePhone(input) {
+  let s = String(input || '');
+  // تبدیل اعداد فارسی به انگلیسی
+  const persian = '۰۱۲۳۴۵۶۷۸۹';
+  const arabic = '٠١٢٣٤٥٦٧٨٩';
+  for (let i = 0; i < 10; i++) {
+    s = s.replace(new RegExp(persian[i], 'g'), String(i));
+    s = s.replace(new RegExp(arabic[i], 'g'), String(i));
+  }
+  // حذف هر چیزی جز عدد
+  s = s.replace(/\D/g, '');
+  // 98xxxxxxxxxx → 0xxxxxxxxxx
+  if (s.startsWith('98') && s.length === 12) s = '0' + s.slice(2);
+  // 9xxxxxxxxx → 09xxxxxxxxx
+  if (s.startsWith('9') && s.length === 10) s = '0' + s;
+  // +98 → 0
+  if (s.startsWith('0098')) s = '0' + s.slice(4);
+  return s;
+}
+
+// فرمت زیبای شماره برای نمایش
+function formatPhone(p) {
+  const n = normalizePhone(p);
+  if (n.length === 11 && n.startsWith('0')) {
+    return n.slice(0,4) + ' ' + n.slice(4,7) + ' ' + n.slice(7);
+  }
+  return n;
+}
+
+function validPhone(p) {
+  const n = normalizePhone(p);
+  return n.length === 11 && n.startsWith('09');
+}
 
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {
@@ -381,16 +460,13 @@ const EMOJIS = '😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰
 
 // ============ State ============
 const state = {
-  myId: localStorage.getItem('raaz_id') || (() => {
-    const id = 'u' + Math.random().toString(36).slice(2, 10);
-    localStorage.setItem('raaz_id', id);
-    return id;
-  })(),
+  myPhone: localStorage.getItem('raaz_phone') || '',
   myName: localStorage.getItem('raaz_name') || '',
-  contacts: JSON.parse(localStorage.getItem('raaz_contacts') || '{}'),
+  contacts: JSON.parse(localStorage.getItem('raaz_contacts') || '{}'),  // { phone: { name } }
   groups: JSON.parse(localStorage.getItem('raaz_groups') || '{}'),
   messages: JSON.parse(localStorage.getItem('raaz_msgs') || '{}'),
-  presence: {},
+  directory: JSON.parse(localStorage.getItem('raaz_dir') || '{}'),      // { phone: { name, time } }
+  presence: {},   // { phone: time }
   typing: {},
   currentChat: null,
   mqtt: null,
@@ -400,10 +476,21 @@ const state = {
 };
 
 function save() {
+  localStorage.setItem('raaz_phone', state.myPhone);
   localStorage.setItem('raaz_name', state.myName);
   localStorage.setItem('raaz_contacts', JSON.stringify(state.contacts));
   localStorage.setItem('raaz_groups', JSON.stringify(state.groups));
   localStorage.setItem('raaz_unread', JSON.stringify(state.unread));
+  // نگه‌داشتن فقط آخرین ورودی‌های directory
+  const dir = {};
+  const now = Date.now();
+  for (const p in state.directory) {
+    if (now - (state.directory[p].time || 0) < 7 * 24 * 60 * 60 * 1000) { // ۷ روز
+      dir[p] = state.directory[p];
+    }
+  }
+  state.directory = dir;
+  try { localStorage.setItem('raaz_dir', JSON.stringify(dir)); } catch(e){}
   const trimmed = {};
   for (const cid in state.messages) {
     trimmed[cid] = state.messages[cid].slice(-200).map(m => {
@@ -418,18 +505,43 @@ function save() {
 
 // ============ Login ============
 $('nameInp').value = state.myName;
-if (state.myName) $('joinBtn').textContent = 'ادامه';
+if (state.myPhone) $('phoneInp').value = state.myPhone;
 
 $('joinBtn').onclick = async () => {
   const n = $('nameInp').value.trim();
-  if (!n) return alert('اسمت رو وارد کن!');
+  const p = $('phoneInp').value.trim();
+
+  if (!n) {
+    $('nameInp').classList.add('error');
+    return alert('اسمت رو وارد کن!');
+  }
+  $('nameInp').classList.remove('error');
+
+  if (!validPhone(p)) {
+    $('phoneInp').classList.add('error');
+    return alert('شماره موبایل نامعتبره!\n\nمثال درست: 09123456789');
+  }
+  $('phoneInp').classList.remove('error');
+
   state.myName = n;
+  state.myPhone = normalizePhone(p);
   save();
+
   $('login').classList.add('hidden');
   $('mainScreen').classList.remove('hidden');
   startApp();
 };
-$('nameInp').addEventListener('keypress', e => { if (e.key === 'Enter') $('joinBtn').click(); });
+
+$('nameInp').addEventListener('keypress', e => {
+  if (e.key === 'Enter') $('phoneInp').focus();
+});
+$('phoneInp').addEventListener('keypress', e => {
+  if (e.key === 'Enter') $('joinBtn').click();
+});
+$('phoneInp').addEventListener('input', e => {
+  const n = normalizePhone(e.target.value);
+  if (n.length >= 4) e.target.value = n;
+});
 
 // ============ Start ============
 let appStarted = false;
@@ -438,7 +550,7 @@ async function startApp() {
   appStarted = true;
   $('myAvatarHeader').textContent = state.myName[0].toUpperCase();
   $('myAvatarHeader').style.background = colorOf(state.myName);
-  $('myIdSub').textContent = 'ID: ' + state.myId;
+  $('myIdSub').textContent = '📱 ' + formatPhone(state.myPhone);
   renderChatList();
 
   try {
@@ -446,7 +558,7 @@ async function startApp() {
     console.log('✅ MQTT وصل شد →', state.mqttBroker);
   } catch(e) {
     console.error('❌ MQTT failed:', e);
-    alert('❌ اتصال به سرور ناموفق!\n\nVPN رو خاموش/روشن کن و رفرش کن.');
+    alert('❌ اتصال به سرور ناموفق!');
   }
 }
 
@@ -474,7 +586,7 @@ function tryConnect(url) {
     let c;
     try {
       c = mqtt.connect(url, {
-        clientId: 'raaz_' + state.myId + '_' + uid(),
+        clientId: 'raaz_' + state.myPhone + '_' + uid(),
         clean: true,
         connectTimeout: 6000,
         reconnectPeriod: 0,
@@ -492,9 +604,10 @@ function tryConnect(url) {
       state.mqtt = c;
 
       c.subscribe([
-        `${PREFIX}/msg/${state.myId}`,
+        `${PREFIX}/msg/${state.myPhone}`,
         `${PREFIX}/presence/+`,
-        `${PREFIX}/typing/${state.myId}`,
+        `${PREFIX}/typing/${state.myPhone}`,
+        `${PREFIX}/directory`,
       ], err => {
         if (err) console.error('sub err', err);
         else console.log('📥 subscribe ok');
@@ -502,9 +615,14 @@ function tryConnect(url) {
 
       c.on('message', onMQTT);
 
+      // اعلام حضور
       announcePresence();
       setInterval(announcePresence, 5000);
       setInterval(checkPresence, 3000);
+
+      // پخش در دفترچه تلفن
+      broadcastDirectory();
+      setInterval(broadcastDirectory, DIRECTORY_INTERVAL);
 
       res(c);
     });
@@ -528,8 +646,17 @@ function tryConnect(url) {
 
 function announcePresence() {
   if (!state.mqtt || !state.mqtt.connected) return;
-  state.mqtt.publish(`${PREFIX}/presence/${state.myId}`,
-    JSON.stringify({ user: state.myName, time: Date.now() }));
+  state.mqtt.publish(`${PREFIX}/presence/${state.myPhone}`,
+    JSON.stringify({ name: state.myName, time: Date.now() }));
+}
+
+function broadcastDirectory() {
+  if (!state.mqtt || !state.mqtt.connected) return;
+  state.mqtt.publish(`${PREFIX}/directory`, JSON.stringify({
+    phone: state.myPhone,
+    name: state.myName,
+    time: Date.now()
+  }));
 }
 
 function checkPresence() {
@@ -548,9 +675,19 @@ function onMQTT(topic, payload) {
   let d;
   try { d = JSON.parse(payload.toString()); } catch(e) { return; }
 
+  // دفترچه تلفن
+  if (topic === `${PREFIX}/directory`) {
+    if (!d.phone) return;
+    if (d.phone === state.myPhone) return;
+    state.directory[d.phone] = { name: d.name, time: d.time || Date.now() };
+    // ذخیره تدریجی
+    try { localStorage.setItem('raaz_dir', JSON.stringify(state.directory)); } catch(e){}
+    return;
+  }
+
   if (topic.startsWith(`${PREFIX}/presence/`)) {
     const u = topic.slice(`${PREFIX}/presence/`.length);
-    if (u === state.myId) return;
+    if (u === state.myPhone) return;
     if (d.left) delete state.presence[u];
     else state.presence[u] = Date.now();
     renderChatList();
@@ -558,7 +695,7 @@ function onMQTT(topic, payload) {
     return;
   }
 
-  if (topic === `${PREFIX}/typing/${state.myId}`) {
+  if (topic === `${PREFIX}/typing/${state.myPhone}`) {
     if (!d.fromId) return;
     if (d.typing) state.typing[d.fromId] = Date.now();
     else delete state.typing[d.fromId];
@@ -566,7 +703,7 @@ function onMQTT(topic, payload) {
     return;
   }
 
-  if (topic === `${PREFIX}/msg/${state.myId}`) {
+  if (topic === `${PREFIX}/msg/${state.myPhone}`) {
     handleIncoming(d);
     return;
   }
@@ -574,7 +711,7 @@ function onMQTT(topic, payload) {
 
 // ============ Incoming ============
 function handleIncoming(d) {
-  if (!d || d.fromId === state.myId) return;
+  if (!d || d.fromId === state.myPhone) return;
 
   // پیام حذف شده برای همه
   if (d.type === 'delete') {
@@ -602,6 +739,7 @@ function handleIncoming(d) {
     return;
   }
 
+  // اگه مخاطب جدیده، خودکار اضافه کن
   if (!d.groupId && !state.contacts[d.fromId]) {
     state.contacts[d.fromId] = { name: d.from };
     save();
@@ -615,16 +753,14 @@ function handleIncoming(d) {
     try {
       const blob = base64ToBlob(d.audioBase64, d.mime || 'audio/webm');
       state.fileStore[d.fileId] = { blob, name: 'voice.webm', size: blob.size, mime: d.mime || 'audio/webm', duration: d.duration || 0 };
-      console.log('🎤 ویس دریافتی:', blob.size, 'بایت');
-    } catch(e) { console.error('voice error', e); }
+    } catch(e) {}
   }
 
   if (d.type === 'image' && d.imageBase64) {
     try {
       const blob = base64ToBlob(d.imageBase64, d.mime || 'image/jpeg');
       state.fileStore[d.fileId] = { blob, name: 'image.jpg', size: blob.size, mime: d.mime || 'image/jpeg' };
-      console.log('📷 عکس دریافتی:', blob.size, 'بایت');
-    } catch(e) { console.error('image error', e); }
+    } catch(e) {}
   }
 
   state.messages[chatId].push(d);
@@ -649,15 +785,15 @@ function renderChatList() {
   box.innerHTML = '';
   const items = [];
 
-  for (const uid2 in state.contacts) {
-    const cid = 'dm_' + uid2;
+  for (const phone in state.contacts) {
+    const cid = 'dm_' + phone;
     const msgs = state.messages[cid] || [];
     items.push({
-      id: cid, type: 'dm', peerId: uid2,
-      name: state.contacts[uid2].name,
+      id: cid, type: 'dm', peerPhone: phone,
+      name: state.contacts[phone].name,
       last: msgs[msgs.length - 1],
       unread: state.unread[cid] || 0,
-      online: !!state.presence[uid2],
+      online: !!state.presence[phone],
     });
   }
 
@@ -681,9 +817,9 @@ function renderChatList() {
       <div class="em">🔒</div>
       <p>هنوز چتی نداری</p>
       <p style="margin-top:8px;font-size:12px">
-        با <b>➕</b> مخاطب اضافه کن<br>یا با <b>👥</b> گروه بساز
+        با <b>➕</b> مخاطب اضافه کن (با شماره موبایل)<br>یا با <b>👥</b> گروه بساز
       </p>
-      <p style="margin-top:16px;font-size:11px;color:#666">ID شما: <span style="font-family:monospace">${state.myId}</span></p>
+      <p style="margin-top:16px;font-size:11px;color:#666">📱 شماره شما: <span style="font-family:monospace" dir="ltr">${formatPhone(state.myPhone)}</span></p>
     </div>`;
     return;
   }
@@ -760,11 +896,11 @@ function updateHeaderPresence() {
     sub.textContent = g ? (g.members.length + ' عضو • ' + online + ' آنلاین') : '';
     sub.classList.remove('on');
   } else {
-    if (state.presence[state.currentChat.peerId]) {
-      sub.textContent = 'آنلاین';
+    if (state.presence[state.currentChat.peerPhone]) {
+      sub.textContent = 'آنلاین • ' + formatPhone(state.currentChat.peerPhone);
       sub.classList.add('on');
     } else {
-      sub.textContent = 'آفلاین';
+      sub.textContent = formatPhone(state.currentChat.peerPhone);
       sub.classList.remove('on');
     }
   }
@@ -792,31 +928,24 @@ function renderMessages() {
       box.appendChild(dd);
       lastDay = day;
     }
-    appendMessage(m, m.fromId === state.myId);
+    appendMessage(m, m.fromId === state.myPhone);
   }
   box.scrollTop = box.scrollHeight;
 }
 
 function appendMessage(m, isMine) {
   const box = $('messages');
-
-  // Wrapper حاوی پیام + دکمه سه نقطه
   const wrapper = document.createElement('div');
   wrapper.className = 'msg-wrapper ' + (isMine ? 'me' : 'other');
   wrapper.dataset.id = m.id;
 
-  // دکمه سه نقطه
   const menuBtn = document.createElement('button');
   menuBtn.className = 'msg-menu-btn';
   menuBtn.type = 'button';
   menuBtn.innerHTML = '⋮';
   menuBtn.title = 'گزینه‌ها';
-  menuBtn.onclick = (e) => {
-    e.stopPropagation();
-    openMsgMenu(m);
-  };
+  menuBtn.onclick = (e) => { e.stopPropagation(); openMsgMenu(m); };
 
-  // خود پیام
   const d = document.createElement('div');
   d.className = 'msg ' + (isMine ? 'me' : 'other');
 
@@ -830,13 +959,11 @@ function appendMessage(m, isMine) {
       try {
         const blob = base64ToBlob(m.audioBase64, m.mime || 'audio/webm');
         state.fileStore[m.fileId] = { blob, name: 'voice.webm', size: blob.size, mime: m.mime || 'audio/webm', duration: m.duration || 0 };
-      } catch(e) { console.error(e); }
+      } catch(e) {}
     }
-
     const hasFile = !!state.fileStore[m.fileId];
     const dur = fmtDur(m.duration || 0);
     const bars = Array.from({length: 18}, () => `<span style="height:${4 + Math.random()*16}px"></span>`).join('');
-
     if (hasFile) {
       inner += `<div class="voiceBox" data-fid="${m.fileId}">
         <button class="play" type="button">▶</button>
@@ -851,9 +978,8 @@ function appendMessage(m, isMine) {
       try {
         const blob = base64ToBlob(m.imageBase64, m.mime || 'image/jpeg');
         state.fileStore[m.fileId] = { blob, name: 'image.jpg', size: blob.size, mime: m.mime || 'image/jpeg' };
-      } catch(e) { console.error(e); }
+      } catch(e) {}
     }
-
     const fs = state.fileStore[m.fileId];
     if (fs) {
       const url = URL.createObjectURL(fs.blob);
@@ -868,9 +994,6 @@ function appendMessage(m, isMine) {
   inner += `<div class="meta">${fmtT(m.time)}</div>`;
   d.innerHTML = inner;
 
-  // ترتیب: دکمه سه نقطه سمت پیام
-  // در RTL: پیام‌های من در سمت چپ، پس دکمه سمت راستش
-  // پیام‌های دیگران در سمت راست، پس دکمه سمت چپش
   if (isMine) {
     wrapper.appendChild(d);
     wrapper.appendChild(menuBtn);
@@ -882,7 +1005,6 @@ function appendMessage(m, isMine) {
   box.appendChild(wrapper);
   box.scrollTop = box.scrollHeight;
 
-  // رویدادها
   d.querySelectorAll('.voiceBox').forEach(vb => {
     vb.querySelector('.play').onclick = () => playVoice(m.fileId, vb);
   });
@@ -894,31 +1016,23 @@ function appendMessage(m, isMine) {
   });
 }
 
-// ============ Message Action Menu ============
+// ============ Message Menu ============
 let selectedMsg = null;
 
 function openMsgMenu(m) {
   selectedMsg = m;
-  const menu = $('msgMenu');
   const preview = $('msgMenuPreview');
-
-  // پیش‌نمایش متن پیام
   let previewText = '';
   if (m.type === 'text') previewText = m.text || '(خالی)';
   else if (m.type === 'voice') previewText = '🎤 پیام صوتی';
   else if (m.type === 'image') previewText = '📷 عکس';
-
   preview.textContent = previewText.length > 40 ? previewText.slice(0, 40) + '...' : previewText;
 
-  // اگه پیام متنی نیست، دکمه کپی رو مخفی کن
   $('menuCopy').style.display = (m.type === 'text') ? 'flex' : 'none';
-
-  // اگه پیام خودم نیست، دکمه "حذف برای همه" رو مخفی کن
-  const isMine = m.fromId === state.myId;
+  const isMine = m.fromId === state.myPhone;
   $('menuDeleteAll').style.display = isMine ? 'flex' : 'none';
 
-  menu.classList.add('on');
-
+  $('msgMenu').classList.add('on');
   if (navigator.vibrate) navigator.vibrate(30);
 }
 
@@ -928,23 +1042,14 @@ function closeMsgMenu() {
 }
 
 $('cancelMsgMenu').onclick = closeMsgMenu;
+$('msgMenu').onclick = (e) => { if (e.target.id === 'msgMenu') closeMsgMenu(); };
 
-$('msgMenu').onclick = (e) => {
-  if (e.target.id === 'msgMenu') closeMsgMenu();
-};
-
-// کپی متن
 $('menuCopy').onclick = () => {
   if (!selectedMsg || !selectedMsg.text) return;
   const text = selectedMsg.text;
-
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('✅ متن کپی شد');
-    }).catch(() => fallbackCopy(text));
-  } else {
-    fallbackCopy(text);
-  }
+    navigator.clipboard.writeText(text).then(() => alert('✅ کپی شد')).catch(() => fallbackCopy(text));
+  } else fallbackCopy(text);
   closeMsgMenu();
 };
 
@@ -955,77 +1060,54 @@ function fallbackCopy(text) {
   ta.style.left = '-9999px';
   document.body.appendChild(ta);
   ta.select();
-  try { document.execCommand('copy'); alert('✅ متن کپی شد'); } catch(e) { alert('❌ خطا در کپی'); }
+  try { document.execCommand('copy'); alert('✅ کپی شد'); } catch(e) { alert('❌ خطا'); }
   ta.remove();
 }
 
-// حذف از طرف من
 $('menuDeleteMe').onclick = () => {
   if (!selectedMsg || !state.currentChat) return;
   const msg = selectedMsg;
   const chatId = state.currentChat.id;
-
   if (!confirm('این پیام از چت تو حذف بشه؟')) { closeMsgMenu(); return; }
-
-  // حذف از state
   if (state.messages[chatId]) {
     state.messages[chatId] = state.messages[chatId].filter(x => x.id !== msg.id);
   }
   save();
-
-  // حذف از DOM
   const el = document.querySelector(`.msg-wrapper[data-id="${msg.id}"]`);
   if (el) el.remove();
-
-  console.log('🗑️ حذف از طرف من:', msg.id);
   closeMsgMenu();
   renderChatList();
 };
 
-// حذف برای همه
 $('menuDeleteAll').onclick = () => {
   if (!selectedMsg || !state.currentChat) return;
   const msg = selectedMsg;
   const chatId = state.currentChat.id;
-
-  if (msg.fromId !== state.myId) {
-    alert('فقط پیام‌های خودت رو می‌تونی برای همه حذف کنی');
-    closeMsgMenu();
-    return;
-  }
-
+  if (msg.fromId !== state.myPhone) { alert('فقط پیام‌های خودت رو می‌تونی برای همه حذف کنی'); closeMsgMenu(); return; }
   if (!confirm('این پیام برای همه حذف بشه؟')) { closeMsgMenu(); return; }
 
-  // حذف از state
   if (state.messages[chatId]) {
     state.messages[chatId] = state.messages[chatId].filter(x => x.id !== msg.id);
   }
   save();
-
-  // حذف از DOM
   const el = document.querySelector(`.msg-wrapper[data-id="${msg.id}"]`);
   if (el) el.remove();
 
-  // ارسال سیگنال به بقیه
   const delMsg = {
-    type: 'delete',
-    msgId: msg.id,
-    fromId: state.myId,
-    from: state.myName,
+    type: 'delete', msgId: msg.id,
+    fromId: state.myPhone, from: state.myName,
     groupId: msg.groupId,
   };
 
   if (state.currentChat.type === 'group') {
     const g = state.groups[state.currentChat.groupId];
     for (const mem of g.members) {
-      if (mem === state.myId) continue;
+      if (mem === state.myPhone) continue;
       state.mqtt.publish(`${PREFIX}/msg/${mem}`, JSON.stringify(delMsg));
     }
   } else {
-    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerId}`, JSON.stringify(delMsg));
+    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(delMsg));
   }
-
-  console.log('🗑️ حذف برای همه:', msg.id);
   closeMsgMenu();
   renderChatList();
 };
@@ -1037,23 +1119,19 @@ function sendText() {
   if (!state.mqtt || !state.currentChat) return;
 
   const msg = {
-    id: uid(),
-    from: state.myName,
-    fromId: state.myId,
-    time: Date.now(),
-    type: 'text',
-    text: txt,
+    id: uid(), from: state.myName, fromId: state.myPhone,
+    time: Date.now(), type: 'text', text: txt,
   };
 
   if (state.currentChat.type === 'group') {
     msg.groupId = state.currentChat.groupId;
     const g = state.groups[state.currentChat.groupId];
     for (const m of g.members) {
-      if (m === state.myId) continue;
+      if (m === state.myPhone) continue;
       state.mqtt.publish(`${PREFIX}/msg/${m}`, JSON.stringify(msg));
     }
   } else {
-    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerId}`, JSON.stringify(msg));
+    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(msg));
   }
 
   if (!state.messages[state.currentChat.id]) state.messages[state.currentChat.id] = [];
@@ -1069,15 +1147,15 @@ function sendText() {
 // ============ Typing ============
 function sendTyping(t) {
   if (!state.mqtt || !state.currentChat) return;
-  const payload = JSON.stringify({ fromId: state.myId, from: state.myName, typing: t });
+  const payload = JSON.stringify({ fromId: state.myPhone, from: state.myName, typing: t });
   if (state.currentChat.type === 'group') {
     const g = state.groups[state.currentChat.groupId];
     for (const m of g.members) {
-      if (m === state.myId) continue;
+      if (m === state.myPhone) continue;
       state.mqtt.publish(`${PREFIX}/typing/${m}`, payload);
     }
   } else {
-    state.mqtt.publish(`${PREFIX}/typing/${state.currentChat.peerId}`, payload);
+    state.mqtt.publish(`${PREFIX}/typing/${state.currentChat.peerPhone}`, payload);
   }
 }
 
@@ -1087,10 +1165,10 @@ function updateTypingBar() {
   let typers = [];
   if (state.currentChat.type === 'group') {
     const g = state.groups[state.currentChat.groupId];
-    typers = g.members.filter(m => m !== state.myId && state.typing[m])
+    typers = g.members.filter(m => m !== state.myPhone && state.typing[m])
       .map(m => state.contacts[m]?.name || 'کاربر');
   } else {
-    if (state.typing[state.currentChat.peerId]) typers = [state.currentChat.name];
+    if (state.typing[state.currentChat.peerPhone]) typers = [state.currentChat.name];
   }
   if (!typers.length) { bar.classList.remove('on'); bar.textContent = ''; }
   else if (typers.length === 1) { bar.classList.add('on'); bar.textContent = `✎ ${typers[0]} داره تایپ می‌کنه...`; }
@@ -1102,7 +1180,6 @@ let recorder = null, recChunks = [], recSec = 0, recTmr = null;
 
 $('micBtn').onclick = async () => {
   if (recorder) { stopRec(true); return; }
-
   const isSecure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
   if (!isSecure) { alert('❌ میکروفون فقط روی HTTPS کار می‌کنه!'); return; }
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { alert('❌ مرورگرت پشتیبانی نمی‌کنه.'); return; }
@@ -1119,15 +1196,13 @@ $('micBtn').onclick = async () => {
     $('recBar').classList.add('on');
     $('micBtn').classList.add('rec');
     $('micBtn').textContent = '⏹';
-
     recTmr = setInterval(() => {
       recSec++;
       $('recTime').textContent = fmtDur(recSec);
       if (recSec >= MAX_VOICE_DURATION) stopRec(true);
     }, 1000);
   } catch(e) {
-    console.error('mic error:', e);
-    if (e.name === 'NotAllowedError') alert('❌ اجازه میکروفون داده نشد!\n\nروی قفل 🔒 کنار آدرس بزن → Microphone → Allow');
+    if (e.name === 'NotAllowedError') alert('❌ اجازه میکروفون داده نشد!\n\nروی قفل 🔒 بزن → Microphone → Allow');
     else alert('❌ خطا: ' + e.message);
   }
 };
@@ -1155,28 +1230,21 @@ function stopRec(sendIt) {
 $('cancelRec').onclick = () => stopRec(false);
 $('sendRec').onclick = () => stopRec(true);
 
-// ============ Send Voice ============
 async function sendVoice(blob, duration) {
   if (!state.currentChat || !state.mqtt) return;
-  console.log('🎤 ویس ضبط شد:', blob.size, 'بایت /', duration, 'ثانیه');
-
   if (blob.size > MAX_VOICE_SIZE) {
-    alert('❌ ویس خیلی بزرگه! (' + Math.round(blob.size/1024) + 'KB)\n\nحداکثر ۲۰۰ کیلوبایت — یعنی حدود ۱۵ ثانیه.');
+    alert('❌ ویس خیلی بزرگه! (' + Math.round(blob.size/1024) + 'KB)\n\nحداکثر ۱۵ ثانیه.');
     return;
   }
-
   const fileId = 'f_' + uid();
   const msgId = uid();
   state.fileStore[fileId] = { blob, name: 'voice.webm', size: blob.size, mime: 'audio/webm', duration };
 
   let base64;
-  try {
-    base64 = await blobToBase64(blob);
-    console.log('🔄 base64:', base64.length, 'کاراکتر');
-  } catch(e) { alert('خطا در پردازش ویس'); return; }
+  try { base64 = await blobToBase64(blob); } catch(e) { alert('خطا در پردازش ویس'); return; }
 
   const msg = {
-    id: msgId, from: state.myName, fromId: state.myId,
+    id: msgId, from: state.myName, fromId: state.myPhone,
     time: Date.now(), type: 'voice', fileId, duration,
     audioBase64: base64, mime: 'audio/webm',
   };
@@ -1185,11 +1253,11 @@ async function sendVoice(blob, duration) {
     msg.groupId = state.currentChat.groupId;
     const g = state.groups[state.currentChat.groupId];
     for (const m of g.members) {
-      if (m === state.myId) continue;
+      if (m === state.myPhone) continue;
       state.mqtt.publish(`${PREFIX}/msg/${m}`, JSON.stringify(msg));
     }
   } else {
-    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerId}`, JSON.stringify(msg));
+    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(msg));
   }
 
   const localMsg = { ...msg };
@@ -1198,21 +1266,12 @@ async function sendVoice(blob, duration) {
   state.messages[state.currentChat.id].push(localMsg);
   save();
   appendMessage(localMsg, true);
-  console.log('✅ ویس ارسال شد');
 }
 
-// ============ Image Menu ============
-$('attachBtn').onclick = () => {
-  $('imageMenu').classList.add('on');
-};
-
-$('cancelImageMenu').onclick = () => {
-  $('imageMenu').classList.remove('on');
-};
-
-$('imageMenu').onclick = (e) => {
-  if (e.target.id === 'imageMenu') $('imageMenu').classList.remove('on');
-};
+// ============ Image ============
+$('attachBtn').onclick = () => $('imageMenu').classList.add('on');
+$('cancelImageMenu').onclick = () => $('imageMenu').classList.remove('on');
+$('imageMenu').onclick = (e) => { if (e.target.id === 'imageMenu') $('imageMenu').classList.remove('on'); };
 
 $('pickGallery').onclick = () => {
   $('imageMenu').classList.remove('on');
@@ -1233,45 +1292,32 @@ $('pickCamera').onclick = () => {
   input.click();
 };
 
-// ============ Handle Image Pick ============
 async function handleImagePick(e) {
   const file = e.target.files[0];
   if (!file) return;
   if (!file.type.startsWith('image/')) { alert('فقط عکس قبول می‌شه!'); return; }
-
   $('uploading').classList.add('on');
-
   try {
     const compressed = await compressImage(file, 800, 0.6);
-    console.log('📷 عکس فشرده:', Math.round(compressed.size/1024), 'KB');
-
     if (compressed.size > MAX_IMAGE_SIZE) {
-      alert('❌ عکس حتی بعد از فشرده‌سازی بزرگه (' + Math.round(compressed.size/1024) + 'KB)\n\nعکس کوچیک‌تر انتخاب کن.');
+      alert('❌ عکس بزرگه (' + Math.round(compressed.size/1024) + 'KB)\n\nعکس کوچیک‌تر انتخاب کن.');
       $('uploading').classList.remove('on');
       return;
     }
-
     await sendImage(compressed);
-  } catch(err) {
-    console.error(err);
-    alert('خطا در پردازش عکس');
-  }
+  } catch(err) { alert('خطا در پردازش عکس'); }
   $('uploading').classList.remove('on');
 }
 
-// ============ Send Image ============
 async function sendImage(blob) {
   if (!state.currentChat || !state.mqtt) return;
   const fileId = 'f_' + uid();
   const msgId = uid();
-
   state.fileStore[fileId] = { blob, name: 'image.jpg', size: blob.size, mime: 'image/jpeg' };
-
   const base64 = await blobToBase64(blob);
-  console.log('📷 عکس base64:', base64.length, 'کاراکتر');
 
   const msg = {
-    id: msgId, from: state.myName, fromId: state.myId,
+    id: msgId, from: state.myName, fromId: state.myPhone,
     time: Date.now(), type: 'image', fileId,
     imageBase64: base64, mime: 'image/jpeg',
   };
@@ -1280,11 +1326,11 @@ async function sendImage(blob) {
     msg.groupId = state.currentChat.groupId;
     const g = state.groups[state.currentChat.groupId];
     for (const m of g.members) {
-      if (m === state.myId) continue;
+      if (m === state.myPhone) continue;
       state.mqtt.publish(`${PREFIX}/msg/${m}`, JSON.stringify(msg));
     }
   } else {
-    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerId}`, JSON.stringify(msg));
+    state.mqtt.publish(`${PREFIX}/msg/${state.currentChat.peerPhone}`, JSON.stringify(msg));
   }
 
   const localMsg = { ...msg };
@@ -1293,16 +1339,13 @@ async function sendImage(blob) {
   state.messages[state.currentChat.id].push(localMsg);
   save();
   appendMessage(localMsg, true);
-  console.log('✅ عکس ارسال شد');
 }
 
 // ============ Voice Playback ============
 let curAudio = null, curVB = null;
-
 function playVoice(fileId, vb) {
   const fs = state.fileStore[fileId];
-  if (!fs) { alert('❌ فایل صوتی در حافظه نیست'); return; }
-
+  if (!fs) { alert('❌ فایل صوتی نیست'); return; }
   if (curAudio && curVB === vb && !curAudio.paused) {
     curAudio.pause();
     vb.classList.remove('playing');
@@ -1310,7 +1353,6 @@ function playVoice(fileId, vb) {
     curAudio = null; curVB = null;
     return;
   }
-
   if (curAudio) {
     curAudio.pause();
     document.querySelectorAll('.voiceBox.playing').forEach(b => {
@@ -1318,7 +1360,6 @@ function playVoice(fileId, vb) {
       b.querySelector('.play').textContent = '▶';
     });
   }
-
   try {
     const url = URL.createObjectURL(fs.blob);
     curAudio = new Audio(url);
@@ -1326,40 +1367,102 @@ function playVoice(fileId, vb) {
     curAudio.play();
     vb.classList.add('playing');
     vb.querySelector('.play').textContent = '⏸';
-
     curAudio.onended = () => {
       vb.classList.remove('playing');
       vb.querySelector('.play').textContent = '▶';
       URL.revokeObjectURL(url);
       curAudio = null; curVB = null;
     };
-    curAudio.onerror = (e) => {
-      console.error('play error:', e);
-      vb.classList.remove('playing');
-      vb.querySelector('.play').textContent = '▶';
-      curAudio = null; curVB = null;
-    };
-  } catch(e) { console.error(e); }
+  } catch(e) {}
 }
 
-// ============ Contacts ============
-$('newContactFab').onclick = () => {
-  $('contactIdInp').value = '';
+// ============ Search Contact by Phone ============
+let searchTimer = null;
+
+$('contactPhoneInp').addEventListener('input', (e) => {
+  const n = normalizePhone(e.target.value);
+  if (n.length >= 4) e.target.value = n;
+
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => searchContact(n), 500);
+});
+
+function searchContact(phone) {
+  const results = $('searchResults');
+  results.innerHTML = '';
+  $('manualNameField').style.display = 'none';
+  $('addContactOk').disabled = true;
   $('contactNameInp').value = '';
+  $('contactNameInp').dataset.phone = '';
+
+  if (!phone || phone.length < 10) return;
+
+  if (phone === state.myPhone) {
+    results.innerHTML = '<div class="no-result">این شماره خودته! 😅</div>';
+    return;
+  }
+
+  // اگه قبلاً اضافه شده
+  if (state.contacts[phone]) {
+    results.innerHTML = `<div class="no-result">قبلاً این مخاطب رو داری: <b>${esc(state.contacts[phone].name)}</b></div>`;
+    return;
+  }
+
+  // جستجو در دفترچه تلفن
+  const found = state.directory[phone];
+
+  if (found) {
+    const div = document.createElement('div');
+    div.className = 'search-result';
+    div.innerHTML = `
+      <div class="av" style="background:${colorOf(found.name)}">${esc(found.name[0].toUpperCase())}</div>
+      <div class="info">
+        <div class="nm">✅ ${esc(found.name)}</div>
+        <div class="ph" dir="ltr">${formatPhone(phone)}</div>
+      </div>`;
+    results.appendChild(div);
+
+    // ذخیره‌ی انتخاب
+    $('contactNameInp').value = found.name;
+    $('contactNameInp').dataset.phone = phone;
+    $('addContactOk').disabled = false;
+  } else {
+    results.innerHTML = `<div class="no-result">
+      🔍 کسی با این شماره توی راز پیدا نشد<br>
+      <span style="font-size:10px;opacity:.7">مطمئن شو طرف هم توی راز ثبت‌نام کرده</span>
+    </div>`;
+    // اجازه می‌دیم دستی هم اضافه کنه
+    $('manualNameField').style.display = 'block';
+    $('contactNameInp').dataset.phone = phone;
+    $('contactNameInp').addEventListener('input', () => {
+      $('addContactOk').disabled = !$('contactNameInp').value.trim();
+    }, { once: true });
+  }
+}
+
+// ============ Add Contact ============
+$('newContactFab').onclick = () => {
+  $('contactPhoneInp').value = '';
+  $('contactNameInp').value = '';
+  $('contactNameInp').dataset.phone = '';
+  $('searchResults').innerHTML = '';
+  $('manualNameField').style.display = 'none';
+  $('addContactOk').disabled = true;
   openModal('newContactModal');
+  setTimeout(() => $('contactPhoneInp').focus(), 200);
 };
 
 $('addContactOk').onclick = () => {
-  const id = $('contactIdInp').value.trim();
+  const phone = $('contactNameInp').dataset.phone || normalizePhone($('contactPhoneInp').value);
   const name = $('contactNameInp').value.trim();
-  if (!id) return alert('ID رو وارد کن');
-  if (id === state.myId) return alert('این ID خودته!');
-  if (!/^u[a-z0-9]{4,}$/i.test(id)) return alert('ID نامعتبره (باید با u شروع بشه)');
-  if (!name) return alert('اسم دلخواه رو وارد کن');
-  state.contacts[id] = { name };
+  if (!validPhone(phone)) return alert('شماره نامعتبره');
+  if (phone === state.myPhone) return alert('این شماره خودته!');
+  if (!name) return alert('اسم رو وارد کن');
+  state.contacts[phone] = { name };
   save();
   renderChatList();
   closeModal('newContactModal');
+  console.log('✅ مخاطب اضافه شد:', name, phone);
 };
 
 // ============ Groups ============
@@ -1377,15 +1480,15 @@ function renderContactPickList() {
     box.innerHTML = '<div style="color:#8696a0;font-size:13px;padding:12px;text-align:center">هنوز مخاطبی نداری</div>';
     return;
   }
-  for (const [uid2, c] of list) {
+  for (const [phone, c] of list) {
     const row = document.createElement('label');
     row.className = 'contact-row';
     row.innerHTML = `
-      <input type="checkbox" value="${uid2}">
+      <input type="checkbox" value="${phone}">
       <div class="av" style="background:${colorOf(c.name)}">${esc(c.name[0].toUpperCase())}</div>
       <div style="flex:1;min-width:0">
         <div class="nm">${esc(c.name)}</div>
-        <div class="uid" dir="ltr">${esc(uid2)}</div>
+        <div class="uid" dir="ltr">${formatPhone(phone)}</div>
       </div>`;
     row.querySelector('input').onchange = updateCreateGroupBtn;
     box.appendChild(row);
@@ -1405,11 +1508,11 @@ $('createGroupOk').onclick = () => {
   const selected = Array.from(document.querySelectorAll('#contactPickList input:checked')).map(cb => cb.value);
   if (!name || !selected.length) return;
   const gid = uid();
-  const members = [state.myId, ...selected];
+  const members = [state.myPhone, ...selected];
   state.groups[gid] = { name, members, createdAt: Date.now() };
   save();
 
-  const invite = { type: 'invite', groupId: gid, groupName: name, members, from: state.myName, fromId: state.myId };
+  const invite = { type: 'invite', groupId: gid, groupName: name, members, from: state.myName, fromId: state.myPhone };
   for (const m of selected) {
     state.mqtt.publish(`${PREFIX}/msg/${m}`, JSON.stringify(invite));
   }
@@ -1433,23 +1536,33 @@ $('myAvatarHeader').onclick = openProfile;
 $('settingsBtn').onclick = openProfile;
 function openProfile() {
   $('profileNameInp').value = state.myName;
-  $('profileIdInp').value = state.myId;
+  $('profilePhoneInp').value = formatPhone(state.myPhone);
   openModal('profileModal');
 }
+
 $('saveProfileOk').onclick = () => {
   const n = $('profileNameInp').value.trim();
-  if (!n) return alert('اسم نمی‌تونه خالی باشه');
+  if (!n) return alert('اسم خالی نباشه');
   state.myName = n;
   save();
   $('myAvatarHeader').textContent = n[0].toUpperCase();
   $('myAvatarHeader').style.background = colorOf(n);
   announcePresence();
+  broadcastDirectory();
   closeModal('profileModal');
 };
-$('profileIdInp').onclick = function() {
+
+$('profilePhoneInp').onclick = function() {
   this.select();
-  try { document.execCommand('copy'); alert('ID کپی شد: ' + state.myId); } catch(e){}
+  try {
+    navigator.clipboard.writeText(state.myPhone);
+    alert('📱 شماره کپی شد: ' + state.myPhone);
+  } catch(e) {
+    document.execCommand('copy');
+    alert('📱 شماره کپی شد');
+  }
 };
+
 $('logoutBtn').onclick = () => {
   if (!confirm('خارج بشی؟ همه چیز پاک می‌شه')) return;
   localStorage.clear();
@@ -1464,16 +1577,15 @@ $('chatInfoBtn').onclick = () => {
     const g = state.groups[state.currentChat.groupId];
     let txt = `گروه: ${g.name}\n\nاعضا:\n`;
     for (const m of g.members) {
-      const n = m === state.myId ? state.myName + ' (شما)' : (state.contacts[m]?.name || 'ناشناس');
-      txt += `• ${n}\n`;
+      const n = m === state.myPhone ? state.myName + ' (شما)' : (state.contacts[m]?.name || 'ناشناس');
+      txt += `• ${n} — ${formatPhone(m)}\n`;
     }
     alert(txt);
   } else {
-    alert(`نام: ${state.currentChat.name}\nID: ${state.currentChat.peerId}`);
+    alert(`نام: ${state.currentChat.name}\n📱 ${formatPhone(state.currentChat.peerPhone)}`);
   }
 };
 
-// ======== ارسال ========
 function doSend() {
   const txt = $('msgInp').value.trim();
   if (txt) sendText();
@@ -1514,7 +1626,7 @@ document.addEventListener('click', e => {
 $('lightbox').onclick = () => $('lightbox').classList.remove('on');
 
 // ============ Startup ============
-if (state.myName) {
+if (state.myName && state.myPhone) {
   $('login').classList.add('hidden');
   $('mainScreen').classList.remove('hidden');
   startApp();
@@ -1524,8 +1636,8 @@ if ('Notification' in window && Notification.permission === 'default') {
   setTimeout(() => Notification.requestPermission(), 3000);
 }
 
-console.log('✅ راز آماده. ID شما:', state.myId);
-console.log('⋮ سه نقطه کنار هر پیام — برای منوی حذف');
+console.log('✅ راز آماده. 📱 شما:', state.myPhone);
+console.log('🔍 برای اضافه کردن مخاطب، شماره‌اش رو وارد کن');
 </script>
 </body>
 </html>
