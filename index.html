@@ -15,8 +15,8 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 
 /* ============ Login ============ */
 #login{background:linear-gradient(135deg,#0b141a,#111b21);z-index:100;justify-content:center;align-items:center;padding:24px;overflow-y:auto}
-#login .inner{display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px;align-items:center}
-#login .logo{font-size:70px;margin-bottom:4px}
+#login .inner{display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px;align-items:stretch;padding-bottom:30px}
+#login .logo{font-size:70px;text-align:center;margin-bottom:4px}
 #login h1{font-size:28px;background:linear-gradient(90deg,#6678ff,#20d9ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center}
 #login .sub{color:var(--dim);font-size:13px;margin-bottom:14px;text-align:center}
 .field{width:100%;position:relative}
@@ -24,28 +24,32 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .field input{width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid var(--panel3);background:var(--panel2);color:var(--text);font-size:15px;outline:none;font-family:inherit;transition:.2s}
 .field input:focus{border-color:var(--green);background:var(--panel3)}
 .field input.error{border-color:#ff5e7a}
-.field .hint{font-size:10px;color:var(--dim);margin-top:5px;padding-right:6px}
-#login button{width:100%;padding:15px;border-radius:12px;border:none;background:var(--green);color:#fff;font-size:16px;cursor:pointer;font-weight:bold;font-family:inherit;transition:.2s;margin-top:8px}
-#login button:hover{background:var(--green2)}
-#login button:disabled{opacity:.5;cursor:not-allowed}
+.field input:disabled{opacity:.55;cursor:not-allowed}
+.field .hint{font-size:10px;color:var(--dim);margin-top:5px;padding-right:6px;transition:.2s}
+.pass-wrap{position:relative;width:100%}
+.pass-wrap input{padding-left:46px !important}
+.pass-wrap button{position:absolute;left:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:8px;border-radius:8px;transition:.15s}
+.pass-wrap button:hover{background:var(--panel3);color:var(--text)}
+.checkbox-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);cursor:pointer;user-select:none;padding:6px 4px;transition:.15s}
+.checkbox-row:hover{background:var(--panel2);border-radius:8px}
+.checkbox-row input{width:20px;height:20px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+#login button.main{width:100%;padding:15px;border-radius:12px;border:none;background:var(--green);color:#fff;font-size:16px;cursor:pointer;font-weight:bold;font-family:inherit;transition:.2s;margin-top:8px}
+#login button.main:hover{background:var(--green2)}
+#login button.main:disabled{opacity:.5;cursor:not-allowed}
 #loginStatus{margin-top:6px;font-size:12px;color:var(--dim);min-height:20px;text-align:center;line-height:1.6}
 
 /* ============ Header ============ */
 .hdr{background:var(--panel2);padding:12px 14px;display:flex;align-items:center;gap:10px;z-index:2;flex-shrink:0;min-height:60px}
 .hdr .back{background:none;border:none;color:#aebac1;font-size:22px;cursor:pointer;padding:4px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.hdr .back:hover{background:var(--panel3)}
 .hdr .title{flex:1;font-weight:bold;font-size:16px;min-width:0}
 .hdr .title .sub{font-size:11px;color:var(--dim);font-weight:normal;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hdr .title .sub.on{color:var(--green2)}
 .hdr .icon{background:none;border:none;color:#aebac1;font-size:19px;cursor:pointer;padding:6px;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.hdr .icon:hover{background:var(--panel3)}
-.hdr .avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;color:#fff;flex-shrink:0;overflow:hidden}
+.hdr .avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;color:#fff;flex-shrink:0;overflow:hidden;cursor:pointer}
 
 /* ============ Chat list ============ */
 #chatList{flex:1;overflow-y:auto;background:var(--panel)}
-#chatList::-webkit-scrollbar{width:5px}
-#chatList::-webkit-scrollbar-thumb{background:var(--panel3);border-radius:3px}
-.chat-item{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #1a252c;transition:background .1s}
+.chat-item{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;border-bottom:1px solid #1a252c}
 .chat-item:hover{background:var(--panel2)}
 .chat-item .av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:19px;color:#fff;flex-shrink:0;position:relative;background:var(--green)}
 .chat-item .av .dot{position:absolute;bottom:1px;left:1px;width:12px;height:12px;background:var(--green2);border-radius:50%;border:2px solid var(--panel)}
@@ -59,27 +63,21 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .empty{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 24px;text-align:center;color:var(--dim)}
 .empty .em{font-size:60px;margin-bottom:16px;opacity:.5}
 .empty p{font-size:14px;line-height:1.6}
-.empty b{color:var(--green)}
-
-/* ============ FAB ============ */
 .fabs{position:absolute;bottom:20px;left:20px;display:flex;flex-direction:column;gap:10px;z-index:4}
 .fab{width:56px;height:56px;border-radius:50%;background:var(--green);color:#fff;font-size:24px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
-.fab:hover{background:var(--green2)}
 .fab.group{background:#7c3aed}
 
 /* ============ Messages ============ */
 #messages{flex:1;overflow-y:auto;padding:16px 4%;background:var(--bg);display:flex;flex-direction:column;gap:2px}
-#messages::-webkit-scrollbar{width:5px}
-#messages::-webkit-scrollbar-thumb{background:var(--panel3);border-radius:3px}
 .msg-wrapper{display:flex;align-items:center;gap:6px;animation:pop .15s;max-width:88%}
 .msg-wrapper.me{align-self:flex-start;flex-direction:row}
 .msg-wrapper.other{align-self:flex-end;flex-direction:row-reverse}
 @keyframes pop{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
-.msg-menu-btn{width:26px;height:26px;border-radius:50%;background:transparent;border:none;color:var(--dim);font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.15s;opacity:.4}
+.msg-menu-btn{width:26px;height:26px;border-radius:50%;background:transparent;border:none;color:var(--dim);font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:.4}
 .msg-menu-btn:hover{background:var(--panel2);color:var(--text);opacity:1}
 .msg{max-width:100%;padding:7px 11px 5px;border-radius:9px;font-size:14.5px;line-height:1.4;word-wrap:break-word;position:relative}
-.msg.me{background:var(--me);border-top-left-radius:2px;color:var(--text)}
-.msg.other{background:var(--other);border-top-right-radius:2px;color:var(--text)}
+.msg.me{background:var(--me);border-top-left-radius:2px}
+.msg.other{background:var(--other);border-top-right-radius:2px}
 .msg .from{font-size:12px;font-weight:bold;margin-bottom:3px}
 .msg.me .from{color:#06cf9c}
 .msg.other .from{color:#53bdeb}
@@ -97,10 +95,9 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 #typingBar{background:var(--bg);color:var(--green2);font-size:12px;padding:0 20px;min-height:0;flex-shrink:0}
 #typingBar.on{min-height:22px;padding:5px 20px}
 
-/* ============ Input Bar ============ */
+/* ============ Input ============ */
 #inputBar{background:var(--panel2);padding:8px 10px;display:flex;gap:6px;align-items:center;flex-shrink:0}
 #inputBar button{width:42px;height:42px;border-radius:50%;border:none;background:transparent;color:#aebac1;font-size:19px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-#inputBar button:hover{background:var(--panel3)}
 #inputBar button.send{background:var(--green);color:#fff}
 #inputBar button.mic{background:var(--green);color:#fff}
 #inputBar button.mic.rec{background:#ff4444;animation:pulse 1s infinite}
@@ -127,8 +124,8 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .modalHdr button{background:none;border:none;color:#aebac1;font-size:22px;cursor:pointer;padding:4px;line-height:1}
 .modalBody{flex:1;overflow-y:auto;padding:14px 18px}
 .modalBody .lbl{font-size:12px;color:var(--dim);margin-bottom:6px;display:block;margin-top:8px;font-weight:bold}
-.modalBody input[type=text],.modalBody input[type=tel]{width:100%;padding:12px 14px;border-radius:8px;border:1.5px solid var(--panel3);background:var(--panel2);color:var(--text);font-size:14px;outline:none;font-family:inherit;margin-bottom:12px;transition:.2s}
-.modalBody input[type=text]:focus,.modalBody input[type=tel]:focus{border-color:var(--green);background:var(--panel3)}
+.modalBody input[type=text],.modalBody input[type=tel],.modalBody input[type=password]{width:100%;padding:12px 14px;border-radius:8px;border:1.5px solid var(--panel3);background:var(--panel2);color:var(--text);font-size:14px;outline:none;font-family:inherit;margin-bottom:12px;transition:.2s}
+.modalBody input:focus{border-color:var(--green);background:var(--panel3)}
 .modalBody input.error{border-color:#ff5e7a}
 .modalBody .hint{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.6}
 .contact-row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;cursor:pointer}
@@ -142,6 +139,10 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .modalFtr .cancel{background:var(--panel3);color:var(--text)}
 .modalFtr .ok{background:var(--green);color:#fff}
 .modalFtr .ok:disabled{opacity:.4}
+.modalBody button.action{width:100%;padding:12px;border-radius:10px;border:none;background:var(--panel3);color:var(--text);font-size:14px;font-family:inherit;cursor:pointer;margin-top:6px;transition:.15s;text-align:center;font-weight:bold}
+.modalBody button.action:hover{background:#374248}
+.modalBody button.danger{background:#3a1a1a;color:#ff6b6b}
+.modalBody button.danger:hover{background:#5c1e1e}
 
 /* ============ Lightbox ============ */
 #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;justify-content:center;align-items:center;z-index:300;cursor:zoom-out;padding:20px}
@@ -151,7 +152,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 /* ============ Emoji ============ */
 #emojiPanel{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--panel2);border-radius:12px;padding:8px;display:none;grid-template-columns:repeat(8,1fr);gap:2px;max-width:340px;max-height:240px;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.6);z-index:20}
 #emojiPanel.on{display:grid}
-#emojiPanel span{font-size:20px;cursor:pointer;padding:4px;border-radius:6px;text-align:center;user-select:none}
+#emojiPanel span{font-size:20px;cursor:pointer;padding:4px;border-radius:6px;text-align:center}
 #emojiPanel span:hover{background:var(--panel3)}
 
 /* ============ Bottom Sheets ============ */
@@ -160,21 +161,17 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 .sheet{background:var(--panel2);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px;display:flex;flex-direction:column;gap:10px;animation:slideUp .3s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .sheet .sheetTitle{font-weight:bold;text-align:center;color:var(--text);margin-bottom:10px;font-size:15px}
-.sheet button{padding:16px;border-radius:12px;border:none;background:var(--panel3);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:12px;justify-content:center;transition:.15s}
-.sheet button:hover{background:#374248}
+.sheet button{padding:16px;border-radius:12px;border:none;background:var(--panel3);color:var(--text);font-size:15px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:12px;justify-content:center}
 .sheet button.danger{color:#ff6b6b;background:#3a1a1a}
-.sheet button.danger:hover{background:#5c1e1e}
 .sheet button.cancel{background:#2a3942;padding:14px}
 
-/* ============ Phone Search Results ============ */
+/* ============ Phone Search ============ */
 .search-results{margin-top:8px;margin-bottom:10px}
-.search-result{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--panel2);margin-bottom:6px;cursor:pointer;transition:.15s}
-.search-result:hover{background:var(--panel3)}
+.search-result{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--panel2);margin-bottom:6px}
 .search-result .av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;color:#fff;flex-shrink:0}
 .search-result .info{flex:1;min-width:0}
 .search-result .nm{font-size:14px;font-weight:bold}
 .search-result .ph{font-size:11px;color:var(--dim);margin-top:2px;font-family:monospace;direction:ltr;text-align:right}
-.search-result .btn{padding:6px 14px;border-radius:8px;background:var(--green);color:#fff;border:none;font-size:12px;font-family:inherit;cursor:pointer;font-weight:bold}
 .no-result{padding:14px;text-align:center;color:var(--dim);font-size:12px;background:var(--panel2);border-radius:10px}
 </style>
 </head>
@@ -197,15 +194,29 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
     <div class="field">
       <label>شماره موبایل</label>
       <input id="phoneInp" type="tel" placeholder="09123456789" maxlength="15" autocomplete="off" dir="ltr" style="text-align:left">
-      <div class="hint">💡 دوستات با این شماره پیدات می‌کنن</div>
+      <div class="hint" id="phoneHint">💡 دوستات با این شماره پیدات می‌کنن</div>
     </div>
 
-    <button id="joinBtn">ورود به راز</button>
+    <div class="field">
+      <label>رمز عبور</label>
+      <div class="pass-wrap">
+        <input id="passInp" type="password" placeholder="••••••••" autocomplete="off">
+        <button type="button" id="passToggle" tabindex="-1">👁</button>
+      </div>
+      <div class="hint" id="passHint">🔐 حداقل ۴ کاراکتر</div>
+    </div>
+
+    <label class="checkbox-row">
+      <input type="checkbox" id="rememberChk" checked>
+      <span>یادآوری من در این دستگاه</span>
+    </label>
+
+    <button class="main" id="joinBtn">ورود به راز</button>
     <div id="loginStatus">آماده</div>
   </div>
 </div>
 
-<!-- ============ Main Screen ============ -->
+<!-- ============ Main ============ -->
 <div class="screen hidden" id="mainScreen">
   <div class="hdr">
     <div class="avatar" id="myAvatarHeader" style="background:var(--green)">؟</div>
@@ -219,7 +230,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
   </div>
 </div>
 
-<!-- ============ Chat Screen ============ -->
+<!-- ============ Chat ============ -->
 <div class="screen hidden" id="chatScreen">
   <div class="hdr">
     <button class="back" id="chatBack">←</button>
@@ -252,7 +263,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 
 </div>
 
-<!-- ============ Message Action Menu ============ -->
+<!-- ============ Message Menu ============ -->
 <div id="msgMenu">
   <div class="sheet">
     <div class="sheetTitle" id="msgMenuPreview">پیام</div>
@@ -273,7 +284,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
   </div>
 </div>
 
-<!-- ============ New Contact Modal ============ -->
+<!-- ============ Contact Modal ============ -->
 <div class="modal" id="newContactModal">
   <div class="modalBox">
     <div class="modalHdr"><h2>🔍 پیدا کردن مخاطب</h2><button data-close="newContactModal">✕</button></div>
@@ -281,9 +292,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
       <label class="lbl">شماره موبایل دوستت:</label>
       <input type="tel" id="contactPhoneInp" placeholder="09123456789" autocomplete="off" dir="ltr" style="text-align:left">
       <div class="hint">شماره رو کامل وارد کن. اگه طرف توی راز باشه، پیدا می‌شه.</div>
-
       <div id="searchResults" class="search-results"></div>
-
       <div id="manualNameField" style="display:none">
         <label class="lbl">اسم دلخواه:</label>
         <input type="text" id="contactNameInp" placeholder="مثلاً: علی" autocomplete="off">
@@ -296,7 +305,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
   </div>
 </div>
 
-<!-- ============ New Group Modal ============ -->
+<!-- ============ Group Modal ============ -->
 <div class="modal" id="newGroupModal">
   <div class="modalBox">
     <div class="modalHdr"><h2>👥 گروه جدید</h2><button data-close="newGroupModal">✕</button></div>
@@ -321,13 +330,35 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
       <label class="lbl">اسم:</label>
       <input type="text" id="profileNameInp" autocomplete="off">
       <label class="lbl">شماره موبایل (به دوستات بده):</label>
-      <input type="tel" id="profilePhoneInp" dir="ltr" style="text-align:left">
-      <div class="hint">با کلیک روی شماره کپی می‌شه. هر کی این شماره رو داشته باشه، می‌تونه بهت پیام بده.</div>
-      <button id="logoutBtn" style="padding:10px;border-radius:8px;border:none;background:#5c1e1e;color:#fff;cursor:pointer;font-family:inherit;font-size:13px;width:100%;margin-top:8px">خروج</button>
+      <input type="tel" id="profilePhoneInp" dir="ltr" style="text-align:left" readonly>
+      <div class="hint">با کلیک روی شماره کپی می‌شه.</div>
+
+      <button class="action" id="changePassBtn">🔐 تغییر رمز عبور</button>
+      <button class="action danger" id="logoutBtn">🚪 خروج از حساب</button>
     </div>
     <div class="modalFtr">
       <button class="cancel" data-close="profileModal">بستن</button>
       <button class="ok" id="saveProfileOk">ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Change Password Modal ============ -->
+<div class="modal" id="changePassModal">
+  <div class="modalBox">
+    <div class="modalHdr"><h2>🔐 تغییر رمز عبور</h2><button data-close="changePassModal">✕</button></div>
+    <div class="modalBody">
+      <label class="lbl">رمز فعلی:</label>
+      <input type="password" id="oldPassInp" placeholder="رمز فعلی" autocomplete="off">
+      <label class="lbl">رمز جدید:</label>
+      <input type="password" id="newPassInp" placeholder="حداقل ۴ کاراکتر" autocomplete="off">
+      <label class="lbl">تکرار رمز جدید:</label>
+      <input type="password" id="newPass2Inp" placeholder="دوباره وارد کن" autocomplete="off">
+      <div class="hint" id="changePassHint">پس از ذخیره، از دفعه بعد رمز جدید لازمه.</div>
+    </div>
+    <div class="modalFtr">
+      <button class="cancel" data-close="changePassModal">لغو</button>
+      <button class="ok" id="changePassOk">ذخیره</button>
     </div>
   </div>
 </div>
@@ -337,7 +368,7 @@ body{font-family:Tahoma,Arial,sans-serif;background:#0b141a;color:var(--text);he
 
 <script>
 // ========================================================
-//    راز — پیام‌رسان (با شماره موبایل)
+//   راز — پیام‌رسان امن (شماره موبایل + رمز عبور)
 // ========================================================
 
 const $ = id => document.getElementById(id);
@@ -354,6 +385,7 @@ const MAX_VOICE_SIZE = 200 * 1024;
 const MAX_VOICE_DURATION = 15;
 const MAX_IMAGE_SIZE = 150 * 1024;
 const DIRECTORY_INTERVAL = 8000;
+const MIN_PASS_LEN = 4;
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -381,36 +413,44 @@ const beep = () => {
   } catch(e){}
 };
 
-// ⭐ نرمال‌سازی شماره موبایل (تبدیل اعداد فارسی/عربی به انگلیسی)
+// ============ Hashing ============
+async function hashPassword(pass) {
+  const input = 'raaz|v1|' + pass;
+  if (window.crypto && window.crypto.subtle) {
+    try {
+      const buf = new TextEncoder().encode(input);
+      const hash = await crypto.subtle.digest('SHA-256', buf);
+      return 'sha_' + Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch(e) { /* fallback */ }
+  }
+  // fallback
+  let h = 5381;
+  for (let i = 0; i < input.length; i++) h = ((h << 5) + h + input.charCodeAt(i)) | 0;
+  let h2 = 0;
+  for (let i = 0; i < input.length; i++) h2 = (h2 * 31 + input.charCodeAt(i)) | 0;
+  return 'fb_' + Math.abs(h).toString(36) + '_' + Math.abs(h2).toString(36);
+}
+
+// ============ Phone Utils ============
 function normalizePhone(input) {
   let s = String(input || '');
-  // تبدیل اعداد فارسی به انگلیسی
   const persian = '۰۱۲۳۴۵۶۷۸۹';
   const arabic = '٠١٢٣٤٥٦٧٨٩';
   for (let i = 0; i < 10; i++) {
     s = s.replace(new RegExp(persian[i], 'g'), String(i));
     s = s.replace(new RegExp(arabic[i], 'g'), String(i));
   }
-  // حذف هر چیزی جز عدد
   s = s.replace(/\D/g, '');
-  // 98xxxxxxxxxx → 0xxxxxxxxxx
-  if (s.startsWith('98') && s.length === 12) s = '0' + s.slice(2);
-  // 9xxxxxxxxx → 09xxxxxxxxx
-  if (s.startsWith('9') && s.length === 10) s = '0' + s;
-  // +98 → 0
   if (s.startsWith('0098')) s = '0' + s.slice(4);
+  if (s.startsWith('98') && s.length === 12) s = '0' + s.slice(2);
+  if (s.startsWith('9') && s.length === 10) s = '0' + s;
   return s;
 }
-
-// فرمت زیبای شماره برای نمایش
 function formatPhone(p) {
   const n = normalizePhone(p);
-  if (n.length === 11 && n.startsWith('0')) {
-    return n.slice(0,4) + ' ' + n.slice(4,7) + ' ' + n.slice(7);
-  }
+  if (n.length === 11 && n.startsWith('0')) return n.slice(0,4) + ' ' + n.slice(4,7) + ' ' + n.slice(7);
   return n;
 }
-
 function validPhone(p) {
   const n = normalizePhone(p);
   return n.length === 11 && n.startsWith('09');
@@ -424,15 +464,12 @@ function blobToBase64(blob) {
     reader.readAsDataURL(blob);
   });
 }
-
 function base64ToBlob(base64, mime) {
   const byteChars = atob(base64);
   const byteNumbers = new Array(byteChars.length);
   for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
-  const byteArray = new Uint8Array(byteNumbers);
-  return new Blob([byteArray], { type: mime || 'application/octet-stream' });
+  return new Blob([new Uint8Array(byteNumbers)], { type: mime || 'application/octet-stream' });
 }
-
 function compressImage(file, maxWidth, quality) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -442,10 +479,8 @@ function compressImage(file, maxWidth, quality) {
         const canvas = document.createElement('canvas');
         let w = img.width, h = img.height;
         if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
         canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/jpeg', quality);
       };
       img.onerror = reject;
@@ -462,11 +497,11 @@ const EMOJIS = '😀😃😄😁😆😅😂🤣😊😇🙂🙃😉😌😍🥰
 const state = {
   myPhone: localStorage.getItem('raaz_phone') || '',
   myName: localStorage.getItem('raaz_name') || '',
-  contacts: JSON.parse(localStorage.getItem('raaz_contacts') || '{}'),  // { phone: { name } }
+  contacts: JSON.parse(localStorage.getItem('raaz_contacts') || '{}'),
   groups: JSON.parse(localStorage.getItem('raaz_groups') || '{}'),
   messages: JSON.parse(localStorage.getItem('raaz_msgs') || '{}'),
-  directory: JSON.parse(localStorage.getItem('raaz_dir') || '{}'),      // { phone: { name, time } }
-  presence: {},   // { phone: time }
+  directory: JSON.parse(localStorage.getItem('raaz_dir') || '{}'),
+  presence: {},
   typing: {},
   currentChat: null,
   mqtt: null,
@@ -481,13 +516,10 @@ function save() {
   localStorage.setItem('raaz_contacts', JSON.stringify(state.contacts));
   localStorage.setItem('raaz_groups', JSON.stringify(state.groups));
   localStorage.setItem('raaz_unread', JSON.stringify(state.unread));
-  // نگه‌داشتن فقط آخرین ورودی‌های directory
   const dir = {};
   const now = Date.now();
   for (const p in state.directory) {
-    if (now - (state.directory[p].time || 0) < 7 * 24 * 60 * 60 * 1000) { // ۷ روز
-      dir[p] = state.directory[p];
-    }
+    if (now - (state.directory[p].time || 0) < 7 * 24 * 60 * 60 * 1000) dir[p] = state.directory[p];
   }
   state.directory = dir;
   try { localStorage.setItem('raaz_dir', JSON.stringify(dir)); } catch(e){}
@@ -503,47 +535,152 @@ function save() {
   try { localStorage.setItem('raaz_msgs', JSON.stringify(trimmed)); } catch(e){}
 }
 
-// ============ Login ============
-$('nameInp').value = state.myName;
-if (state.myPhone) $('phoneInp').value = state.myPhone;
+// ============ Login Screen ============
+$('passToggle').onclick = () => {
+  const inp = $('passInp');
+  if (inp.type === 'password') { inp.type = 'text'; $('passToggle').textContent = '🙈'; }
+  else { inp.type = 'password'; $('passToggle').textContent = '👁'; }
+};
+
+$('phoneInp').addEventListener('input', (e) => {
+  const n = normalizePhone(e.target.value);
+  if (n.length >= 4) e.target.value = n;
+  updateLoginUI(n);
+});
+
+function updateLoginUI(phone) {
+  const hint = $('phoneHint');
+  const passHint = $('passHint');
+  const nameInp = $('nameInp');
+
+  if (phone.length === 11 && validPhone(phone)) {
+    const hasPass = !!localStorage.getItem('raaz_pass_' + phone);
+    if (hasPass) {
+      hint.textContent = '✅ این شماره قبلاً ثبت‌نام کرده';
+      hint.style.color = 'var(--green2)';
+      nameInp.disabled = true;
+      nameInp.value = localStorage.getItem('raaz_name_' + phone) || '';
+      passHint.textContent = '🔑 رمزت رو وارد کن';
+      passHint.style.color = 'var(--green2)';
+    } else {
+      hint.textContent = '🆕 شماره جدید — رمز بساز';
+      hint.style.color = 'var(--dim)';
+      nameInp.disabled = false;
+      if (nameInp.value === localStorage.getItem('raaz_name_' + phone)) nameInp.value = '';
+      passHint.textContent = '🔐 حداقل ۴ کاراکتر';
+      passHint.style.color = 'var(--dim)';
+    }
+  } else {
+    hint.textContent = '💡 دوستات با این شماره پیدات می‌کنن';
+    hint.style.color = 'var(--dim)';
+    nameInp.disabled = false;
+    passHint.textContent = '🔐 حداقل ۴ کاراکتر';
+    passHint.style.color = 'var(--dim)';
+  }
+}
+
+$('nameInp').addEventListener('keypress', e => { if (e.key === 'Enter') $('phoneInp').focus(); });
+$('phoneInp').addEventListener('keypress', e => { if (e.key === 'Enter') $('passInp').focus(); });
+$('passInp').addEventListener('keypress', e => { if (e.key === 'Enter') $('joinBtn').click(); });
 
 $('joinBtn').onclick = async () => {
-  const n = $('nameInp').value.trim();
-  const p = $('phoneInp').value.trim();
+  const nameVal = $('nameInp').value.trim();
+  const phoneVal = $('phoneInp').value.trim();
+  const passVal = $('passInp').value;
 
-  if (!n) {
-    $('nameInp').classList.add('error');
-    return alert('اسمت رو وارد کن!');
-  }
-  $('nameInp').classList.remove('error');
-
-  if (!validPhone(p)) {
+  // validation
+  if (!validPhone(phoneVal)) {
     $('phoneInp').classList.add('error');
-    return alert('شماره موبایل نامعتبره!\n\nمثال درست: 09123456789');
+    return alert('شماره موبایل نامعتبره!\n\nمثال: 09123456789');
   }
   $('phoneInp').classList.remove('error');
 
-  state.myName = n;
-  state.myPhone = normalizePhone(p);
-  save();
+  const phone = normalizePhone(phoneVal);
+  const savedHash = localStorage.getItem('raaz_pass_' + phone);
+  const btn = $('joinBtn');
+  btn.disabled = true;
+  $('loginStatus').textContent = '⏳ در حال بررسی...';
 
-  $('login').classList.add('hidden');
-  $('mainScreen').classList.remove('hidden');
-  startApp();
+  try {
+    if (savedHash) {
+      // کاربر موجود
+      if (!passVal) {
+        $('passInp').classList.add('error');
+        $('loginStatus').textContent = '';
+        btn.disabled = false;
+        return alert('رمزت رو وارد کن!');
+      }
+      $('passInp').classList.remove('error');
+      const entered = await hashPassword(passVal);
+      if (entered !== savedHash) {
+        $('passInp').classList.add('error');
+        $('passInp').value = '';
+        $('loginStatus').textContent = '❌ رمز اشتباه';
+        btn.disabled = false;
+        return;
+      }
+      state.myName = localStorage.getItem('raaz_name_' + phone) || nameVal || 'کاربر';
+    } else {
+      // کاربر جدید
+      if (!nameVal) {
+        $('nameInp').classList.add('error');
+        $('loginStatus').textContent = '';
+        btn.disabled = false;
+        return alert('اسمت رو وارد کن!');
+      }
+      $('nameInp').classList.remove('error');
+      if (passVal.length < MIN_PASS_LEN) {
+        $('passInp').classList.add('error');
+        $('loginStatus').textContent = '';
+        btn.disabled = false;
+        return alert('رمز باید حداقل ۴ کاراکتر باشه!');
+      }
+      $('passInp').classList.remove('error');
+      const newHash = await hashPassword(passVal);
+      localStorage.setItem('raaz_pass_' + phone, newHash);
+      localStorage.setItem('raaz_name_' + phone, nameVal);
+      state.myName = nameVal;
+    }
+
+    state.myPhone = phone;
+    save();
+
+    // session
+    const remember = $('rememberChk').checked;
+    const session = JSON.stringify({ phone, name: state.myName, time: Date.now() });
+    if (remember) localStorage.setItem('raaz_session', session);
+    else { localStorage.removeItem('raaz_session'); sessionStorage.setItem('raaz_session', session); }
+
+    $('loginStatus').textContent = '✅ خوش آمدی!';
+    $('login').classList.add('hidden');
+    $('mainScreen').classList.remove('hidden');
+    startApp();
+  } catch(e) {
+    console.error(e);
+    $('loginStatus').textContent = '❌ خطا';
+    btn.disabled = false;
+  }
 };
 
-$('nameInp').addEventListener('keypress', e => {
-  if (e.key === 'Enter') $('phoneInp').focus();
-});
-$('phoneInp').addEventListener('keypress', e => {
-  if (e.key === 'Enter') $('joinBtn').click();
-});
-$('phoneInp').addEventListener('input', e => {
-  const n = normalizePhone(e.target.value);
-  if (n.length >= 4) e.target.value = n;
-});
-
-// ============ Start ============
+// ============ Auto-login ============
+(function checkSession() {
+  try {
+    const s = JSON.parse(localStorage.getItem('raaz_session') || sessionStorage.getItem('raaz_session') || 'null');
+    if (s && s.phone && localStorage.getItem('raaz_pass_' + s.phone)) {
+      state.myPhone = s.phone;
+      state.myName = s.name || localStorage.getItem('raaz_name_' + s.phone) || 'کاربر';
+      $('login').classList.add('hidden');
+      $('mainScreen').classList.remove('hidden');
+      startApp();
+      return;
+    }
+  } catch(e){}
+  // پر کردن فیلدها اگه قبلاً بوده
+  if (state.myPhone) $('phoneInp').value = state.myPhone;
+  if (state.myName) $('nameInp').value = state.myName;
+  updateLoginUI(state.myPhone);
+})();
+  // ============ Start ============
 let appStarted = false;
 async function startApp() {
   if (appStarted) return;
@@ -615,12 +752,10 @@ function tryConnect(url) {
 
       c.on('message', onMQTT);
 
-      // اعلام حضور
       announcePresence();
       setInterval(announcePresence, 5000);
       setInterval(checkPresence, 3000);
 
-      // پخش در دفترچه تلفن
       broadcastDirectory();
       setInterval(broadcastDirectory, DIRECTORY_INTERVAL);
 
@@ -675,12 +810,9 @@ function onMQTT(topic, payload) {
   let d;
   try { d = JSON.parse(payload.toString()); } catch(e) { return; }
 
-  // دفترچه تلفن
   if (topic === `${PREFIX}/directory`) {
-    if (!d.phone) return;
-    if (d.phone === state.myPhone) return;
+    if (!d.phone || d.phone === state.myPhone) return;
     state.directory[d.phone] = { name: d.name, time: d.time || Date.now() };
-    // ذخیره تدریجی
     try { localStorage.setItem('raaz_dir', JSON.stringify(state.directory)); } catch(e){}
     return;
   }
@@ -713,7 +845,6 @@ function onMQTT(topic, payload) {
 function handleIncoming(d) {
   if (!d || d.fromId === state.myPhone) return;
 
-  // پیام حذف شده برای همه
   if (d.type === 'delete') {
     if (!d.msgId) return;
     const chatId = d.groupId ? 'group_' + d.groupId : 'dm_' + d.fromId;
@@ -739,7 +870,6 @@ function handleIncoming(d) {
     return;
   }
 
-  // اگه مخاطب جدیده، خودکار اضافه کن
   if (!d.groupId && !state.contacts[d.fromId]) {
     state.contacts[d.fromId] = { name: d.from };
     save();
@@ -779,7 +909,8 @@ function handleIncoming(d) {
     new Notification(d.from, { body });
   }
 }
-  // ============ Chat list ============
+
+// ============ Chat list ============
 function renderChatList() {
   const box = $('chatList');
   box.innerHTML = '';
@@ -817,9 +948,9 @@ function renderChatList() {
       <div class="em">🔒</div>
       <p>هنوز چتی نداری</p>
       <p style="margin-top:8px;font-size:12px">
-        با <b>➕</b> مخاطب اضافه کن (با شماره موبایل)<br>یا با <b>👥</b> گروه بساز
+        با <b>➕</b> مخاطب اضافه کن<br>یا با <b>👥</b> گروه بساز
       </p>
-      <p style="margin-top:16px;font-size:11px;color:#666">📱 شماره شما: <span style="font-family:monospace" dir="ltr">${formatPhone(state.myPhone)}</span></p>
+      <p style="margin-top:16px;font-size:11px;color:#666">📱 <span dir="ltr" style="font-family:monospace">${formatPhone(state.myPhone)}</span></p>
     </div>`;
     return;
   }
@@ -943,7 +1074,6 @@ function appendMessage(m, isMine) {
   menuBtn.className = 'msg-menu-btn';
   menuBtn.type = 'button';
   menuBtn.innerHTML = '⋮';
-  menuBtn.title = 'گزینه‌ها';
   menuBtn.onclick = (e) => { e.stopPropagation(); openMsgMenu(m); };
 
   const d = document.createElement('div');
@@ -1035,12 +1165,7 @@ function openMsgMenu(m) {
   $('msgMenu').classList.add('on');
   if (navigator.vibrate) navigator.vibrate(30);
 }
-
-function closeMsgMenu() {
-  $('msgMenu').classList.remove('on');
-  selectedMsg = null;
-}
-
+function closeMsgMenu() { $('msgMenu').classList.remove('on'); selectedMsg = null; }
 $('cancelMsgMenu').onclick = closeMsgMenu;
 $('msgMenu').onclick = (e) => { if (e.target.id === 'msgMenu') closeMsgMenu(); };
 
@@ -1052,15 +1177,13 @@ $('menuCopy').onclick = () => {
   } else fallbackCopy(text);
   closeMsgMenu();
 };
-
 function fallbackCopy(text) {
   const ta = document.createElement('textarea');
   ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.left = '-9999px';
+  ta.style.position = 'fixed'; ta.style.left = '-9999px';
   document.body.appendChild(ta);
   ta.select();
-  try { document.execCommand('copy'); alert('✅ کپی شد'); } catch(e) { alert('❌ خطا'); }
+  try { document.execCommand('copy'); alert('✅ کپی شد'); } catch(e) {}
   ta.remove();
 }
 
@@ -1069,9 +1192,7 @@ $('menuDeleteMe').onclick = () => {
   const msg = selectedMsg;
   const chatId = state.currentChat.id;
   if (!confirm('این پیام از چت تو حذف بشه؟')) { closeMsgMenu(); return; }
-  if (state.messages[chatId]) {
-    state.messages[chatId] = state.messages[chatId].filter(x => x.id !== msg.id);
-  }
+  if (state.messages[chatId]) state.messages[chatId] = state.messages[chatId].filter(x => x.id !== msg.id);
   save();
   const el = document.querySelector(`.msg-wrapper[data-id="${msg.id}"]`);
   if (el) el.remove();
@@ -1083,21 +1204,15 @@ $('menuDeleteAll').onclick = () => {
   if (!selectedMsg || !state.currentChat) return;
   const msg = selectedMsg;
   const chatId = state.currentChat.id;
-  if (msg.fromId !== state.myPhone) { alert('فقط پیام‌های خودت رو می‌تونی برای همه حذف کنی'); closeMsgMenu(); return; }
-  if (!confirm('این پیام برای همه حذف بشه؟')) { closeMsgMenu(); return; }
+  if (msg.fromId !== state.myPhone) { alert('فقط پیام‌های خودت'); closeMsgMenu(); return; }
+  if (!confirm('برای همه حذف بشه؟')) { closeMsgMenu(); return; }
 
-  if (state.messages[chatId]) {
-    state.messages[chatId] = state.messages[chatId].filter(x => x.id !== msg.id);
-  }
+  if (state.messages[chatId]) state.messages[chatId] = state.messages[chatId].filter(x => x.id !== msg.id);
   save();
   const el = document.querySelector(`.msg-wrapper[data-id="${msg.id}"]`);
   if (el) el.remove();
 
-  const delMsg = {
-    type: 'delete', msgId: msg.id,
-    fromId: state.myPhone, from: state.myName,
-    groupId: msg.groupId,
-  };
+  const delMsg = { type: 'delete', msgId: msg.id, fromId: state.myPhone, from: state.myName, groupId: msg.groupId };
 
   if (state.currentChat.type === 'group') {
     const g = state.groups[state.currentChat.groupId];
@@ -1115,13 +1230,9 @@ $('menuDeleteAll').onclick = () => {
 // ============ Send text ============
 function sendText() {
   const txt = $('msgInp').value.trim();
-  if (!txt) return;
-  if (!state.mqtt || !state.currentChat) return;
+  if (!txt || !state.mqtt || !state.currentChat) return;
 
-  const msg = {
-    id: uid(), from: state.myName, fromId: state.myPhone,
-    time: Date.now(), type: 'text', text: txt,
-  };
+  const msg = { id: uid(), from: state.myName, fromId: state.myPhone, time: Date.now(), type: 'text', text: txt };
 
   if (state.currentChat.type === 'group') {
     msg.groupId = state.currentChat.groupId;
@@ -1175,7 +1286,7 @@ function updateTypingBar() {
   else { bar.classList.add('on'); bar.textContent = `✎ ${typers.length} نفر دارن تایپ می‌کنن...`; }
 }
 
-// ============ Voice Recording ============
+// ============ Voice ============
 let recorder = null, recChunks = [], recSec = 0, recTmr = null;
 
 $('micBtn').onclick = async () => {
@@ -1202,7 +1313,7 @@ $('micBtn').onclick = async () => {
       if (recSec >= MAX_VOICE_DURATION) stopRec(true);
     }, 1000);
   } catch(e) {
-    if (e.name === 'NotAllowedError') alert('❌ اجازه میکروفون داده نشد!\n\nروی قفل 🔒 بزن → Microphone → Allow');
+    if (e.name === 'NotAllowedError') alert('❌ اجازه میکروفون داده نشد!\nروی قفل 🔒 بزن → Microphone → Allow');
     else alert('❌ خطا: ' + e.message);
   }
 };
@@ -1226,14 +1337,13 @@ function stopRec(sendIt) {
   };
   r.stop();
 }
-
 $('cancelRec').onclick = () => stopRec(false);
 $('sendRec').onclick = () => stopRec(true);
 
 async function sendVoice(blob, duration) {
   if (!state.currentChat || !state.mqtt) return;
   if (blob.size > MAX_VOICE_SIZE) {
-    alert('❌ ویس خیلی بزرگه! (' + Math.round(blob.size/1024) + 'KB)\n\nحداکثر ۱۵ ثانیه.');
+    alert('❌ ویس خیلی بزرگه! (' + Math.round(blob.size/1024) + 'KB)\nحداکثر ۱۵ ثانیه.');
     return;
   }
   const fileId = 'f_' + uid();
@@ -1241,7 +1351,7 @@ async function sendVoice(blob, duration) {
   state.fileStore[fileId] = { blob, name: 'voice.webm', size: blob.size, mime: 'audio/webm', duration };
 
   let base64;
-  try { base64 = await blobToBase64(blob); } catch(e) { alert('خطا در پردازش ویس'); return; }
+  try { base64 = await blobToBase64(blob); } catch(e) { alert('خطا'); return; }
 
   const msg = {
     id: msgId, from: state.myName, fromId: state.myPhone,
@@ -1276,18 +1386,14 @@ $('imageMenu').onclick = (e) => { if (e.target.id === 'imageMenu') $('imageMenu'
 $('pickGallery').onclick = () => {
   $('imageMenu').classList.remove('on');
   const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
+  input.type = 'file'; input.accept = 'image/*';
   input.onchange = (e) => handleImagePick(e);
   input.click();
 };
-
 $('pickCamera').onclick = () => {
   $('imageMenu').classList.remove('on');
   const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.capture = 'environment';
+  input.type = 'file'; input.accept = 'image/*'; input.capture = 'environment';
   input.onchange = (e) => handleImagePick(e);
   input.click();
 };
@@ -1295,17 +1401,17 @@ $('pickCamera').onclick = () => {
 async function handleImagePick(e) {
   const file = e.target.files[0];
   if (!file) return;
-  if (!file.type.startsWith('image/')) { alert('فقط عکس قبول می‌شه!'); return; }
+  if (!file.type.startsWith('image/')) { alert('فقط عکس!'); return; }
   $('uploading').classList.add('on');
   try {
     const compressed = await compressImage(file, 800, 0.6);
     if (compressed.size > MAX_IMAGE_SIZE) {
-      alert('❌ عکس بزرگه (' + Math.round(compressed.size/1024) + 'KB)\n\nعکس کوچیک‌تر انتخاب کن.');
+      alert('❌ عکس بزرگه (' + Math.round(compressed.size/1024) + 'KB)');
       $('uploading').classList.remove('on');
       return;
     }
     await sendImage(compressed);
-  } catch(err) { alert('خطا در پردازش عکس'); }
+  } catch(err) { alert('خطا در پردازش'); }
   $('uploading').classList.remove('on');
 }
 
@@ -1376,13 +1482,11 @@ function playVoice(fileId, vb) {
   } catch(e) {}
 }
 
-// ============ Search Contact by Phone ============
+// ============ Search Contact ============
 let searchTimer = null;
-
 $('contactPhoneInp').addEventListener('input', (e) => {
   const n = normalizePhone(e.target.value);
   if (n.length >= 4) e.target.value = n;
-
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => searchContact(n), 500);
 });
@@ -1396,21 +1500,13 @@ function searchContact(phone) {
   $('contactNameInp').dataset.phone = '';
 
   if (!phone || phone.length < 10) return;
-
-  if (phone === state.myPhone) {
-    results.innerHTML = '<div class="no-result">این شماره خودته! 😅</div>';
-    return;
-  }
-
-  // اگه قبلاً اضافه شده
+  if (phone === state.myPhone) { results.innerHTML = '<div class="no-result">این شماره خودته! 😅</div>'; return; }
   if (state.contacts[phone]) {
-    results.innerHTML = `<div class="no-result">قبلاً این مخاطب رو داری: <b>${esc(state.contacts[phone].name)}</b></div>`;
+    results.innerHTML = `<div class="no-result">قبلاً داری: <b>${esc(state.contacts[phone].name)}</b></div>`;
     return;
   }
 
-  // جستجو در دفترچه تلفن
   const found = state.directory[phone];
-
   if (found) {
     const div = document.createElement('div');
     div.className = 'search-result';
@@ -1421,17 +1517,14 @@ function searchContact(phone) {
         <div class="ph" dir="ltr">${formatPhone(phone)}</div>
       </div>`;
     results.appendChild(div);
-
-    // ذخیره‌ی انتخاب
     $('contactNameInp').value = found.name;
     $('contactNameInp').dataset.phone = phone;
     $('addContactOk').disabled = false;
   } else {
     results.innerHTML = `<div class="no-result">
-      🔍 کسی با این شماره توی راز پیدا نشد<br>
-      <span style="font-size:10px;opacity:.7">مطمئن شو طرف هم توی راز ثبت‌نام کرده</span>
+      🔍 کسی با این شماره پیدا نشد<br>
+      <span style="font-size:10px;opacity:.7">۱۰ ثانیه صبر کن، شاید طرف آنلاین بشه</span>
     </div>`;
-    // اجازه می‌دیم دستی هم اضافه کنه
     $('manualNameField').style.display = 'block';
     $('contactNameInp').dataset.phone = phone;
     $('contactNameInp').addEventListener('input', () => {
@@ -1440,7 +1533,6 @@ function searchContact(phone) {
   }
 }
 
-// ============ Add Contact ============
 $('newContactFab').onclick = () => {
   $('contactPhoneInp').value = '';
   $('contactNameInp').value = '';
@@ -1456,13 +1548,12 @@ $('addContactOk').onclick = () => {
   const phone = $('contactNameInp').dataset.phone || normalizePhone($('contactPhoneInp').value);
   const name = $('contactNameInp').value.trim();
   if (!validPhone(phone)) return alert('شماره نامعتبره');
-  if (phone === state.myPhone) return alert('این شماره خودته!');
+  if (phone === state.myPhone) return alert('خودته!');
   if (!name) return alert('اسم رو وارد کن');
   state.contacts[phone] = { name };
   save();
   renderChatList();
   closeModal('newContactModal');
-  console.log('✅ مخاطب اضافه شد:', name, phone);
 };
 
 // ============ Groups ============
@@ -1554,18 +1645,52 @@ $('saveProfileOk').onclick = () => {
 
 $('profilePhoneInp').onclick = function() {
   this.select();
-  try {
-    navigator.clipboard.writeText(state.myPhone);
-    alert('📱 شماره کپی شد: ' + state.myPhone);
-  } catch(e) {
-    document.execCommand('copy');
-    alert('📱 شماره کپی شد');
-  }
+  try { navigator.clipboard.writeText(state.myPhone); alert('📱 کپی شد: ' + state.myPhone); }
+  catch(e) { document.execCommand('copy'); alert('📱 کپی شد'); }
+};
+
+// ============ Change Password ============
+$('changePassBtn').onclick = () => {
+  $('oldPassInp').value = '';
+  $('newPassInp').value = '';
+  $('newPass2Inp').value = '';
+  $('changePassHint').textContent = 'پس از ذخیره، از دفعه بعد رمز جدید لازمه.';
+  $('changePassHint').style.color = 'var(--dim)';
+  closeModal('profileModal');
+  openModal('changePassModal');
+};
+
+$('changePassOk').onclick = async () => {
+  const oldP = $('oldPassInp').value;
+  const newP = $('newPassInp').value;
+  const new2 = $('newPass2Inp').value;
+  const hint = $('changePassHint');
+
+  if (!oldP) { hint.textContent = '❌ رمز فعلی رو وارد کن'; hint.style.color = '#ff6b6b'; return; }
+  if (newP.length < MIN_PASS_LEN) { hint.textContent = '❌ رمز جدید حداقل ۴ کاراکتر'; hint.style.color = '#ff6b6b'; return; }
+  if (newP !== new2) { hint.textContent = '❌ رمز جدید یکسان نیست'; hint.style.color = '#ff6b6b'; return; }
+
+  const oldHash = await hashPassword(oldP);
+  const saved = localStorage.getItem('raaz_pass_' + state.myPhone);
+  if (oldHash !== saved) { hint.textContent = '❌ رمز فعلی اشتباهه'; hint.style.color = '#ff6b6b'; return; }
+
+  const newHash = await hashPassword(newP);
+  localStorage.setItem('raaz_pass_' + state.myPhone, newHash);
+  hint.textContent = '✅ رمز تغییر کرد!';
+  hint.style.color = 'var(--green2)';
+  setTimeout(() => closeModal('changePassModal'), 1000);
 };
 
 $('logoutBtn').onclick = () => {
-  if (!confirm('خارج بشی؟ همه چیز پاک می‌شه')) return;
-  localStorage.clear();
+  if (!confirm('خارج بشی؟ چت‌ها پاک می‌شن ولی رمزت می‌مونه.')) return;
+  localStorage.removeItem('raaz_session');
+  sessionStorage.removeItem('raaz_session');
+  // پاک کردن اطلاعات موقت ولی نه رمز
+  localStorage.removeItem('raaz_contacts');
+  localStorage.removeItem('raaz_groups');
+  localStorage.removeItem('raaz_msgs');
+  localStorage.removeItem('raaz_unread');
+  localStorage.removeItem('raaz_dir');
   location.reload();
 };
 
@@ -1625,19 +1750,13 @@ document.addEventListener('click', e => {
 
 $('lightbox').onclick = () => $('lightbox').classList.remove('on');
 
-// ============ Startup ============
-if (state.myName && state.myPhone) {
-  $('login').classList.add('hidden');
-  $('mainScreen').classList.remove('hidden');
-  startApp();
-}
-
+// ============ Notifications ============
 if ('Notification' in window && Notification.permission === 'default') {
   setTimeout(() => Notification.requestPermission(), 3000);
 }
 
 console.log('✅ راز آماده. 📱 شما:', state.myPhone);
-console.log('🔍 برای اضافه کردن مخاطب، شماره‌اش رو وارد کن');
+console.log('🔐 رمز عبور فعال — اطلاعات با SHA-256 محافظت می‌شن');
 </script>
 </body>
 </html>
